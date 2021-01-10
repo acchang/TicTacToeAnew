@@ -1,42 +1,56 @@
 // tic tac toe alternative ... pipe connector, first team to cross the ocean wins
 // need to animate connection though
 
-// I need to put event listeners on squares
-// get every square to acknowledge if an X or O is clicked
-// then removeEventListener() 
+let currentPlayer = "playerOne"
 
-//puts even listeners on all squares
+// puts even listeners on all squares -- and also prevents another
+// for loop puts eventlistener on
+// could also use forEach method which is how webdev/kubow does it "cellEleents.forEach(cell => {cell.addEventListener...)"
 const gridBoxes = document.querySelectorAll('.box');
 for (const gridBox of gridBoxes) {
-    gridBox.addEventListener('click', boxmarked)
+    gridBox.addEventListener('click', boxmarked,  {once: true})
 }
 
 // draw a mark in inner html that's the same as same the player
-// kubow builds an array and then targets
+// kubow targets
+// Kim sets player and if true add classList (35:16)
 // need some way of updating the index so I can measure it against winning combos
+// kubow does const squareArray = Array.from(squares)
+// const index = squareArray.indexOf(e.target)
+// if not classList.add then .setAttribute("id"
+// yeah and marked should be the same as current player
+// then check if there is a winner
 function boxmarked(e) {
-    e.target.innerHTML = "yeah";
-    e.target.classList.add("marked");
-    // const nowBox= e.target;
-    // nowBox.classList.add("marked");
-    console.log(boxes)
-    // nowBox.setAttribute("id", "marked")
+    e.target.innerHTML = "symbol";
+    const gridArray = Array.from(gridBoxes)
+    const index = gridArray.indexOf(e.target)
+
+    // need to work on indeterminate players; current player is 'one' or 'two'
+
+    if(currentPlayer === 'playerOne') {
+        gridArray[index].classList.add('X')
+        currentPlayer = 'playerTwo'
+      } else {
+        gridArray[index].classList.add('O')
+        currentPlayer = 'playerOne'
+      }
+
+    console.log(e.target.classList[1], index)
+    // Then check if the array matches 
 }
 
 // need a function that acknowledges whose turn it is
+// use current player and other player and allow them to choose marks
+// foster does it by determining turn first, and then using boxmarked function
+// use css so a new class invokes a new image
+// quick sets current player with target ***
+
+let turn = 0
+function whosTurn () {
 
 
+}
 
-// WEB DEV how to - works
-// const boxElements = document.querySelectorAll('[data-box]');
-// boxElements.forEach(box => {box.addEventListener('click', bonk, {once: true})
-// })
-
-//   KUBOW - this should work too, I just fon't know what the first line does
-//   document.addEventListener('DOMContentLoaded', () => {
-//       const squares = document.querySelectorAll('.grid div')
-//       squares.forEach(square => {square.addEventListener('click', clickOutcome)})
-//   })
 
 // THIS WORKS
 // document.getElementById("0").addEventListener("click", displayDate);
