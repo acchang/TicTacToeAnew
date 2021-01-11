@@ -2,10 +2,20 @@
 // need to animate connection though
 
 let currentPlayer = "playerOne"
+const winCombos = [
+	[0, 1, 2],
+	[3, 4, 5],
+	[6, 7, 8],
+	[0, 3, 6],
+	[1, 4, 7],
+	[2, 5, 8],
+	[0, 4, 8],
+	[6, 4, 2]
+]
 
 // puts even listeners on all squares -- and also prevents another
 // for loop puts eventlistener on
-// could also use forEach method which is how webdev/kubow does it "cellEleents.forEach(cell => {cell.addEventListener...)"
+// could also use forEach method which is how webdev/kubow does it "cellElements.forEach(cell => {cell.addEventListener...)"
 const gridBoxes = document.querySelectorAll('.box');
 for (const gridBox of gridBoxes) {
     gridBox.addEventListener('click', boxmarked,  {once: true})
@@ -36,7 +46,17 @@ function boxmarked(e) {
       }
 
     console.log(e.target.classList[1], index)
-    // Then check if the array matches 
+    // Kim and Quick use brute force, so no
+    // -- Foster does it by checking the board (array) after each play with a .foreach
+    // for the big array WC, take each array in WC, use the smaller array components to see if on board
+    // *** WebDev uses board and player and .some with .every -- array, method, function
+    // combination.every(index => {return cellElements[index].classList.contains(currentClass)} means:
+    // which of the smaller arrays "combination" has every the index of the board becomes the index?
+    // this is passed up to WINNING_COMBINATIONS.some(combination => {
+    // which of the larger array has the "combination" -- can't this be .every too?-- but this only results in true/false
+    // *** FCC does it by passing in board and player. I need the board for the minimaxy
+    // he .reduces the board to get an array of the occupied places
+    // then he also employs an .every and for loop (25:00 in video)
 }
 
 // need a function that acknowledges whose turn it is
@@ -50,6 +70,22 @@ function whosTurn () {
 
 
 }
+
+
+
+function checkWin(board, player) {
+	let plays = board.reduce((a, e, i) =>
+		(e === player) ? a.concat(i) : a, []);
+	let gameWon = null;
+	for (let [index, win] of winCombos.entries()) {
+		if (win.every(elem => plays.indexOf(elem) > -1)) {
+			gameWon = {index: index, player: player};
+			break;
+		}
+	}
+	return gameWon;
+}
+
 
 
 // THIS WORKS

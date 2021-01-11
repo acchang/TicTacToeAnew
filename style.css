@@ -30,3 +30,11 @@ button:hover {
     cursor: pointer;
     transform: translateY(-2px);
 }
+
+.X {
+    background-color: red;
+}
+
+.O {
+    background-color: blue;
+}
