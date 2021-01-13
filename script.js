@@ -76,11 +76,28 @@ function boxmarked(e) {
 // start with an empty board and each click matches index with marker 
 
 
-let evalBoard = []
+const evalBoard = [];
 
 function checkWin() {
 
+const evalBoard = [];
 
+boxes.forEach(function (box) {
+    evalBoard.push(box.classList[1]);
+});
+
+// var rebels = pilots.filter(function (pilot) {
+//     return pilot.faction === "Rebels";
+//   });
+
+// I can't do it this way bc .notation is a quality, so assign quality
+
+var final = evalBoard.filter(function (eval) {
+    return eval.findIndex === "X";
+  });
+
+console.log(evalBoard);
+console.log(final)
 
     // https://stackoverflow.com/questions/20798477/how-to-find-index-of-all-occurrences-of-element-in-array
 
@@ -91,20 +108,20 @@ function checkWin() {
     // boxes.map(box => evalBoard.push(box.classList[1]));
     // console.log(evalBoard)
 
-    boxes.map(box => evalBoard.push(box.classList[1]));
+    // boxes.map(box => evalBoard.push(box.classList[1]));
 
-    console.log(evalBoard)
+    // console.log(evalBoard)
 
-    function getAllIndexes(arr, val) {
-        var indexes = [], i = -1;
-        while ((i = arr.indexOf(val, i+1)) != -1){
-            indexes.push(i);
-        }
-        return indexes;
-    }
+    // function getAllIndexes(arr, val) {
+    //     var indexes = [], i = -1;
+    //     while ((i = arr.indexOf(val, i+1)) != -1){
+    //         indexes.push(i);
+    //     }
+    //     return indexes;
+    // }
     
-    var indexes = getAllIndexes(evalBoard, "X");
-    console.log(indexes)
+    // var indexes = getAllIndexes(evalBoard, "X");
+    // console.log(indexes)
 
     // const test = boxes.reduce(function(a, e, i) {
     //     if (e === 'X')
