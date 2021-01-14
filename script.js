@@ -1,33 +1,23 @@
 // 1) CLEAN THIS UP SO BOTH SIDES CAN PLAY AND PLAYERS CAN BE PICKED
+//      dropdown menu: 
+//      player 1 : symbol / human
+//      player 2 : symbol(auto) / type - human dumbAI smartAI
+//
 // 2) REFACTOR TO CONSOLIDATED, NO NEED TO GENERATE INDEXSELECTED
+// 3) DUMB AI
+// 4) SMART AI
 // need to work on indeterminate players; current player is 'one' or 'two'
 
-// let playerTurn
+let playerTurn
 
-// const currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS
-// const X_CLASS = 'x'
-// const CIRCLE_CLASS = 'circle'
+const ECKS_CLASS = 'X'
+const CIRCLE_CLASS = 'circle'
+const currentClass = playerTurn ? ECKS_CLASS : CIRCLE_CLASS
+
 
 function swapTurns() {
-  circleTurn = !circleTurn
+  playerTurn = !playerTurn
 };
-
-let currentPlayer = 'playerOne'
-    // const currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS
-    // const X_CLASS = 'x'
-    // const CIRCLE_CLASS = 'circle'
-
-
-
-restartBtn.addEventListener('click', startGame);
-
-function startGame() {
-    gridOfBoxes.forEach(gridBox => {
-        gridBox.classList.remove('X')
-        gridBox.classList.remove('O')
-    // this clears but does not allow board to start
-    })
-}
 
 const winningTrios = [
 	[0, 1, 2],
@@ -40,27 +30,33 @@ const winningTrios = [
 	[6, 4, 2]
 ]
 
-const boxes = Array.from(document.getElementsByClassName('box'));
+restartBtn.addEventListener('click', startGame);
 
-const gridOfBoxes = document.querySelectorAll('.box');
-for (const gridBox of gridOfBoxes) {
-    gridBox.addEventListener('click', boxmarked,  {once: true})
+function startGame() {
+    stylingOfBoxes.forEach(gridBox => {
+        gridBox.classList.remove('X')
+        gridBox.classList.remove('O')
+        for (const gridBox of stylingOfBoxes) {
+            gridBox.addEventListener('click', boxmarked,  {once: true})
+        }
+    })
 }
+const arrayfromBoxes = Array.from(document.getElementsByClassName('box'));
+const stylingOfBoxes = document.querySelectorAll('.box');
 
 function boxmarked(e) {
     // e.target.innerHTML = "icon goes here";
-    const gridArray = Array.from(gridOfBoxes)
-    const index = gridArray.indexOf(e.target)
-
+    const index = arrayfromBoxes.indexOf(e.target)
+    
     if(currentPlayer === 'playerOne') {
-        gridArray[index].classList.add('X')
+        arrayfromBoxes[index].classList.add('X')
         currentPlayer = 'playerTwo'
       } else {
-        gridArray[index].classList.add('O')
+        arrayfromBoxes[index].classList.add('O')
         currentPlayer = 'playerOne'
       }
 
-    console.log(e.target.classList[1], index, gridArray)
+    console.log(e.target.classList[1], index, arrayfromBoxes)
     
     checkWin()
 }
@@ -70,7 +66,7 @@ function boxmarked(e) {
 // then he also employs an .every and for loop (25:00 in video)
 
 function checkWin() {
-    var indexSelected = boxes.reduce((indexSelected, box, idx) => {
+    var indexSelected = arrayfromBoxes.reduce((indexSelected, box, idx) => {
         if (box.classList[1] === 'X') {
             indexSelected.push(idx);
         }
@@ -82,9 +78,8 @@ function checkWin() {
        return trio.every(i => indexSelected.includes(i))});
 
     if (winner === true) {alert ("game won")}
+    // then remove all eventlisteners
 }
-
-
 
 // try refactoring to do as below.
 // function checkWin(currentClass) {
