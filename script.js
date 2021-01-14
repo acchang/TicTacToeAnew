@@ -3,7 +3,7 @@ const boxes = Array.from(document.getElementsByClassName('box'));
 let currentPlayer = "playerOne"
 let board = []
 
-const winCombos = [
+const winningTrios = [
 	[0, 1, 2],
 	[3, 4, 5],
 	[6, 7, 8],
@@ -17,10 +17,12 @@ const winCombos = [
 // puts even listeners on all squares -- and also prevents another
 // for loop puts eventlistener on
 // could also use forEach method which is how webdev/kubow does it "cellElements.forEach(cell => {cell.addEventListener...)"
-const gridBoxes = document.querySelectorAll('.box');
-for (const gridBox of gridBoxes) {
+const gridOfBoxes = document.querySelectorAll('.box');
+for (const gridBox of gridOfBoxes) {
     gridBox.addEventListener('click', boxmarked,  {once: true})
 }
+
+
 
 // draw a mark in inner html that's the same as same the player
 // kubow targets
@@ -33,7 +35,7 @@ for (const gridBox of gridBoxes) {
 // then check if there is a winner
 function boxmarked(e) {
     e.target.innerHTML = "icon goes here";
-    const gridArray = Array.from(gridBoxes)
+    const gridArray = Array.from(gridOfBoxes)
     const index = gridArray.indexOf(e.target)
 
     // need to work on indeterminate players; current player is 'one' or 'two'
@@ -47,6 +49,7 @@ function boxmarked(e) {
       }
 
     console.log(e.target.classList[1], index, gridArray)
+    
     checkWin()
     // Kim and Quick use brute force, so no
     // -- Foster does it by checking the board (array) after each play with a .foreach
@@ -68,131 +71,75 @@ function boxmarked(e) {
 // use css so a new class invokes a new image
 // quick sets current player with target ***
 
-// My grid has eventlisteners
-// when clicked it adds a class to the box
-// then I need to check if there is a winner
-// I make a var "plays" that reduces the board to the indexes of one player and see if plays contains any of the wincombos
-
 // start with an empty board and each click matches index with marker 
 
 
-const evalBoard = [];
-
 function checkWin() {
 
-const evalBoard = [];
+    // function isTrue(arr, arr2){
+    //     return arr.every(i => arr2.includes(i))};
 
-boxes.forEach(function (box) {
-    evalBoard.push(box.classList[1]);
-});
+    var indexSelected = boxes.reduce((indexSelected, box, idx) => {
+        if (box.classList[1] === 'X') {
+            indexSelected.push(idx);
+        }
+        return indexSelected;
+    }, []);
+    console.log(indexSelected);
 
-// var rebels = pilots.filter(function (pilot) {
-//     return pilot.faction === "Rebels";
-//   });
-
-// I can't do it this way bc .notation is a quality, so assign quality
-
-var final = evalBoard.filter(function (eval) {
-    return eval.findIndex === "X";
-  });
-
-console.log(evalBoard);
-console.log(final)
-
-    // https://stackoverflow.com/questions/20798477/how-to-find-index-of-all-occurrences-of-element-in-array
-
-    // boxes is the array and I need to reduce it to an array that has the indexes of one symbol
-    // map then filter? if (num.classList[1]="X") {return num.IndexOf} does not work
-    // element.classList.contains(class);
-
-    // boxes.map(box => evalBoard.push(box.classList[1]));
-    // console.log(evalBoard)
-
-    // boxes.map(box => evalBoard.push(box.classList[1]));
-
-    // console.log(evalBoard)
-
-    // function getAllIndexes(arr, val) {
-    //     var indexes = [], i = -1;
-    //     while ((i = arr.indexOf(val, i+1)) != -1){
-    //         indexes.push(i);
-    //     }
-    //     return indexes;
-    // }
+    // console.log(istrue(winningTrios,indexSelected));
     
-    // var indexes = getAllIndexes(evalBoard, "X");
-    // console.log(indexes)
+//    var winner = winningTrios.forEach(trio => {
+//        return trio.every(i => indexSelected.includes(i))});
+//     console.log(winner)
 
-    // const test = boxes.reduce(function(a, e, i) {
-    //     if (e === 'X')
-    //         a.push(i);
-    //     return a;
-    // }, []);  
 
-    // console.log(test)
+    // function checkWin(currentClass) {
+//     return WINNING_COMBINATIONS.some(combination => {
+//       return combination.every(index => {
+//         return cellElements[index].classList.contains(currentClass)
+//       })
+
+   var winner = winningTrios.some(trio => {
+       return trio.every(i => indexSelected.includes(i))});
+    console.log(winner)
+
+
+
+
     
+    // console.log(winningTrios.every(i => indexSelected.includes(i)))
 
-// array1.forEach(element => console.log(element));
+    // if any of the winning trios is included in indexselected, use some
+    // console.log(winningTrios.some(trio => indexSelected.includes(trio)))
 
-//     if (box.classList.contains('X')) {evalBoard.push.box}
+
+    // var winner = winningTrios.forEach((trio) => {
+    //     if (indexSelected.includes(trio)) {
+    //         alert('winner')} else {alert(trio + indexSelected)};
+    //     })
+    //     return winner;
     
-    // let plays = boxes.map(function(num) {return num.classList[1]});
-    // let result = plays.filter(word => word.classList.contains(X));
-    // console.log(result)
+        // var winner = winningTrios.forEach((trio) => {
+        //     console.log(indexSelected + (trio))});
 
-// const result = words.filter(word => word.length > 6);
+    // var winner = winningTrios.forEach(element => console.log(element));
+
+    // indexSelected.includes(a winning trio)
+    // forEach executes function for each element, try another reduce?
+
+    // var winner = winningTrios.forEach(trio => indexSelected.includes(trio));
+
+    // winningTrios.some(trio => {
+    //     return trio.every(indexSelected.contains(index))});
+
+    // console.log(winner)
+
+};
 
 
-    // const map1 = array1.map(x => x * 2);
-    
-    // filter(function (e) {
-    //     return e.indexOf = X
-    // });
-    // console.log(plays);
-    // const array1 = ['a', 'b', 'c'];
-    // array1.forEach(element => console.log(element));
-
-//     // let plays = gridArray.reduce((a, e, i) =>
-//     // (e === player) ? a.concat(i) : a, []);
-
-// //  consider filter too
-//     var indices = [];
-//     var element = 'X';
-// // foreach in boxes get 
-//     var idx = boxes ( X.index())
-//     while (idx != -1) {
-//         indices.push(idx);
-//         idx = array.indexOf(element, idx + 1);}
-//     console.log(indices);
-
- 	// let plays = gridArray.reduce((a, e, i) =>
-    //     (e === player) ? a.concat(i) : a, []);
-    // console.log(plays) 
-    // console.log(boxes)
-    // let gameWon = null;
-    // // if every element matches one of the win arrays then game is won
-	// for (let [index, win] of winCombos.entries()) {
-	// 	if (win.every(elem => plays.indexOf(elem) > -1)) {
-    // // if every element in win is in plays
-	// 		gameWon = {index: index, player: player};
-	// 		break;
-	// 	}
-	// }
-	// return gameWon;
-}
-
-// function checkWin(board, player) {
-//     // reduce the board to an array of the indexes occupied by the player
-// 	let plays = board.reduce((a, e, i) =>
-// 		(e === player) ? a.concat(i) : a, []);
-//     let gameWon = null;
-//     // if every element matches one of the win arrays then game is won
-// 	for (let [index, win] of winCombos.entries()) {
-// 		if (win.every(elem => plays.indexOf(elem) > -1)) {
-//     // if every element in win is in plays
-// 			gameWon = {index: index, player: player};
-// 			break;
-// 		}
-// 	}
-// 	return gameWon;
-// }
+// function checkWin(currentClass) {
+//     return WINNING_COMBINATIONS.some(combination => {
+//       return combination.every(index => {
+//         return cellElements[index].classList.contains(currentClass)
+//       })
