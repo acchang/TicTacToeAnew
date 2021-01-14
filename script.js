@@ -2,13 +2,31 @@
 // 2) REFACTOR TO CONSOLIDATED, NO NEED TO GENERATE INDEXSELECTED
 // need to work on indeterminate players; current player is 'one' or 'two'
 
+// let playerTurn
+
+// const currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS
+// const X_CLASS = 'x'
+// const CIRCLE_CLASS = 'circle'
+
+function swapTurns() {
+  circleTurn = !circleTurn
+};
+
 let currentPlayer = 'playerOne'
     // const currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS
     // const X_CLASS = 'x'
     // const CIRCLE_CLASS = 'circle'
 
-function swapTurns() {
-  circleTurn = !circleTurn
+
+
+restartBtn.addEventListener('click', startGame);
+
+function startGame() {
+    gridOfBoxes.forEach(gridBox => {
+        gridBox.classList.remove('X')
+        gridBox.classList.remove('O')
+    // this clears but does not allow board to start
+    })
 }
 
 const winningTrios = [
