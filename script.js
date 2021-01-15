@@ -1,8 +1,5 @@
 // 1) CLEAN THIS UP SO BOTH SIDES CAN PLAY AND PLAYERS CAN BE PICKED
-//      dropdown menu: 
-//      player 1 : symbol / human
-//      player 2 : symbol(auto) / type - human dumbAI smartAI
-//
+// event listener to dropdown, equate to player choice, start game with player choice
 // 2) REFACTOR TO CONSOLIDATED, NO NEED TO GENERATE INDEXSELECTED
 // 3) DUMB AI
 // 4) SMART AI
@@ -13,7 +10,6 @@ let playerTurn
 const ECKS_CLASS = 'X'
 const CIRCLE_CLASS = 'circle'
 const currentClass = playerTurn ? ECKS_CLASS : CIRCLE_CLASS
-
 
 function swapTurns() {
   playerTurn = !playerTurn
