@@ -1,5 +1,9 @@
 // To do:
-// allow symbol pick then do dumb ai
+// I somehow got a condition where I have confirmed O, alerts "O" and X appears
+// if the last move is X without a winner, confirm O, start new game, causes problems
+// need logic if new game, need player selected
+// 0) insert gameboard space
+// 1) then do dumb ai
 // 2) SMART AI
 // 3) animate winning combination
 
@@ -19,7 +23,7 @@ btn.onclick = function () {
           break;
         }
     }
-    alert(ONE_CLASS);
+    alert("First Move Belongs to " + ONE_CLASS + ". Start New Game.");
     };
 
 let playerTurn
@@ -101,6 +105,5 @@ function checkWin() {
    var winner = winningTrios.some(trio => {
        return trio.every(i => indexSelected.includes(i))});
 
-    if (winner === true) {alert ("game won")}
+    if (winner === true) {alert (checkClass() + " WINS")}
 }
-
