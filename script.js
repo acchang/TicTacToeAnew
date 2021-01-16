@@ -2,7 +2,7 @@
 // I somehow got a condition where I have confirmed O, alerts "O" and X appears
 // if the last move is X without a winner, confirm O, start new game, causes problems
 // need logic if new game, need player selected
-// 1) then do dumb ai
+// Work on player switching mechanism 
 
 // 2) SMART AI
 // 3) animate winning combination
@@ -89,13 +89,23 @@ function boxmarked(e) {
     swapTurns()
 
     if(playerTwoIdentity === "Dumb AI") {
-    // array from inner html; target one or the other.
-    // arrayfromBoxes[index].classList.add(ONE_CLASS)
-    //  e.target.innerHTML = ONE_CLASS
-    } else { console.log("Human")
-    }
+      var dumbAIArray = arrayfromBoxes.reduce((dumbAIArray, box, idx) => {
+        if (box.innerHTML === "") {
+          dumbAIArray.push(idx);
+          }
+          return dumbAIArray;
+        }, []);
+        console.log(dumbAIArray.length);
+        let dumbAIArrayIndex = dumbAIArray.length * (Math.round(Math.random()));
+        console.log(dumbAIArrayIndex);
+        arrayfromBoxes[dumbAIArrayIndex].classList.add(TWO_CLASS)
+        arrayfromBoxes[dumbAIArrayIndex].innerHTML = TWO_CLASS
+
     checkWin()
     swapTurns()
+    } else { console.log("Human")
+    }
+
 }
 
 function checkClass() {
