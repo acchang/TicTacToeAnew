@@ -13,24 +13,28 @@
             <div class="buttonWrapper">
         <button id="restartBtn">New Game</button>
             </div>
-        </div>
+    </div>
 
-        <h2><div class="dropdown">
-            <button class="dropbtn">Player 1</button>
-                <div class="dropdown-content">
-                    <a href="#">X</a>
-                    <a href="#">O</a>
-                </div>
-            </div>
+<div class="radioContainer">
+    <div id="playerOne">
+        <h3>Player One</h3>
+        <form>
+            <input type="radio" name="choice" value="X"> X<br>
+            <input type="radio" name="choice" value="O"> O<br>
+            <input type="button" id="PlayerOneSymbol" value="Confirm">
+        </form>
+    </div>
 
-        <div class="dropdown2">
-            <button class="dropbtn2">Player 2</button>
-                <div class="player2content">
-                  <a href="#">Human</a>
-                  <a href="#">Dumb AI</a>
-                  <a href="#">Smart AI</a>
-                </div>
-        </div></h2>
+    <div id="playerTwo">
+        <h3>Player Two</h3>
+        <form>
+            <input type="radio" name="choice" value="X"> Human<br>
+            <input type="radio" name="choice" value="O"> Dumb AI<br>
+            <input type="radio" name="choice" value="O"> Smart AI<br>
+            <input type="button" id="PlayerTwoChoice" value="Confirm">
+        </form>
+    </div>
+</div>
 
         <div id="gameboard">
             <div class="box" ></div>

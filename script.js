@@ -1,32 +1,11 @@
-// 1) CLEAN THIS UP SO BOTH SIDES CAN PLAY AND PLAYERS CAN BE PICKED
-// event listener to dropdown, equate to player choice, start game with player choice
-// 2) REFACTOR TO CONSOLIDATED, NO NEED TO GENERATE INDEXSELECTED
-//      ALLOW BOTH SIDES TO WIN
-// 3) DUMB AI
-// 4) SMART AI
-// need to work on indeterminate players; current player is 'one' or 'two'
-
-let playerTurn
+// To do:
+// make choice by radial buttons
+// make another winning function to highlight and change color (to black?)
+// 1) DUMB AI
+// 2) SMART AI
 
 const ECKS_CLASS = 'X'
 const OH_CLASS = 'O'
-// const currentClass = playerTurn ? ECKS_CLASS : OH_CLASS
-
-function checkClass() {
-  if(playerTurn) {
-  currentClass = ECKS_CLASS
-} else {
-  currentClass = OH_CLASS
-};}
-
-
-function currentClass() {
-  if(playerTurn) {
-  return ECKS_CLASS
-} else {
-  return OH_CLASS
-};}
-
 
 function swapTurns() {
   playerTurn = !playerTurn
@@ -45,12 +24,14 @@ const winningTrios = [
 
 restartBtn.addEventListener('click', startGame);
 
+let playerTurn
+
 function startGame() {
-    // document.getElementsByClassName('box').innerHTML = ""
-    // why isn't this clearing the innerhtml?
+  swapTurns()
     stylingOfBoxes.forEach(gridBox => {
         gridBox.classList.remove(ECKS_CLASS)
         gridBox.classList.remove(OH_CLASS)
+        gridBox.innerHTML = ""
         for (const gridBox of stylingOfBoxes) {
             gridBox.addEventListener('click', boxmarked,  {once: true})
         }
@@ -62,30 +43,37 @@ const stylingOfBoxes = document.querySelectorAll('.box');
 
 function boxmarked(e) {
     const index = arrayfromBoxes.indexOf(e.target)
-    
     if(playerTurn) {
-        arrayfromBoxes[index].classList.add(OH_CLASS)
-        e.target.innerHTML = "O"
-      } else {
         arrayfromBoxes[index].classList.add(ECKS_CLASS)
         e.target.innerHTML = "X"
+      } else {
+        arrayfromBoxes[index].classList.add(OH_CLASS)
+        e.target.innerHTML = "O"
       }
 
     console.log(e.target.classList[1], index, arrayfromBoxes)
-    swapTurns()
-    
+    // why does the alert in checkWin() appear before the added classes that change the box?
     checkWin()
+    swapTurns()
+
+    // if radial checked then play dumbAI
+    // make an array of where e.target.innerHTML = ""
+    // then pick one of the spaces
+    // arrayfromBoxes[dumbpick].classList.add(ECKS_CLASS)
+    // e.target.innerHTML = "X"
+    // checkWin()
 }
 
-// *** FCC does it by passing in board and player. I need the board for the minimax and I need the current player
-// he .reduces the board to get an array of the occupied places
-// then he also employs an .every and for loop (25:00 in video)
+function checkClass() {
+  if(playerTurn) {
+  return ECKS_CLASS
+} else {
+  return OH_CLASS
+};}
 
 function checkWin() {
-    checkClass();
-    console.log(currentClass)
     var indexSelected = arrayfromBoxes.reduce((indexSelected, box, idx) => {
-        if (box.classList[1] === currentClass) {
+        if (box.classList[1] === checkClass()) {
             indexSelected.push(idx);
         }
         return indexSelected;
@@ -96,12 +84,5 @@ function checkWin() {
        return trio.every(i => indexSelected.includes(i))});
 
     if (winner === true) {alert ("game won")}
-    // then remove all eventlisteners
 }
 
-// try refactoring to do as below.
-// function checkWin(currentClass) {
-//     return WINNING_COMBINATIONS.some(combination => {
-//       return combination.every(index => {
-//         return cellElements[index].classList.contains(currentClass)
-//       })
