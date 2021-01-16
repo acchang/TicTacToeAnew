@@ -11,11 +11,12 @@ body {
 
 #playtext {
     text-align: center;
+    padding: 10px;
 }
 
 .buttonHolder {
     height: 60px;
-    position: relative;
+    float: left;
 }
 
 .buttonWrapper {
@@ -34,6 +35,13 @@ body {
     flex-wrap: wrap; */
     width: 400px;
     height: 600px;
+}
+
+#gameboard {
+  border-top:10px;
+  border-bottom: 4px;
+  border-bottom-color: black;
+  background-color: chartreuse;
 }
 
 .box {
@@ -61,10 +69,15 @@ button:hover {
     background-color: blue;
 }
 
+#spacer {
+ height: 20px;
+ background-color: purple;
+}
+
 #playerOne {
   background-color: blanchedalmond;
   padding: 5px;
-  height: 100px;
+  height: 110px;
   float: left;
   width: 50%;
 }
@@ -72,7 +85,7 @@ button:hover {
 #playerTwo {
   background-color: mintcream;
   padding: 5px;
-  height: 100px;
+  height: 110px;
   float: left;
   width: 50%;
 }
