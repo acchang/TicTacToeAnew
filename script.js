@@ -2,18 +2,16 @@
 // I somehow got a condition where I have confirmed O, alerts "O" and X appears
 // if the last move is X without a winner, confirm O, start new game, causes problems
 // need logic if new game, need player selected
-// 0) insert gameboard space
 // 1) then do dumb ai
+
 // 2) SMART AI
 // 3) animate winning combination
-
-// if picked then playerOneSymbol = X (use ternary)
-// instead of ECKS and OH CLASS, use playerOneClass and playerTwoClass
 
 var ONE_CLASS
 var TWO_CLASS 
 
 const btn = document.querySelector('#PlayerOneSymbol');
+
 btn.onclick = function () {
     const XOs = document.querySelectorAll('input[name="choice"]');
     for (const XO of XOs) {
@@ -23,7 +21,21 @@ btn.onclick = function () {
           break;
         }
     }
-    alert("First Move Belongs to " + ONE_CLASS + ". Start New Game.");
+    alert("First Move Belongs to " + ONE_CLASS + ". Select Player Two.");
+    };
+
+var playerTwoIdentity
+  
+const btn2 = document.querySelector('#PlayerTwoChoice');
+btn2.onclick = function () {
+    const Opponents = document.querySelectorAll('input[name="choice2"]');
+    for (const Opponent of Opponents) {
+        if (Opponent.checked) {
+          playerTwoIdentity = Opponent.value
+          break;
+        }
+    }
+    alert("Your Opponent is "  + playerTwoIdentity + ". Start New Game.")
     };
 
 let playerTurn
@@ -45,10 +57,8 @@ const winningTrios = [
 
 restartBtn.addEventListener('click', startGame);
 
-
-
 function startGame() {
-  console.log(ONE_CLASS, TWO_CLASS)
+  console.log(playerTwoIdentity)
     stylingOfBoxes.forEach(gridBox => {
         gridBox.classList.remove(ONE_CLASS)
         gridBox.classList.remove(TWO_CLASS)
@@ -78,12 +88,14 @@ function boxmarked(e) {
     checkWin()
     swapTurns()
 
-    // if radial checked, shut off receiver then play dumbAI
-    // make an array of where e.target.innerHTML = ""
-    // then pick one of the spaces
-    // arrayfromBoxes[dumbpick].classList.add(ECKS_CLASS)
-    // e.target.innerHTML = "X"
-    // checkWin()
+    if(playerTwoIdentity === "Dumb AI") {
+    // array from inner html; target one or the other.
+    // arrayfromBoxes[index].classList.add(ONE_CLASS)
+    //  e.target.innerHTML = ONE_CLASS
+    } else { console.log("Human")
+    }
+    checkWin()
+    swapTurns()
 }
 
 function checkClass() {
