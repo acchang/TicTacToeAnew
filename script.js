@@ -1,8 +1,7 @@
-// To do:
+// Work on player switching mechanism 
 // I somehow got a condition where I have confirmed O, alerts "O" and X appears
 // if the last move is X without a winner, confirm O, start new game, causes problems
-// need logic if new game, need player selected
-// Work on player switching mechanism 
+// need logic if new game, need player selected, shut off clicklisteners
 
 // 2) SMART AI
 // 3) animate winning combination
@@ -83,7 +82,6 @@ function boxmarked(e) {
         e.target.innerHTML = TWO_CLASS
       }
 
-    console.log(e.target.classList[1], index, arrayfromBoxes)
     // why does the alert in checkWin() appear before the added classes that change the box?
     checkWin()
     swapTurns()
@@ -95,11 +93,11 @@ function boxmarked(e) {
           }
           return dumbAIArray;
         }, []);
-        console.log(dumbAIArray.length);
-        let dumbAIArrayIndex = dumbAIArray.length * (Math.round(Math.random()));
-        console.log(dumbAIArrayIndex);
-        arrayfromBoxes[dumbAIArrayIndex].classList.add(TWO_CLASS)
-        arrayfromBoxes[dumbAIArrayIndex].innerHTML = TWO_CLASS
+        console.log(dumbAIArray, dumbAIArray.length);
+        let dumbAIpicked = dumbAIArray[Math.round(dumbAIArray.length * (Math.random()))]
+        console.log(dumbAIpicked);
+        arrayfromBoxes[dumbAIpicked].classList.add(TWO_CLASS)
+        arrayfromBoxes[dumbAIpicked].innerHTML = TWO_CLASS
 
     checkWin()
     swapTurns()
@@ -116,16 +114,16 @@ function checkClass() {
 };}
 
 function checkWin() {
-    var indexSelected = arrayfromBoxes.reduce((indexSelected, box, idx) => {
+    var indexOfSelected = arrayfromBoxes.reduce((indexOfSelected, box, idx) => {
         if (box.classList[1] === checkClass()) {
-            indexSelected.push(idx);
+            indexOfSelected.push(idx);
         }
-        return indexSelected;
+        return indexOfSelected;
     }, []);
-    console.log(indexSelected);
+    console.log(indexOfSelected);
 
    var winner = winningTrios.some(trio => {
-       return trio.every(i => indexSelected.includes(i))});
+       return trio.every(i => indexOfSelected.includes(i))});
 
     if (winner === true) {alert (checkClass() + " WINS")}
 }
