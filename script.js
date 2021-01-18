@@ -2,6 +2,15 @@
 // I somehow got a condition where I have confirmed O, alerts "O" and X appears
 // if the last move is X without a winner, confirm O, start new game, causes problems
 // need logic if new game, need player selected, shut off clicklisteners
+// confirm remove, confirm remove (no confirm, accept on click)
+// new game (make sure both radios accepted) remove, winner clear, allow press again
+// that's the easiest way
+// start game, keep board off, pick player1, pick player2, activate board
+// work on the logic, start new game is "O" but goes to "X"
+
+// Symbol X | O       Opponent: Human | DumbAI | SmartAI
+// the second restart always starts with the opposite marker
+// the problem is in the swapturns and let playerturn
 
 // 2) SMART AI
 // 3) animate winning combination
@@ -37,7 +46,7 @@ btn2.onclick = function () {
     alert("Your Opponent is "  + playerTwoIdentity + ". Start New Game.")
     };
 
-let playerTurn
+let playerTurn = true;
     
 function swapTurns() {
   playerTurn = !playerTurn
@@ -57,7 +66,7 @@ const winningTrios = [
 restartBtn.addEventListener('click', startGame);
 
 function startGame() {
-  console.log(playerTwoIdentity)
+  console.log("player 1 = " + ONE_CLASS + ", player 2 = " + playerTwoIdentity)
     stylingOfBoxes.forEach(gridBox => {
         gridBox.classList.remove(ONE_CLASS)
         gridBox.classList.remove(TWO_CLASS)
@@ -66,7 +75,7 @@ function startGame() {
             gridBox.addEventListener('click', boxmarked,  {once: true})
         }
     })
-  swapTurns()
+  // swapTurns()
 }
 
 const arrayfromBoxes = Array.from(document.getElementsByClassName('box'));
@@ -74,6 +83,7 @@ const stylingOfBoxes = document.querySelectorAll('.box');
 
 function boxmarked(e) {
     const index = arrayfromBoxes.indexOf(e.target)
+// maybe I jut let ONE_CLASS mark and then if the AI or player; or do it even earlier
     if(playerTurn) {
         arrayfromBoxes[index].classList.add(ONE_CLASS)
         e.target.innerHTML = ONE_CLASS
@@ -93,9 +103,9 @@ function boxmarked(e) {
           }
           return dumbAIArray;
         }, []);
-        console.log(dumbAIArray, dumbAIArray.length);
+        console.log("player 2 picks from " + dumbAIArray);
         let dumbAIpicked = dumbAIArray[Math.round(dumbAIArray.length * (Math.random()))]
-        console.log(dumbAIpicked);
+        console.log("player 2 picks " + dumbAIpicked);
         arrayfromBoxes[dumbAIpicked].classList.add(TWO_CLASS)
         arrayfromBoxes[dumbAIpicked].innerHTML = TWO_CLASS
 
@@ -107,7 +117,7 @@ function boxmarked(e) {
 }
 
 function checkClass() {
-  if(playerTurn) {
+  if(!playerTurn) {
   return ONE_CLASS
 } else {
   return TWO_CLASS
@@ -120,10 +130,14 @@ function checkWin() {
         }
         return indexOfSelected;
     }, []);
-    console.log(indexOfSelected);
 
    var winner = winningTrios.some(trio => {
        return trio.every(i => indexOfSelected.includes(i))});
 
-    if (winner === true) {alert (checkClass() + " WINS")}
+    if (winner === true) {declareWinner()};
+    console.log("all spaces by player 1 " + indexOfSelected);
+}
+
+function declareWinner() {
+  alert (checkClass() + " WINS")
 }
