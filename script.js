@@ -46,7 +46,7 @@ btn2.onclick = function () {
     alert("Your Opponent is "  + playerTwoIdentity + ". Start New Game.")
     };
 
-let playerTurn = true;
+let playerTurn 
     
 function swapTurns() {
   playerTurn = !playerTurn
@@ -66,6 +66,7 @@ const winningTrios = [
 restartBtn.addEventListener('click', startGame);
 
 function startGame() {
+  // let playerTurn = true
   console.log("player 1 = " + ONE_CLASS + ", player 2 = " + playerTwoIdentity)
     stylingOfBoxes.forEach(gridBox => {
         gridBox.classList.remove(ONE_CLASS)
@@ -75,13 +76,14 @@ function startGame() {
             gridBox.addEventListener('click', boxmarked,  {once: true})
         }
     })
-  // swapTurns()
+  playerTurn = true
 }
 
 const arrayfromBoxes = Array.from(document.getElementsByClassName('box'));
 const stylingOfBoxes = document.querySelectorAll('.box');
 
 function boxmarked(e) {
+  console.log("playerTurn = " + playerTurn)
     const index = arrayfromBoxes.indexOf(e.target)
 // maybe I jut let ONE_CLASS mark and then if the AI or player; or do it even earlier
     if(playerTurn) {
