@@ -1,5 +1,9 @@
-// left: SMART AI
-//  animate winning combination
+// need to manipulate win order and end game bc right now it is:
+// click box, alert, paste icon, past opponent icon
+// add a condition if started without player or opponent, if ONE_CLASS or TWO_CLASS undefined
+// ask to pick
+// THEN: SMART AI
+// animate winning combination
 
 var ONE_CLASS
 var TWO_CLASS 
@@ -105,7 +109,7 @@ function boxmarked(e) {
 }
 
 function checkClass() {
-  if(!playerTurn) {
+  if(playerTurn) {
   return ONE_CLASS
 } else {
   return TWO_CLASS
@@ -123,7 +127,7 @@ function checkWin() {
        return trio.every(i => indexOfSelected.includes(i))});
 
     if (winner === true) {declareWinner()};
-    console.log("all spaces by player 1 " + indexOfSelected);
+    console.log("all spaces by player" + checkClass() + " is " + indexOfSelected);
 }
 
 function declareWinner() {
