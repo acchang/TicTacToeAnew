@@ -1,19 +1,5 @@
-// Work on player switching mechanism 
-// I somehow got a condition where I have confirmed O, alerts "O" and X appears
-// if the last move is X without a winner, confirm O, start new game, causes problems
-// need logic if new game, need player selected, shut off clicklisteners
-// confirm remove, confirm remove (no confirm, accept on click)
-// new game (make sure both radios accepted) remove, winner clear, allow press again
-// that's the easiest way
-// start game, keep board off, pick player1, pick player2, activate board
-// work on the logic, start new game is "O" but goes to "X"
-
-// Symbol X | O       Opponent: Human | DumbAI | SmartAI
-// the second restart always starts with the opposite marker
-// the problem is in the swapturns and let playerturn
-
-// 2) SMART AI
-// 3) animate winning combination
+// left: SMART AI
+//  animate winning combination
 
 var ONE_CLASS
 var TWO_CLASS 
@@ -106,7 +92,7 @@ function boxmarked(e) {
           return dumbAIArray;
         }, []);
         console.log("player 2 picks from " + dumbAIArray);
-        let dumbAIpicked = dumbAIArray[Math.round(dumbAIArray.length * (Math.random()))]
+        let dumbAIpicked = dumbAIArray[Math.floor(dumbAIArray.length * (Math.random()))]
         console.log("player 2 picks " + dumbAIpicked);
         arrayfromBoxes[dumbAIpicked].classList.add(TWO_CLASS)
         arrayfromBoxes[dumbAIpicked].innerHTML = TWO_CLASS
