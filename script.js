@@ -1,7 +1,3 @@
-// need to manipulate win order and end game bc right now it is:
-// click box, alert, paste icon, past opponent icon
-// add a condition if started without player or opponent, if ONE_CLASS or TWO_CLASS undefined
-// ask to pick
 // THEN: SMART AI
 // animate winning combination
 
@@ -19,7 +15,7 @@ btn.onclick = function () {
           break;
         }
     }
-    alert("First Move Belongs to " + ONE_CLASS + ". Select Player Two.");
+    alert("First Move Belongs to " + ONE_CLASS + ".");
     };
 
 var playerTwoIdentity
@@ -33,7 +29,7 @@ btn2.onclick = function () {
           break;
         }
     }
-    alert("Your Opponent is "  + playerTwoIdentity + ". Start New Game.")
+    alert("Your Opponent is "  + playerTwoIdentity)
     };
 
 let playerTurn 
@@ -53,10 +49,12 @@ const winningTrios = [
 	[6, 4, 2]
 ]
 
+let gridBox
+
 restartBtn.addEventListener('click', startGame);
 
 function startGame() {
-  // let playerTurn = true
+  if (ONE_CLASS == undefined || playerTwoIdentity == undefined) {return alert ("Make sure players are defined")}
   console.log("player 1 = " + ONE_CLASS + ", player 2 = " + playerTwoIdentity)
     stylingOfBoxes.forEach(gridBox => {
         gridBox.classList.remove(ONE_CLASS)
@@ -75,7 +73,6 @@ const stylingOfBoxes = document.querySelectorAll('.box');
 function boxmarked(e) {
   console.log("playerTurn = " + playerTurn)
     const index = arrayfromBoxes.indexOf(e.target)
-// maybe I jut let ONE_CLASS mark and then if the AI or player; or do it even earlier
     if(playerTurn) {
         arrayfromBoxes[index].classList.add(ONE_CLASS)
         e.target.innerHTML = ONE_CLASS
@@ -83,8 +80,6 @@ function boxmarked(e) {
         arrayfromBoxes[index].classList.add(TWO_CLASS)
         e.target.innerHTML = TWO_CLASS
       }
-
-    // why does the alert in checkWin() appear before the added classes that change the box?
     checkWin()
     swapTurns()
 
@@ -98,8 +93,9 @@ function boxmarked(e) {
         console.log("player 2 picks from " + dumbAIArray);
         let dumbAIpicked = dumbAIArray[Math.floor(dumbAIArray.length * (Math.random()))]
         console.log("player 2 picks " + dumbAIpicked);
-        arrayfromBoxes[dumbAIpicked].classList.add(TWO_CLASS)
-        arrayfromBoxes[dumbAIpicked].innerHTML = TWO_CLASS
+        setTimeout(function(){arrayfromBoxes[dumbAIpicked].classList.add(TWO_CLASS)}, 500);
+        setTimeout(function(){arrayfromBoxes[dumbAIpicked].innerHTML = TWO_CLASS}, 500);
+      
 
     checkWin()
     swapTurns()
@@ -124,12 +120,20 @@ function checkWin() {
     }, []);
 
    var winner = winningTrios.some(trio => {
-       return trio.every(i => indexOfSelected.includes(i))});
+       return trio.every(i => indexOfSelected.includes(i))})
 
-    if (winner === true) {declareWinner()};
-    console.log("all spaces by player" + checkClass() + " is " + indexOfSelected);
+    if (winner === true) {
+      declareWinner();
+    }
+    return
+    console.log("all spaces by player " + checkClass() + " is " + indexOfSelected);
 }
 
 function declareWinner() {
-  alert (checkClass() + " WINS")
+  setTimeout(function(){alert (checkClass() + " WINS")}, 500);
+  gridBox.removeEventListener('click', boxmarked,  {once: true});
+  gridbox.detachEvent('click', boxmarked,  {once: true});
+  // just need to stop boxes from being clickable
+  // also try to identify winning trio to add class and change background color
+  // declar a tie
 }
