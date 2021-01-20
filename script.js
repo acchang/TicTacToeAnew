@@ -49,26 +49,29 @@ const winningTrios = [
 	[6, 4, 2]
 ]
 
-let gridBox
 
 restartBtn.addEventListener('click', startGame);
 
 function startGame() {
-  if (ONE_CLASS == undefined || playerTwoIdentity == undefined) {return alert ("Make sure players are defined")}
-  console.log("player 1 = " + ONE_CLASS + ", player 2 = " + playerTwoIdentity)
-    stylingOfBoxes.forEach(gridBox => {
-        gridBox.classList.remove(ONE_CLASS)
-        gridBox.classList.remove(TWO_CLASS)
-        gridBox.innerHTML = ""
-        for (const gridBox of stylingOfBoxes) {
-            gridBox.addEventListener('click', boxmarked,  {once: true})
-        }
-    })
-  playerTurn = true
+  if (ONE_CLASS == undefined || playerTwoIdentity == undefined) {return alert ("Make sure players are defined")};
+  console.log("player 1 = " + ONE_CLASS + ", player 2 = " + playerTwoIdentity);
+  drawBoard();
+  playerTurn = true;
 }
 
-const arrayfromBoxes = Array.from(document.getElementsByClassName('box'));
 const stylingOfBoxes = document.querySelectorAll('.box');
+
+function drawBoard() {
+  console.log(stylingOfBoxes)
+  for (let i = 0; i < stylingOfBoxes.length; i++) {
+  stylingOfBoxes[i].addEventListener('click', boxmarked, false);
+  // stylingOfBoxes.remove(ONE_CLASS);
+  // stylingOfBoxes.remove(TWO_CLASS);
+  // stylingOfBoxes.innerHTML = "";
+        }
+    }
+
+const arrayfromBoxes = Array.from(document.getElementsByClassName('box'));
 
 function boxmarked(e) {
   console.log("playerTurn = " + playerTurn)
@@ -131,9 +134,72 @@ function checkWin() {
 
 function declareWinner() {
   setTimeout(function(){alert (checkClass() + " WINS")}, 500);
-  gridBox.removeEventListener('click', boxmarked,  {once: true});
-  gridbox.detachEvent('click', boxmarked,  {once: true});
-  // just need to stop boxes from being clickable
+  for (let i=0; i < stylingOfBoxes.length; i++) {
+    stylingOfBoxes[i].removeEventListener('click', boxmarked, false);
+  }
+  // gridBox.removeEventListener('click', boxmarked,  {once: true});
+  // gridbox.detachEvent('click', boxmarked,  {once: true});
+  // // just need to stop boxes from being clickable
+
+// I wouldn't pollute the global scope. If I am reading your code correctly, 
+// you might be able to access the contents of the gridBox element through the click event object (start button)
+
+// restartBtn.addEventListener('click', startGame);
+// try breaking the trigger off in to it's own function so you can reference it.
+
   // also try to identify winning trio to add class and change background color
   // declar a tie
 }
+
+// for (let i = 0; i < cells.length; i++) {
+//   stylingOfBoxes[i].addEventListener('click', turnClick, false);
+
+
+
+// WAS:
+
+// function drawBoard() {
+//   stylingOfBoxes.forEach(gridBox => {
+//     gridBox.classList.remove(ONE_CLASS)
+//     gridBox.classList.remove(TWO_CLASS)
+//     gridBox.innerHTML = ""
+//     for (const gridBox of stylingOfBoxes) {
+//         gridBox.addEventListener('click', boxmarked,  {once: true})
+//     }
+// })
+// }
+
+
+
+
+// const cells = document.querySelectorAll('.cell');
+
+// function selectSym(sym){
+//   huPlayer = sym;
+//   aiPlayer = sym==='O' ? 'X' :'O';
+//   origBoard = Array.from(Array(9).keys());
+//   for (let i = 0; i < cells.length; i++) {
+//     cells[i].addEventListener('click', turnClick, false);
+//   }
+//   if (aiPlayer === 'X') {
+//     turn(bestSpot(),aiPlayer);
+//   }
+//   document.querySelector('.selectSym').style.display = "none";
+// }
+
+
+// const arrayfromBoxes = Array.from(document.getElementsByClassName('box'));
+// const stylingOfBoxes = document.querySelectorAll('.box');
+
+// // Is using arrayfromBoxes and stylingOfBoxes the same? I attach from one but remove from the other.
+
+// what I changed:
+// for (const gridBox of stylingOfBoxes) {
+//   gridBox.addEventListener('click', boxmarked,  {once: true});
+// for (let i = 0; i < cells.length; i++) {
+//   stylingOfBoxes[i].addEventListener('click', turnClick, false);
+
+// right now I use
+// const index = arrayfromBoxes.indexOf(e.target)
+// if(playerTurn) {
+//     arrayfromBoxes[index].classList.add(ONE_CLASS)
