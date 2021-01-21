@@ -82,8 +82,17 @@ function boxmarked(e) {
         arrayfromBoxes[index].classList.add(TWO_CLASS)
         e.target.innerHTML = TWO_CLASS
       }
-    checkWin()
+
+      checkWin()
+
+    //   if (winner === true) {
+    //   console.log("game won")
+    // }
     swapTurns()
+
+    //checkwin does not return a value so I can't do just that
+    //see how other AIs work
+    //DumbAI will continue to be true so this code will run
 
     if(playerTwoIdentity === "Dumb AI") {
       var dumbAIArray = arrayfromBoxes.reduce((dumbAIArray, box, idx) => {
@@ -99,9 +108,12 @@ function boxmarked(e) {
         setTimeout(function(){arrayfromBoxes[dumbAIpicked].innerHTML = TWO_CLASS}, 500);
       
 
-    checkWin()
+        if (checkWin()) {
+          console.log("game won")    
+        }     
     swapTurns()
-    } else { console.log("Human")
+
+    } else { console.log("Human is opponent")
     }
 
 }
@@ -128,12 +140,15 @@ function checkWin() {
   // I need to filter the numbers that match indexofSelected with any of the wincombos
 
   // xxx old code
-  //  var winner = winningTrios.some(trio => {
-  //      return trio.every(i => indexOfSelected.includes(i))});
+   var winner = winningTrios.some(trio => {
+       return trio.every(i => indexOfSelected.includes(i))});
 
-  //   if (winner === true) {
-  //     declareWinner();
-  //   }
+    if (winner === true) {
+      declareWinner()
+      playerTwoIdentity = endstate
+    }
+}
+
   // xxx old code
 
   // TRY THIS
@@ -143,15 +158,17 @@ function checkWin() {
     //     positions[index].className += ' winner';}}
     //   }
 
-    if (winningTrios.some(trio => {
-      return trio.every(i => indexOfSelected.includes(i))}) === true)
+    // if (winningTrios.some(trio => {
+    //   return trio.every(i => indexOfSelected.includes(i))}) === true)
       
-      {declareWinner();
-        trio.forEach((index) => {
-        indexOfSelected[index].className += ' winner'});
-      }
+    //   {
+    //     // declareWinner();
+    //     // console.log(winningTrios);
+    //     // trio.forEach((index) => {
+    //     // indexOfSelected[index].className += ' winner'});
+    //   }
 
-    }
+    // }
 
 function declareWinner() {
   setTimeout(function(){alert (checkClass() + " WINS")}, 500);
@@ -162,6 +179,7 @@ function declareWinner() {
 }
 
   // pre-empt the opponent's last move
+  // I would try to make the boxmarked function behave different based on what checkwin() returns.
 
   // identify winning trio to add class and change background color
   // if (isWinningCombo) {
@@ -170,4 +188,5 @@ function declareWinner() {
   //     positions[index].className += ' winner';}
   //   }
 
+  // need to denote a tie, I guess when all spaces are filled, place after checkwin
   // then smart AI
