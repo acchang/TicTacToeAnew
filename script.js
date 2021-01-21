@@ -1,6 +1,3 @@
-// THEN: SMART AI
-// animate winning combination
-
 var ONE_CLASS
 var TWO_CLASS 
 
@@ -49,7 +46,6 @@ const winningTrios = [
 	[6, 4, 2]
 ]
 
-
 restartBtn.addEventListener('click', startGame);
 
 function startGame() {
@@ -64,11 +60,14 @@ const stylingOfBoxes = document.querySelectorAll('.box');
 function drawBoard() {
   console.log(stylingOfBoxes)
   for (let i = 0; i < stylingOfBoxes.length; i++) {
-  stylingOfBoxes[i].addEventListener('click', boxmarked, false);
-  // stylingOfBoxes.remove(ONE_CLASS);
-  // stylingOfBoxes.remove(TWO_CLASS);
-  // stylingOfBoxes.innerHTML = "";
-        }
+  stylingOfBoxes[i].addEventListener('click', boxmarked, {once: true});}
+
+    stylingOfBoxes.forEach(gridBox => {
+    gridBox.classList.remove(ONE_CLASS)
+    gridBox.classList.remove(TWO_CLASS)
+    gridBox.innerHTML = ""
+
+    })
     }
 
 const arrayfromBoxes = Array.from(document.getElementsByClassName('box'));
@@ -122,84 +121,53 @@ function checkWin() {
         return indexOfSelected;
     }, []);
 
-   var winner = winningTrios.some(trio => {
-       return trio.every(i => indexOfSelected.includes(i))})
+  // var threeinRow = winningTrios.filter(trio => {
+  //   return trio.every(i => indexOfSelected.includes(i))});
 
-    if (winner === true) {
-      declareWinner();
+  // console.log(threeinRow)
+  // I need to filter the numbers that match indexofSelected with any of the wincombos
+
+  // xxx old code
+  //  var winner = winningTrios.some(trio => {
+  //      return trio.every(i => indexOfSelected.includes(i))});
+
+  //   if (winner === true) {
+  //     declareWinner();
+  //   }
+  // xxx old code
+
+  // TRY THIS
+    // if (isWinningCombo) {
+    //   winner = true;
+    //   winningCombo.forEach((index) => {
+    //     positions[index].className += ' winner';}}
+    //   }
+
+    if (winningTrios.some(trio => {
+      return trio.every(i => indexOfSelected.includes(i))}) === true)
+      
+      {declareWinner();
+        trio.forEach((index) => {
+        indexOfSelected[index].className += ' winner'});
+      }
+
     }
-    return
-    console.log("all spaces by player " + checkClass() + " is " + indexOfSelected);
-}
 
 function declareWinner() {
   setTimeout(function(){alert (checkClass() + " WINS")}, 500);
   for (let i=0; i < stylingOfBoxes.length; i++) {
     stylingOfBoxes[i].removeEventListener('click', boxmarked, false);
   }
-  // gridBox.removeEventListener('click', boxmarked,  {once: true});
-  // gridbox.detachEvent('click', boxmarked,  {once: true});
-  // // just need to stop boxes from being clickable
-
-// I wouldn't pollute the global scope. If I am reading your code correctly, 
-// you might be able to access the contents of the gridBox element through the click event object (start button)
-
-// restartBtn.addEventListener('click', startGame);
-// try breaking the trigger off in to it's own function so you can reference it.
-
-  // also try to identify winning trio to add class and change background color
-  // declar a tie
+  
 }
 
-// for (let i = 0; i < cells.length; i++) {
-//   stylingOfBoxes[i].addEventListener('click', turnClick, false);
+  // pre-empt the opponent's last move
 
+  // identify winning trio to add class and change background color
+  // if (isWinningCombo) {
+  //   winner = true;
+  //   winningCombo.forEach((index) => {
+  //     positions[index].className += ' winner';}
+  //   }
 
-
-// WAS:
-
-// function drawBoard() {
-//   stylingOfBoxes.forEach(gridBox => {
-//     gridBox.classList.remove(ONE_CLASS)
-//     gridBox.classList.remove(TWO_CLASS)
-//     gridBox.innerHTML = ""
-//     for (const gridBox of stylingOfBoxes) {
-//         gridBox.addEventListener('click', boxmarked,  {once: true})
-//     }
-// })
-// }
-
-
-
-
-// const cells = document.querySelectorAll('.cell');
-
-// function selectSym(sym){
-//   huPlayer = sym;
-//   aiPlayer = sym==='O' ? 'X' :'O';
-//   origBoard = Array.from(Array(9).keys());
-//   for (let i = 0; i < cells.length; i++) {
-//     cells[i].addEventListener('click', turnClick, false);
-//   }
-//   if (aiPlayer === 'X') {
-//     turn(bestSpot(),aiPlayer);
-//   }
-//   document.querySelector('.selectSym').style.display = "none";
-// }
-
-
-// const arrayfromBoxes = Array.from(document.getElementsByClassName('box'));
-// const stylingOfBoxes = document.querySelectorAll('.box');
-
-// // Is using arrayfromBoxes and stylingOfBoxes the same? I attach from one but remove from the other.
-
-// what I changed:
-// for (const gridBox of stylingOfBoxes) {
-//   gridBox.addEventListener('click', boxmarked,  {once: true});
-// for (let i = 0; i < cells.length; i++) {
-//   stylingOfBoxes[i].addEventListener('click', turnClick, false);
-
-// right now I use
-// const index = arrayfromBoxes.indexOf(e.target)
-// if(playerTurn) {
-//     arrayfromBoxes[index].classList.add(ONE_CLASS)
+  // then smart AI
