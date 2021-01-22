@@ -175,11 +175,53 @@ function playerhasWon() {
         return indexOfSelected;
     }, []);
 
+
+
+
+
+
+
+// no for each bc each will be returned
+// filter creates new array with what passed filter; filter will be
+// use this: var arr1 = [1,2,3,4],
+// arr2 = [2,4],
+// res = arr1.filter(item => !arr2.includes(item));
+// console.log(res);
+
+// THEN: what do with each trio of winningTrios?
+// filter for the array that has three digits?
+
+// So, for each trio, filter what's included in index
+// then flter for arrays that are three digits
+
+// I need to triple filter this or reduce
+// for each combo, see if it is in indexselected
+// if so return wincombo
+    var rowToHighlight = 
+    
+    winningTrios.filter(trio => {
+      trio.reduce(i => indexOfSelected.includes(i))});
+      // reduce 
+      console.log(rowToHighlight);
+
    var isThereAWinner = winningTrios.some(trio => {
        return trio.every(i => indexOfSelected.includes(i))});
+       console.log({isThereAWinner});
    return isThereAWinner
       }
-  // TIP: console.log({isThereAWinner})
+
+// // find the combo that works for playerhasWon, add class: positions[index].className += ' winner
+//   var isThereAWinner = 
+//   winningTrios.some(trio => {
+//     // looking through all trios for at least one trio that
+//     return trio.every(i => indexOfSelected.includes(i))});
+//     // has every digit in trio in IOS
+//     // can I use a filter?
+
+
+
+
+
 
 function declareWinner() {
   setTimeout(alert (checkClass() + " WINS"), 1000);
