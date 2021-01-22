@@ -1,3 +1,17 @@
+  // pre-empt the opponent's last move -- by making playerdesignation inactive
+  // I would try to make the boxmarked function behave different based on what checkwin() returns.
+
+  // identify winning trio to add class and change background color
+  // if (isWinningCombo) {
+  //   winner = true;
+  //   winningCombo.forEach((index) => {
+  //     positions[index].className += ' winner';}
+  //   }
+
+  // need to denote a tie, I guess when all spaces are filled, place after checkwin
+  // then smart AI
+
+
 var ONE_CLASS
 var TWO_CLASS 
 
@@ -83,12 +97,8 @@ function boxmarked(e) {
         e.target.innerHTML = TWO_CLASS
       }
 
-      checkWin()
-
-    //   if (winner === true) {
-    //   console.log("game won")
-    // }
-    swapTurns()
+  checkWin()
+  swapTurns()
 
     //checkwin does not return a value so I can't do just that
     //see how other AIs work
@@ -108,10 +118,8 @@ function boxmarked(e) {
         setTimeout(function(){arrayfromBoxes[dumbAIpicked].innerHTML = TWO_CLASS}, 500);
       
 
-        if (checkWin()) {
-          console.log("game won")    
-        }     
-    swapTurns()
+  checkWin()
+  swapTurns()
 
     } else { console.log("Human is opponent")
     }
@@ -126,12 +134,15 @@ function checkClass() {
 };}
 
 function checkWin() {
+  
     var indexOfSelected = arrayfromBoxes.reduce((indexOfSelected, box, idx) => {
         if (box.classList[1] === checkClass()) {
             indexOfSelected.push(idx);
         }
         return indexOfSelected;
     }, []);
+
+    console.log(checkClass(), indexOfSelected)
 
   // var threeinRow = winningTrios.filter(trio => {
   //   return trio.every(i => indexOfSelected.includes(i))});
@@ -145,7 +156,7 @@ function checkWin() {
 
     if (winner === true) {
       declareWinner()
-      playerTwoIdentity = endstate
+      // playerTwoIdentity = endstate
     }
 }
 
@@ -173,20 +184,6 @@ function checkWin() {
 function declareWinner() {
   setTimeout(function(){alert (checkClass() + " WINS")}, 500);
   for (let i=0; i < stylingOfBoxes.length; i++) {
-    stylingOfBoxes[i].removeEventListener('click', boxmarked, false);
-  }
-  
+    stylingOfBoxes[i].removeEventListener('click', boxmarked, {once: true});
+  } 
 }
-
-  // pre-empt the opponent's last move
-  // I would try to make the boxmarked function behave different based on what checkwin() returns.
-
-  // identify winning trio to add class and change background color
-  // if (isWinningCombo) {
-  //   winner = true;
-  //   winningCombo.forEach((index) => {
-  //     positions[index].className += ' winner';}
-  //   }
-
-  // need to denote a tie, I guess when all spaces are filled, place after checkwin
-  // then smart AI
