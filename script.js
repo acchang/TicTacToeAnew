@@ -1,15 +1,13 @@
-  // 1) identify winning trio to add class and change background color
-  // if (isWinningCombo) {
-  //   winner = true;
-  //   winningCombo.forEach((index) => {
-  //     positions[index].className += ' winner';}
-  //   }
+// 1) identify winning trio to add class and change background color
+//   if (isWinningCombo) {
+//     winner = true;
+//     winningCombo.forEach((index) => {
+//       positions[index].className += ' winner';}
+//     }
 
-// 2) find a way to slow the response
-
-  // 3) need to denote a tie, I guess when all spaces are filled, place after playerhasWon()
+// 2) find a way to slow the response, why do breaking it out reawaken?
   
-  // then smart AI
+// 3) then smart AI with minimax
 
 var ONE_CLASS
 var TWO_CLASS
@@ -84,7 +82,8 @@ function drawBoard() {
 
 function boxmarked(e) {
     const index = arrayfromBoxes.indexOf(e.target)
-// maybe I jut let ONE_CLASS mark and then if the AI or player; or do it even earlier
+// to consolidate maybe I just let ONE_CLASS mark and then if the AI or player
+// or do it even earlier and link it with playerTurn? 
     if(playerOneTurn) {
         arrayfromBoxes[index].classList.add(ONE_CLASS)
         e.target.innerHTML = ONE_CLASS
@@ -93,7 +92,16 @@ function boxmarked(e) {
         e.target.innerHTML = TWO_CLASS
       }
 
-    hasGameEnded()
+      if (playerhasWon()) {
+        declareWinner()
+        return
+      } 
+      
+      if (emptySpaceRemains() == false) {
+        declareTie()
+        return
+      }
+
     swapTurns()
 
     // eliminate repetition - 
@@ -113,14 +121,24 @@ function boxmarked(e) {
 // setTimeout(function(){arrayfromBoxes[dumbAIpicked].innerHTML = TWO_CLASS}, 500);
 // I could break off opponent move and maybe slow it?
     
-    hasGameEnded()
+if (playerhasWon()) {
+  declareWinner()
+  return
+} 
+
+if (emptySpaceRemains() == false) {
+  declareTie()
+  return
+}
+
     swapTurns()
     } else { console.log("Human")
     }
 }
 
 function hasGameEnded() {
-      // declareWinner() appears before the added classes bc alert happens quicker than redraw
+      // fix declareWinner() appears before the added classes bc alert happens quicker than redraw
+      // I also cannot pull these out because then the opponent move shows
       if (playerhasWon()) {
         declareWinner()
         return
@@ -149,8 +167,6 @@ function emptySpaceRemains() {
 function declareTie() {
   setTimeout(alert ("TIE GAME"), 1000)}
 
-  // console.log({isThereAWinner})
-
 function playerhasWon() {
     var indexOfSelected = arrayfromBoxes.reduce((indexOfSelected, box, idx) => {
         if (box.classList[1] === checkClass()) {
@@ -163,6 +179,7 @@ function playerhasWon() {
        return trio.every(i => indexOfSelected.includes(i))});
    return isThereAWinner
       }
+  // TIP: console.log({isThereAWinner})
 
 function declareWinner() {
   setTimeout(alert (checkClass() + " WINS"), 1000);
