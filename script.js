@@ -1,4 +1,4 @@
-  // pre-empt the opponent's last move -- by making playerdesignation inactive
+// pre-empt the opponent's last move -- by making playerdesignation inactive
   // I would try to make the boxmarked function behave different based on what checkwin() returns.
 
   // identify winning trio to add class and change background color
@@ -11,6 +11,7 @@
   // need to denote a tie, I guess when all spaces are filled, place after checkwin
   // then smart AI
 
+  
 
 var ONE_CLASS
 var TWO_CLASS 
@@ -26,7 +27,7 @@ btn.onclick = function () {
           break;
         }
     }
-    alert("First Move Belongs to " + ONE_CLASS + ".");
+    alert("First Move Belongs to " + ONE_CLASS + ". Select Player Two.");
     };
 
 var playerTwoIdentity
@@ -40,7 +41,7 @@ btn2.onclick = function () {
           break;
         }
     }
-    alert("Your Opponent is "  + playerTwoIdentity)
+    alert("Your Opponent is "  + playerTwoIdentity + ". Start New Game.")
     };
 
 let playerTurn 
@@ -63,12 +64,13 @@ const winningTrios = [
 restartBtn.addEventListener('click', startGame);
 
 function startGame() {
-  if (ONE_CLASS == undefined || playerTwoIdentity == undefined) {return alert ("Make sure players are defined")};
-  console.log("player 1 = " + ONE_CLASS + ", player 2 = " + playerTwoIdentity);
+  if (ONE_CLASS == undefined || playerTwoIdentity == undefined) {return alert ("Make sure players are defined")}
+  console.log("player 1 = " + ONE_CLASS + ", player 2 = " + playerTwoIdentity)
   drawBoard();
-  playerTurn = true;
+  playerTurn = true
 }
 
+const arrayfromBoxes = Array.from(document.getElementsByClassName('box'));
 const stylingOfBoxes = document.querySelectorAll('.box');
 
 function drawBoard() {
@@ -84,11 +86,10 @@ function drawBoard() {
     })
     }
 
-const arrayfromBoxes = Array.from(document.getElementsByClassName('box'));
-
 function boxmarked(e) {
   console.log("playerTurn = " + playerTurn)
     const index = arrayfromBoxes.indexOf(e.target)
+// maybe I jut let ONE_CLASS mark and then if the AI or player; or do it even earlier
     if(playerTurn) {
         arrayfromBoxes[index].classList.add(ONE_CLASS)
         e.target.innerHTML = ONE_CLASS
@@ -97,12 +98,9 @@ function boxmarked(e) {
         e.target.innerHTML = TWO_CLASS
       }
 
-  checkWin()
-  swapTurns()
-
-    //checkwin does not return a value so I can't do just that
-    //see how other AIs work
-    //DumbAI will continue to be true so this code will run
+    // why does the alert in checkWin() appear before the added classes that change the box?
+    checkWin()
+    swapTurns()
 
     if(playerTwoIdentity === "Dumb AI") {
       var dumbAIArray = arrayfromBoxes.reduce((dumbAIArray, box, idx) => {
@@ -114,14 +112,12 @@ function boxmarked(e) {
         console.log("player 2 picks from " + dumbAIArray);
         let dumbAIpicked = dumbAIArray[Math.floor(dumbAIArray.length * (Math.random()))]
         console.log("player 2 picks " + dumbAIpicked);
-        setTimeout(function(){arrayfromBoxes[dumbAIpicked].classList.add(TWO_CLASS)}, 500);
-        setTimeout(function(){arrayfromBoxes[dumbAIpicked].innerHTML = TWO_CLASS}, 500);
-      
+        arrayfromBoxes[dumbAIpicked].classList.add(TWO_CLASS)
+        arrayfromBoxes[dumbAIpicked].innerHTML = TWO_CLASS
 
-  checkWin()
-  swapTurns()
-
-    } else { console.log("Human is opponent")
+    checkWin()
+    swapTurns()
+    } else { console.log("Human")
     }
 
 }
@@ -134,7 +130,6 @@ function checkClass() {
 };}
 
 function checkWin() {
-  
     var indexOfSelected = arrayfromBoxes.reduce((indexOfSelected, box, idx) => {
         if (box.classList[1] === checkClass()) {
             indexOfSelected.push(idx);
@@ -142,48 +137,15 @@ function checkWin() {
         return indexOfSelected;
     }, []);
 
-    console.log(checkClass(), indexOfSelected)
-
-  // var threeinRow = winningTrios.filter(trio => {
-  //   return trio.every(i => indexOfSelected.includes(i))});
-
-  // console.log(threeinRow)
-  // I need to filter the numbers that match indexofSelected with any of the wincombos
-
-  // xxx old code
    var winner = winningTrios.some(trio => {
        return trio.every(i => indexOfSelected.includes(i))});
 
-    if (winner === true) {
-      declareWinner()
-      // playerTwoIdentity = endstate
-    }
+    if (winner === true) {declareWinner()};
+    console.log("all spaces by player " + checkClass() + " is " + indexOfSelected);
 }
 
-  // xxx old code
-
-  // TRY THIS
-    // if (isWinningCombo) {
-    //   winner = true;
-    //   winningCombo.forEach((index) => {
-    //     positions[index].className += ' winner';}}
-    //   }
-
-    // if (winningTrios.some(trio => {
-    //   return trio.every(i => indexOfSelected.includes(i))}) === true)
-      
-    //   {
-    //     // declareWinner();
-    //     // console.log(winningTrios);
-    //     // trio.forEach((index) => {
-    //     // indexOfSelected[index].className += ' winner'});
-    //   }
-
-    // }
-
 function declareWinner() {
-  setTimeout(function(){alert (checkClass() + " WINS")}, 500);
+  alert (checkClass() + " WINS");
   for (let i=0; i < stylingOfBoxes.length; i++) {
-    stylingOfBoxes[i].removeEventListener('click', boxmarked, {once: true});
-  } 
+    stylingOfBoxes[i].removeEventListener('click', boxmarked, {once: true});}
 }
