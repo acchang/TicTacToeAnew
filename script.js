@@ -1,30 +1,18 @@
-// 1) pre-empt the opponent's last move -- by making playerdesignation inactive (works but ugly and not explain)
-  // I would try to make the boxmarked function behave different based on what checkwin() returns.
-  // break it up
-
-  // think about it, what should checkWin() do? Maybe even think of a better name, I might even call it something like userHasWon(), and 
-  // think of how nice it will be to read if(userHasWon()) you can tell right away what is happening.
-  // add condition to boxmarked if not won and AI
-
-
-  // 2) find a way to slow the response
-
-  // 3) identify winning trio to add class and change background color
+  // 1) identify winning trio to add class and change background color
   // if (isWinningCombo) {
   //   winner = true;
   //   winningCombo.forEach((index) => {
   //     positions[index].className += ' winner';}
   //   }
 
-  // 4) need to denote a tie, I guess when all spaces are filled, place after checkwin
+// 2) find a way to slow the response
+
+  // 3) need to denote a tie, I guess when all spaces are filled, place after playerhasWon()
   
   // then smart AI
 
-
-
 var ONE_CLASS
 var TWO_CLASS
-var endGame 
 
 const btn = document.querySelector('#PlayerOneSymbol');
 
@@ -54,10 +42,10 @@ btn2.onclick = function () {
     alert("Your Opponent is "  + playerTwoIdentity + ". Start New Game.")
     };
 
-let playerTurn 
+let playerOneTurn 
     
 function swapTurns() {
-  playerTurn = !playerTurn
+  playerOneTurn = !playerOneTurn
 };
 
 const winningTrios = [
@@ -77,8 +65,7 @@ function startGame() {
   if (ONE_CLASS == undefined || playerTwoIdentity == undefined) {return alert ("Make sure players are defined")}
   console.log("player 1 = " + ONE_CLASS + ", player 2 = " + playerTwoIdentity)
   drawBoard();
-  playerTurn = true
-  endGame = false
+  playerOneTurn = true;
 }
 
 const arrayfromBoxes = Array.from(document.getElementsByClassName('box'));
@@ -88,20 +75,17 @@ function drawBoard() {
   console.log(stylingOfBoxes)
   for (let i = 0; i < stylingOfBoxes.length; i++) {
   stylingOfBoxes[i].addEventListener('click', boxmarked, {once: true});}
-
     stylingOfBoxes.forEach(gridBox => {
     gridBox.classList.remove(ONE_CLASS)
     gridBox.classList.remove(TWO_CLASS)
     gridBox.innerHTML = ""
-
     })
     }
 
 function boxmarked(e) {
-  console.log("playerTurn = " + playerTurn)
     const index = arrayfromBoxes.indexOf(e.target)
 // maybe I jut let ONE_CLASS mark and then if the AI or player; or do it even earlier
-    if(playerTurn) {
+    if(playerOneTurn) {
         arrayfromBoxes[index].classList.add(ONE_CLASS)
         e.target.innerHTML = ONE_CLASS
       } else {
@@ -109,43 +93,65 @@ function boxmarked(e) {
         e.target.innerHTML = TWO_CLASS
       }
 
-    // why does the alert in checkWin() appear before the added classes that change the box?
-    checkWin()
+    hasGameEnded()
     swapTurns()
 
-    if(playerTwoIdentity === "Dumb AI" && endGame === false) {
+    // eliminate repetition - 
+    if(playerTwoIdentity === "Dumb AI") {
       var dumbAIArray = arrayfromBoxes.reduce((dumbAIArray, box, idx) => {
         if (box.innerHTML === "") {
           dumbAIArray.push(idx);
           }
           return dumbAIArray;
         }, []);
-        console.log(endGame + " player 2 picks from " + dumbAIArray);
         let dumbAIpicked = dumbAIArray[Math.floor(dumbAIArray.length * (Math.random()))]
-        console.log("player 2 picks " + dumbAIpicked);
         arrayfromBoxes[dumbAIpicked].classList.add(TWO_CLASS)
         arrayfromBoxes[dumbAIpicked].innerHTML = TWO_CLASS
 
 // why does Timeoutfunction prevent "O wins"? this is 100% responsible
 // setTimeout(function(){arrayfromBoxes[dumbAIpicked].classList.add(TWO_CLASS)}, 500);
 // setTimeout(function(){arrayfromBoxes[dumbAIpicked].innerHTML = TWO_CLASS}, 500);
-// I could break off opponent move and mayb slow it?
+// I could break off opponent move and maybe slow it?
     
-    checkWin()
+    hasGameEnded()
     swapTurns()
     } else { console.log("Human")
     }
-
 }
 
+function hasGameEnded() {
+      // declareWinner() appears before the added classes bc alert happens quicker than redraw
+      if (playerhasWon()) {
+        declareWinner()
+        return
+      } 
+      
+      if (emptySpaceRemains() == false) {
+        declareTie()
+        return
+      }
+}
+
+
 function checkClass() {
-  if(playerTurn) {
+  if(playerOneTurn) {
   return ONE_CLASS
 } else {
   return TWO_CLASS
 };}
 
-function checkWin() {
+function emptySpaceRemains() {
+  var innerHTMLempty = (insidebox) => insidebox.innerHTML===""
+  console.log(arrayfromBoxes.some(innerHTMLempty))
+  return (arrayfromBoxes.some(innerHTMLempty))
+}
+
+function declareTie() {
+  setTimeout(alert ("TIE GAME"), 1000)}
+
+  // console.log({isThereAWinner})
+
+function playerhasWon() {
     var indexOfSelected = arrayfromBoxes.reduce((indexOfSelected, box, idx) => {
         if (box.classList[1] === checkClass()) {
             indexOfSelected.push(idx);
@@ -153,18 +159,13 @@ function checkWin() {
         return indexOfSelected;
     }, []);
 
-   var winner = winningTrios.some(trio => {
+   var isThereAWinner = winningTrios.some(trio => {
        return trio.every(i => indexOfSelected.includes(i))});
-
-    if (winner === true) {
-      endGame = true
-      declareWinner()};
-    // I could add a 'let' here so checkwin would return something but boxmarked would still go
-    console.log("all spaces by player " + checkClass() + " is " + indexOfSelected);
-}
+   return isThereAWinner
+      }
 
 function declareWinner() {
-  alert (checkClass() + " WINS");
+  setTimeout(alert (checkClass() + " WINS"), 1000);
   for (let i=0; i < stylingOfBoxes.length; i++) {
     stylingOfBoxes[i].removeEventListener('click', boxmarked, {once: true});}
 }
