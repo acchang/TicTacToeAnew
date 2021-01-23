@@ -1,6 +1,7 @@
-// 1) highlight code, just straighten out the execute
-// 2) find a way to slow the response, why do breaking it out reawaken?
-// 3) then smart AI with minimax
+// 1) clean up highlight code
+// 2) Timing: find a way to slow the response, why do breaking it out reawaken?
+// maybe solve the alert with a hidden div that shows when won
+// 3) Smart AI with minimax
 
 var ONE_CLASS
 var TWO_CLASS
@@ -69,6 +70,7 @@ function drawBoard() {
     stylingOfBoxes.forEach(gridBox => {
     gridBox.classList.remove(ONE_CLASS)
     gridBox.classList.remove(TWO_CLASS)
+    gridBox.classList.remove('winner')
     gridBox.innerHTML = ""
     })
     }
@@ -168,7 +170,6 @@ function playerhasWon() {
         return indexOfSelected;
     }, []);
 
-    // this will be undefined until the game ends so I want it to only fire at the end, no before or I get undefined
   const winningThreeIndexes = winningTrios
   .map(trio => trio.filter(i => indexOfSelected.includes(i)))
   .filter(i => i.length === 3);
@@ -177,14 +178,13 @@ function playerhasWon() {
   console.log(winningThreeIndexes.length)
 
   // if (winningThreeIndexes.length === 1) {winningThreeIndexes.map((index) => {arrayfromBoxes[index].className += ' winner'})}
+  // tidy this up, maybe map with winningThreeIndexes[0].map
+
   if (winningThreeIndexes.length === 1) {
     arrayfromBoxes[winningThreeIndexes[0][0]].className += ' winner';
     arrayfromBoxes[winningThreeIndexes[0][1]].className += ' winner';
     arrayfromBoxes[winningThreeIndexes[0][2]].className += ' winner';
     console.log(arrayfromBoxes[winningThreeIndexes[0][0]].classList)};
-
-  // why is length 1? why can't I map into this?
-  // I keep getting Uncaught TypeError: Cannot read property 'className' of undefined
 
    var isThereAWinner = 
     winningTrios.some(trio => {return trio.every(i => indexOfSelected.includes(i))});
