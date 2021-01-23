@@ -77,7 +77,7 @@ function drawBoard() {
 
 function boxmarked(e) {
     const index = arrayfromBoxes.indexOf(e.target)
-// to consolidate maybe I just let ONE_CLASS mark and then if the AI or player
+// how to consolidate? maybe I just let ONE_CLASS mark and then if the AI or player
 // or do it even earlier and link it with playerTurn? 
     if(playerOneTurn) {
         arrayfromBoxes[index].classList.add(ONE_CLASS)
@@ -112,10 +112,10 @@ function boxmarked(e) {
         arrayfromBoxes[dumbAIpicked].innerHTML = TWO_CLASS
 
 // why does Timeoutfunction prevent "O wins"? this is 100% responsible
-// setTimeout(function(){arrayfromBoxes[dumbAIpicked].classList.add(TWO_CLASS)}, 500);
-// setTimeout(function(){arrayfromBoxes[dumbAIpicked].innerHTML = TWO_CLASS}, 500);
+// setTimeout(() => {arrayfromBoxes[dumbAIpicked].classList.add(TWO_CLASS)}, 500);
+// setTimeout(() => {arrayfromBoxes[dumbAIpicked].innerHTML = TWO_CLASS}, 500);
 // I could break off opponent move and maybe slow it?
-    
+
 if (playerhasWon()) {
   declareWinner()
   return
@@ -177,15 +177,8 @@ function playerhasWon() {
   console.log(winningThreeIndexes)
   console.log(winningThreeIndexes.length)
 
-  // if (winningThreeIndexes.length === 1) {winningThreeIndexes.map((index) => {arrayfromBoxes[index].className += ' winner'})}
-  // tidy this up, maybe map with winningThreeIndexes[0].map
-
-  if (winningThreeIndexes.length === 1) {
-    arrayfromBoxes[winningThreeIndexes[0][0]].className += ' winner';
-    arrayfromBoxes[winningThreeIndexes[0][1]].className += ' winner';
-    arrayfromBoxes[winningThreeIndexes[0][2]].className += ' winner';
-    console.log(arrayfromBoxes[winningThreeIndexes[0][0]].classList)};
-
+  if (winningThreeIndexes.length === 1) {winningThreeIndexes[0].map((index) => {arrayfromBoxes[index].className += ' winner'})}
+ 
    var isThereAWinner = 
     winningTrios.some(trio => {return trio.every(i => indexOfSelected.includes(i))});
        console.log({isThereAWinner});
