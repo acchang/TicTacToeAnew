@@ -47,7 +47,7 @@ background-color: chartreuse;
 }
 
 .box {
-  background-color: yellow;
+  background-color: beige;
   width: 125px;
   height: 125px;
   float: left;
@@ -61,7 +61,7 @@ button:hover {
 
 
 .winner {
-  background-color: black;
+  background-color: yellow;
 }
 
 .X {

@@ -1,7 +1,6 @@
-// 1) clean up highlight code
-// 2) Timing: find a way to slow the response, why do breaking it out reawaken?
-// maybe solve the alert with a hidden div that shows when won
-// 3) Smart AI with minimax
+// 1a) maybe solve the alert issue with a hidden div that shows when won
+// 2) I can start working on minimax, the issue with the others is mostly timing 
+// consolidated winner block fires next move, out-blocking stuff allows next code to show)
 
 var ONE_CLASS
 var TWO_CLASS
@@ -17,7 +16,7 @@ btn.onclick = function () {
           break;
         }
     }
-    alert("First Move Belongs to " + ONE_CLASS + ". Select Player Two.");
+    alert("First Move Belongs to " + ONE_CLASS);
     };
 
 var playerTwoIdentity
@@ -31,7 +30,7 @@ btn2.onclick = function () {
           break;
         }
     }
-    alert("Your Opponent is "  + playerTwoIdentity + ". Start New Game.")
+    alert("Your Opponent is "  + playerTwoIdentity)
     };
 
 let playerOneTurn 
@@ -54,7 +53,8 @@ const winningTrios = [
 restartBtn.addEventListener('click', startGame);
 
 function startGame() {
-  if (ONE_CLASS == undefined || playerTwoIdentity == undefined) {return alert ("Make sure players are defined")}
+  if (ONE_CLASS == undefined || playerTwoIdentity == undefined) 
+  {alert ("Make sure players are defined")}
   console.log("player 1 = " + ONE_CLASS + ", player 2 = " + playerTwoIdentity)
   drawBoard();
   playerOneTurn = true;
@@ -96,44 +96,43 @@ function boxmarked(e) {
         declareTie()
         return
       }
-
+    // hasGameEnded()
     swapTurns()
 
-    // eliminate repetition - 
     if(playerTwoIdentity === "Dumb AI") {
+
       var dumbAIArray = arrayfromBoxes.reduce((dumbAIArray, box, idx) => {
         if (box.innerHTML === "") {
           dumbAIArray.push(idx);
           }
           return dumbAIArray;
         }, []);
+
+  setTimeout(() => {
         let dumbAIpicked = dumbAIArray[Math.floor(dumbAIArray.length * (Math.random()))]
         arrayfromBoxes[dumbAIpicked].classList.add(TWO_CLASS)
         arrayfromBoxes[dumbAIpicked].innerHTML = TWO_CLASS
 
-// why does Timeoutfunction prevent "O wins"? this is 100% responsible
-// setTimeout(() => {arrayfromBoxes[dumbAIpicked].classList.add(TWO_CLASS)}, 500);
-// setTimeout(() => {arrayfromBoxes[dumbAIpicked].innerHTML = TWO_CLASS}, 500);
-// I could break off opponent move and maybe slow it?
-
-if (playerhasWon()) {
-  declareWinner()
-  return
-} 
-
-if (emptySpaceRemains() == false) {
-  declareTie()
-  return
-}
-
-    swapTurns()
-    } else { console.log("Human")
-    }
+        if (playerhasWon()) {
+        declareWinner()
+        return
+        } 
+        if (emptySpaceRemains() == false) {
+        declareTie()
+        return
+        }
+        // hasGameEnded()
+        swapTurns()
+``}, 1000);
+    } 
+else { console.log("Human")
+      }
 }
 
 function hasGameEnded() {
       // fix declareWinner() appears before the added classes bc alert happens quicker than redraw
-      // I also cannot pull these out because then the opponent move shows
+      // I also cannot pull these out because then the opponent move fires and shows
+      // could have something to do with timing of in-block code
       if (playerhasWon()) {
         declareWinner()
         return
@@ -144,7 +143,6 @@ function hasGameEnded() {
         return
       }
 }
-
 
 function checkClass() {
   if(playerOneTurn) {
