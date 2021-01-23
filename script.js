@@ -1,12 +1,5 @@
-// 1) identify winning trio to add class and change background color
-//   if (isWinningCombo) {
-//     winner = true;
-//     winningCombo.forEach((index) => {
-//       positions[index].className += ' winner';}
-//     }
-
+// 1) highlight code, just straighten out the execute
 // 2) find a way to slow the response, why do breaking it out reawaken?
-  
 // 3) then smart AI with minimax
 
 var ONE_CLASS
@@ -175,22 +168,23 @@ function playerhasWon() {
         return indexOfSelected;
     }, []);
 
-   var winnerArrays = winningTrios.map(trio => {return trio.filter(i => indexOfSelected.includes(i))});
-   var boxesToHighlight = winnerArrays.filter(i => i.length == 3);
-  //  console.log(boxesToHighlight)
-  //  add class to boxestohighlight index
+    // this will be undefined until the game ends so I want it to only fire at the end, no before or I get undefined
+  const winningThreeIndexes = winningTrios
+  .map(trio => trio.filter(i => indexOfSelected.includes(i)))
+  .filter(i => i.length === 3);
 
-  var massive = (winningTrios.map(trio => {return trio.filter(i => indexOfSelected.includes(i))})).filter(i => i.length == 3);
-  console.log(massive)
+  console.log(winningThreeIndexes)
+  console.log(winningThreeIndexes.length)
 
- arrayfromBoxes[massive[1]].classList.add(winner)
-  
-  //{arrayfromBoxes[index].className += ' winner'})
+  // if (winningThreeIndexes.length === 1) {winningThreeIndexes.map((index) => {arrayfromBoxes[index].className += ' winner'})}
+  if (winningThreeIndexes.length === 1) {
+    arrayfromBoxes[winningThreeIndexes[0][0]].className += ' winner';
+    arrayfromBoxes[winningThreeIndexes[0][1]].className += ' winner';
+    arrayfromBoxes[winningThreeIndexes[0][2]].className += ' winner';
+    console.log(arrayfromBoxes[winningThreeIndexes[0][0]].classList)};
 
-    // this is not the issue, it's the index?     arrayfromBoxes[index].classList.add(winner)
-    // script.js:186 Uncaught TypeError: Cannot read property 'className' of undefined
-    // Uncaught TypeError: Cannot read property 'classList' of undefined
-    // oh I'm getting undefined because it's not defined until there's a winner. 
+  // why is length 1? why can't I map into this?
+  // I keep getting Uncaught TypeError: Cannot read property 'className' of undefined
 
    var isThereAWinner = 
     winningTrios.some(trio => {return trio.every(i => indexOfSelected.includes(i))});
