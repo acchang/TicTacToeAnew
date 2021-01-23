@@ -175,53 +175,28 @@ function playerhasWon() {
         return indexOfSelected;
     }, []);
 
+   var winnerArrays = winningTrios.map(trio => {return trio.filter(i => indexOfSelected.includes(i))});
+   var boxesToHighlight = winnerArrays.filter(i => i.length == 3);
+  //  console.log(boxesToHighlight)
+  //  add class to boxestohighlight index
 
+  var massive = (winningTrios.map(trio => {return trio.filter(i => indexOfSelected.includes(i))})).filter(i => i.length == 3);
+  console.log(massive)
 
+ arrayfromBoxes[massive[1]].classList.add(winner)
+  
+  //{arrayfromBoxes[index].className += ' winner'})
 
+    // this is not the issue, it's the index?     arrayfromBoxes[index].classList.add(winner)
+    // script.js:186 Uncaught TypeError: Cannot read property 'className' of undefined
+    // Uncaught TypeError: Cannot read property 'classList' of undefined
+    // oh I'm getting undefined because it's not defined until there's a winner. 
 
-
-
-// no for each bc each will be returned
-// filter creates new array with what passed filter; filter will be
-// use this: var arr1 = [1,2,3,4],
-// arr2 = [2,4],
-// res = arr1.filter(item => !arr2.includes(item));
-// console.log(res);
-
-// THEN: what do with each trio of winningTrios?
-// filter for the array that has three digits?
-
-// So, for each trio, filter what's included in index
-// then flter for arrays that are three digits
-
-// I need to triple filter this or reduce
-// for each combo, see if it is in indexselected
-// if so return wincombo
-    var rowToHighlight = 
-    
-    winningTrios.filter(trio => {
-      trio.reduce(i => indexOfSelected.includes(i))});
-      // reduce 
-      console.log(rowToHighlight);
-
-   var isThereAWinner = winningTrios.some(trio => {
-       return trio.every(i => indexOfSelected.includes(i))});
+   var isThereAWinner = 
+    winningTrios.some(trio => {return trio.every(i => indexOfSelected.includes(i))});
        console.log({isThereAWinner});
    return isThereAWinner
       }
-
-// // find the combo that works for playerhasWon, add class: positions[index].className += ' winner
-//   var isThereAWinner = 
-//   winningTrios.some(trio => {
-//     // looking through all trios for at least one trio that
-//     return trio.every(i => indexOfSelected.includes(i))});
-//     // has every digit in trio in IOS
-//     // can I use a filter?
-
-
-
-
-
 
 function declareWinner() {
   setTimeout(alert (checkClass() + " WINS"), 1000);
