@@ -1,6 +1,4 @@
-// 1a) maybe solve the alert issue with a hidden div that shows when won
-// 2) I can start working on minimax, the issue with the others is mostly timing 
-// consolidated winner block fires next move, out-blocking stuff allows next code to show)
+// solve the alert issue with a hidden div that shows when won
 
 var ONE_CLASS
 var TWO_CLASS
@@ -96,7 +94,6 @@ function boxmarked(e) {
         declareTie()
         return
       }
-    // hasGameEnded()
     swapTurns()
 
     if(playerTwoIdentity === "Dumb AI") {
@@ -121,26 +118,10 @@ function boxmarked(e) {
         declareTie()
         return
         }
-        // hasGameEnded()
         swapTurns()
 ``}, 1000);
     } 
 else { console.log("Human")
-      }
-}
-
-function hasGameEnded() {
-      // fix declareWinner() appears before the added classes bc alert happens quicker than redraw
-      // I also cannot pull these out because then the opponent move fires and shows
-      // could have something to do with timing of in-block code
-      if (playerhasWon()) {
-        declareWinner()
-        return
-      } 
-      
-      if (emptySpaceRemains() == false) {
-        declareTie()
-        return
       }
 }
 
@@ -187,4 +168,66 @@ function declareWinner() {
   setTimeout(alert (checkClass() + " WINS"), 1000);
   for (let i=0; i < stylingOfBoxes.length; i++) {
     stylingOfBoxes[i].removeEventListener('click', boxmarked, {once: true});}
+}
+
+
+//////////////////
+
+function minimax(newBoard, player) {
+	var availSpots = emptySquares();
+
+	if (checkWin(newBoard, huPlayer)) {
+		return {score: -10};
+	} else if (checkWin(newBoard, aiPlayer)) {
+		return {score: 10};
+	} else if (availSpots.length === 0) {
+		return {score: 0};
+	}
+
+  //// this is the key code:
+  var moves = [];
+  for (var i = 0; i < availSpots.length; i++) {
+
+    var move = {};
+
+    // take the availble spots on the new board
+		move.index = newBoard[availSpots[i]];
+    
+    newBoard[availSpots[i]] = player;
+
+  //// this scores the move
+		if (player == aiPlayer) {
+			var result = minimax(newBoard, huPlayer);
+			move.score = result.score;
+		} else {
+			var result = minimax(newBoard, aiPlayer);
+			move.score = result.score;
+		}
+
+		newBoard[availSpots[i]] = move.index;
+
+		moves.push(move);
+	}
+
+  /////
+	var bestMove;
+	if(player === aiPlayer) {
+		var bestScore = -10000;
+		for(var i = 0; i < moves.length; i++) {
+			if (moves[i].score > bestScore) {
+				bestScore = moves[i].score;
+				bestMove = i;
+			}
+		}
+	} else {
+		var bestScore = 10000;
+		for(var i = 0; i < moves.length; i++) {
+			if (moves[i].score < bestScore) {
+				bestScore = moves[i].score;
+				bestMove = i;
+			}
+		}
+	}
+
+	return moves[bestMove];
 }
