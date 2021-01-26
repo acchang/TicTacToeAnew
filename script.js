@@ -96,17 +96,16 @@ function boxmarked(e) {
       }
     swapTurns()
 
-    if(playerTwoIdentity === "Dumb AI") {
-
-      var dumbAIArray = arrayfromBoxes.reduce((dumbAIArray, box, idx) => {
+      var AIArray = arrayfromBoxes.reduce((AIArray, box, idx) => {
         if (box.innerHTML === "") {
-          dumbAIArray.push(idx);
+          AIArray.push(idx);
           }
-          return dumbAIArray;
+          return AIArray;
         }, []);
 
-  setTimeout(() => {
-        let dumbAIpicked = dumbAIArray[Math.floor(dumbAIArray.length * (Math.random()))]
+        if(playerTwoIdentity === "Dumb AI") {
+  // setTimeout(() => {
+        let dumbAIpicked = AIArray[Math.floor(AIArray.length * (Math.random()))]
         arrayfromBoxes[dumbAIpicked].classList.add(TWO_CLASS)
         arrayfromBoxes[dumbAIpicked].innerHTML = TWO_CLASS
 
@@ -119,8 +118,12 @@ function boxmarked(e) {
         return
         }
         swapTurns()
-``}, 1000);
+// ``}, 1000);
     } 
+
+    else if(playerTwoIdentity === "Smart AI"){alert("Smart AI not working yet")}
+
+
 else { console.log("Human")
       }
 }
@@ -135,6 +138,7 @@ function checkClass() {
 function emptySpaceRemains() {
   var innerHTMLempty = (insidebox) => insidebox.innerHTML===""
   console.log(arrayfromBoxes.some(innerHTMLempty))
+  // returns true or false
   return (arrayfromBoxes.some(innerHTMLempty))
 }
 
@@ -160,6 +164,7 @@ function playerhasWon() {
  
    var isThereAWinner = 
     winningTrios.some(trio => {return trio.every(i => indexOfSelected.includes(i))});
+       console.log[{indexOfSelected}]
        console.log({isThereAWinner});
    return isThereAWinner
       }
@@ -170,11 +175,19 @@ function declareWinner() {
     stylingOfBoxes[i].removeEventListener('click', boxmarked, {once: true});}
 }
 
+function emptySquares() {
+	return origBoard.filter(s => typeof s == 'number');
+}
 
-//////////////////
+
+////////// BEGIN MINIMAX HERE //////////
 
 function minimax(newBoard, player) {
-	var availSpots = emptySquares();
+
+  // var availSpots = emptySquares();
+
+
+  /// need a function to get availspots
 
 	if (checkWin(newBoard, huPlayer)) {
 		return {score: -10};
@@ -184,18 +197,20 @@ function minimax(newBoard, player) {
 		return {score: 0};
 	}
 
-  //// this is the key code:
+  //// this is the key code, what is var move = {}?
   var moves = [];
   for (var i = 0; i < availSpots.length; i++) {
-
     var move = {};
 
-    // take the availble spots on the new board
+    // take the availble spots on the new board, what are these?
 		move.index = newBoard[availSpots[i]];
-    
     newBoard[availSpots[i]] = player;
 
-  //// this scores the move
+
+  //// recursively run minimax(the whole program, on new board, which player)
+  //// get a result from the board
+  //// score the result from the if
+  //// that's called a move.score
 		if (player == aiPlayer) {
 			var result = minimax(newBoard, huPlayer);
 			move.score = result.score;
@@ -203,13 +218,18 @@ function minimax(newBoard, player) {
 			var result = minimax(newBoard, aiPlayer);
 			move.score = result.score;
 		}
+  //// I think I understand this above
 
+  //// what is this?
 		newBoard[availSpots[i]] = move.index;
-
 		moves.push(move);
 	}
 
-  /////
+///// this is a checking mechanism
+//// if the score from moves at any one point is better than the existing best score
+//// make it the best score
+//// bestMove is i, best Move is the index of where the best score is in the array
+//// this implies the scores are put into moves array according to their space in the grid
 	var bestMove;
 	if(player === aiPlayer) {
 		var bestScore = -10000;
@@ -228,6 +248,27 @@ function minimax(newBoard, player) {
 			}
 		}
 	}
+//// I understand above
 
-	return moves[bestMove];
+
+  return moves[bestMove];
+//// bestMove is an index, so minimax yields or returns one of the moves, but moves is an array of scores
+// what is a representation of what is generated here?
 }
+
+/// I have some of the mechanics down, but how deep in does it analyze (it has to be more than 9)?
+/// where in the code is it switching to the other player?
+
+
+/// minimax generates a moves[bestmove] for bestspot.
+/// bestspot takes the board and player
+function bestSpot() {
+  return minimax(origBoard, aiPlayer).index;
+  /// index of moves[bestMove] goes into turnClick
+}
+
+/// bestspot gets put into turnclick to be played
+function turnClick(square) {
+	if (typeof origBoard[square.target.id] == 'number') {
+		turn(square.target.id, huPlayer)
+		if (!checkWin(origBoard, huPlayer) && !checkTie()) turn(bestSpot(), aiPlayer);}}
