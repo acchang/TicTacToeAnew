@@ -59,13 +59,12 @@ function startGame() {
 }
 
 const arrayfromBoxes = Array.from(document.getElementsByClassName('box'));
-const stylingOfBoxes = document.querySelectorAll('.box');
 
 function drawBoard() {
-  console.log(stylingOfBoxes)
-  for (let i = 0; i < stylingOfBoxes.length; i++) {
-  stylingOfBoxes[i].addEventListener('click', boxmarked, {once: true});}
-    stylingOfBoxes.forEach(gridBox => {
+  console.log(arrayfromBoxes)
+  for (let i = 0; i < arrayfromBoxes.length; i++) {
+    arrayfromBoxes[i].addEventListener('click', boxmarked, {once: true});}
+    arrayfromBoxes.forEach(gridBox => {
     gridBox.classList.remove(ONE_CLASS)
     gridBox.classList.remove(TWO_CLASS)
     gridBox.classList.remove('winner')
@@ -96,14 +95,10 @@ function boxmarked(e) {
       }
     swapTurns()
 
-      var AIArray = arrayfromBoxes.reduce((AIArray, box, idx) => {
-        if (box.innerHTML === "") {
-          AIArray.push(idx);
-          }
-          return AIArray;
-        }, []);
-
         if(playerTwoIdentity === "Dumb AI") {
+        
+        var AIArray = listEmptySpaces()
+        console.log(AIArray)
   // setTimeout(() => {
         let dumbAIpicked = AIArray[Math.floor(AIArray.length * (Math.random()))]
         arrayfromBoxes[dumbAIpicked].classList.add(TWO_CLASS)
@@ -128,6 +123,25 @@ else { console.log("Human")
       }
 }
 
+function listEmptySpaces() {
+ var acc = arrayfromBoxes.reduce((acc, box, idx) => {
+  if (box.innerHTML === "") {
+    acc.push(idx);
+    }
+    return acc;
+  }, []);
+  console.log(acc)
+  return acc;
+}
+
+
+// var AIArray = arrayfromBoxes.reduce((AIArray, box, idx) => {
+//   if (box.innerHTML === "") {
+//     AIArray.push(idx);
+//     }
+//     return AIArray;
+//   }, []);
+
 function checkClass() {
   if(playerOneTurn) {
   return ONE_CLASS
@@ -137,7 +151,7 @@ function checkClass() {
 
 function emptySpaceRemains() {
   var innerHTMLempty = (insidebox) => insidebox.innerHTML===""
-  console.log(arrayfromBoxes.some(innerHTMLempty))
+  console.log("is there empty space?" + arrayfromBoxes.some(innerHTMLempty))
   // returns true or false
   return (arrayfromBoxes.some(innerHTMLempty))
 }
@@ -171,33 +185,26 @@ function playerhasWon() {
 
 function declareWinner() {
   setTimeout(alert (checkClass() + " WINS"), 1000);
-  for (let i=0; i < stylingOfBoxes.length; i++) {
-    stylingOfBoxes[i].removeEventListener('click', boxmarked, {once: true});}
+  for (let i=0; i < arrayfromBoxes.length; i++) {
+    arrayfromBoxes[i].removeEventListener('click', boxmarked, {once: true});}
 }
-
-function emptySquares() {
-	return origBoard.filter(s => typeof s == 'number');
-}
-
 
 ////////// BEGIN MINIMAX HERE //////////
 
 function minimax(newBoard, player) {
 
-  // var availSpots = emptySquares();
+    /// need a function to get availspots
+  var availSpots = listEmptySpaces();
 
-
-  /// need a function to get availspots
-
-	if (checkWin(newBoard, huPlayer)) {
+	if (playerhasWon() &&  playerOneTurn) {
 		return {score: -10};
-	} else if (checkWin(newBoard, aiPlayer)) {
+	} else if (playerhasWon() && !playerOneTurn) {
 		return {score: 10};
-	} else if (availSpots.length === 0) {
+	} else if (emptySpaceRemains() == false) {
 		return {score: 0};
 	}
 
-  //// this is the key code, what is var move = {}?
+  //// this is the key code, what is var move = {}? START HERE
   var moves = [];
   for (var i = 0; i < availSpots.length; i++) {
     var move = {};
