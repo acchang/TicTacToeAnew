@@ -134,14 +134,6 @@ function listEmptySpaces() {
   return acc;
 }
 
-
-// var AIArray = arrayfromBoxes.reduce((AIArray, box, idx) => {
-//   if (box.innerHTML === "") {
-//     AIArray.push(idx);
-//     }
-//     return AIArray;
-//   }, []);
-
 function checkClass() {
   if(playerOneTurn) {
   return ONE_CLASS
@@ -171,8 +163,8 @@ function playerhasWon() {
   .map(trio => trio.filter(i => indexOfSelected.includes(i)))
   .filter(i => i.length === 3);
 
-  console.log(winningThreeIndexes)
-  console.log(winningThreeIndexes.length)
+  console.log("win index" + winningThreeIndexes)
+  console.log("win index length" + winningThreeIndexes.length)
 
   if (winningThreeIndexes.length === 1) {winningThreeIndexes[0].map((index) => {arrayfromBoxes[index].className += ' winner'})}
  
@@ -192,6 +184,10 @@ function declareWinner() {
 ////////// BEGIN MINIMAX HERE //////////
 
 function minimax(newBoard, player) {
+  /// I may need an old board/new board
+  /// his checkwin function takes as an input any board so that either can be put into it
+  /// for him, origBoard = Array.from(Array(9).keys());
+  /// arrayfromBoxes is my origBoard that can go into the playerhaswon function
 
     /// need a function to get availspots
   var availSpots = listEmptySpaces();
@@ -204,15 +200,18 @@ function minimax(newBoard, player) {
 		return {score: 0};
 	}
 
-  //// this is the key code, what is var move = {}? START HERE
-  var moves = [];
+   var moves = [];
+  // moves is an array
   for (var i = 0; i < availSpots.length; i++) {
+  // lets say 7,8,9 is availSpots
     var move = {};
-
-    // take the availble spots on the new board, what are these?
-		move.index = newBoard[availSpots[i]];
+  // each move is an object that is created for each available spot and corresponds
+  // move {index:7} is from availSpots[0] of newBoard, which is 7.
+    move.index = newBoard[availSpots[i]];
+  // availSpots that tells you what's available on the new board, spots added to move obj
+  // newBoard keeps getting redrawn each time?
     newBoard[availSpots[i]] = player;
-
+  // put an "X" in availSpots of newboard, place[0]
 
   //// recursively run minimax(the whole program, on new board, which player)
   //// get a result from the board
@@ -220,16 +219,19 @@ function minimax(newBoard, player) {
   //// that's called a move.score
 		if (player == aiPlayer) {
 			var result = minimax(newBoard, huPlayer);
-			move.score = result.score;
+      move.score = result.score;
+    // in the object "move", there is a quality, "score," that gets result.score
 		} else {
 			var result = minimax(newBoard, aiPlayer);
 			move.score = result.score;
 		}
-  //// I think I understand this above
+    newBoard[availSpots[i]] = move.index;
+  // ?????? I'm stuck here, it's the opposite of earlier in the for loop move.index = newBoard[availSpots[i]];
+//  newBoard[availSpots[i]] --> move.index; player --> newBoard[availSpots[i]]; move.index --> newBoard[availSpots[i]]
+// this is in preparaton for the next i in the for loop, the marker goes away and the index returns?
 
-  //// what is this?
-		newBoard[availSpots[i]] = move.index;
-		moves.push(move);
+    moves.push(move);
+  /// move is pushed into the array moves; where would you console.log and how does moves look?
 	}
 
 ///// this is a checking mechanism
@@ -255,27 +257,20 @@ function minimax(newBoard, player) {
 			}
 		}
 	}
-//// I understand above
-
 
   return moves[bestMove];
-//// bestMove is an index, so minimax yields or returns one of the moves, but moves is an array of scores
-// what is a representation of what is generated here?
+//// bestMove is an array of objects, best move is the best one in the array
 }
 
-/// I have some of the mechanics down, but how deep in does it analyze (it has to be more than 9)?
-/// where in the code is it switching to the other player?
+/// ******* where in the code is it switching to the other player?
+/// It doesn't, because it's taking the array of empty spaces, it just takes the first empty through 
+/// the for loop, then places a marker, and moves on
 
 
 /// minimax generates a moves[bestmove] for bestspot.
 /// bestspot takes the board and player
 function bestSpot() {
   return minimax(origBoard, aiPlayer).index;
-  /// index of moves[bestMove] goes into turnClick
+  /// this is just the index of bestMove 
 }
 
-/// bestspot gets put into turnclick to be played
-function turnClick(square) {
-	if (typeof origBoard[square.target.id] == 'number') {
-		turn(square.target.id, huPlayer)
-		if (!checkWin(origBoard, huPlayer) && !checkTie()) turn(bestSpot(), aiPlayer);}}
