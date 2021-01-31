@@ -60,7 +60,7 @@ function startGame() {
 
 const arrayfromBoxes = Array.from(document.getElementsByClassName('box'));
 
-var board = arrayfromBoxes
+var origBoard = arrayfromBoxes
 
 function establishBoard() {
   console.log(arrayfromBoxes)
@@ -155,6 +155,8 @@ function declareTie() {
   setTimeout(alert ("TIE GAME"), 1000)}
 
 /// arrayfromBoxes needs to be its own gameboard that can be evaluated
+/// playerhasWon() returns true or false
+
 function playerhasWon() {
     var indexOfSelected = arrayfromBoxes.reduce((indexOfSelected, box, idx) => {
         if (box.classList[1] === checkClass()) {
@@ -162,23 +164,32 @@ function playerhasWon() {
         }
         return indexOfSelected;
     }, []);
-/// 
+// first you get the index of everything selected by the current player
 
   const winningThreeIndexes = winningTrios
   .map(trio => trio.filter(i => indexOfSelected.includes(i)))
   .filter(i => i.length === 3);
+// get the const by mapping each trio and run filter, does indexOfSelected include trio?
+// then filter such that the only one returned is the trio with 3 digits.
 
-  console.log("win index" + winningThreeIndexes)
+  console.log("win index " + winningThreeIndexes)
   console.log("win index length" + winningThreeIndexes.length)
 
-  if (winningThreeIndexes.length === 1) {winningThreeIndexes[0].map((index) => {arrayfromBoxes[index].className += ' winner'})}
+  if (winningThreeIndexes.length === 1) {winningThreeIndexes[0]
+    .map((index) => {arrayfromBoxes[index].className += ' winner'})}  
+
+  if (winningThreeIndexes.length === 1) {return true}  
  
-   var isThereAWinner = 
-    winningTrios.some(trio => {return trio.every(i => indexOfSelected.includes(i))});
-       console.log[{indexOfSelected}]
-       console.log({isThereAWinner});
-   return isThereAWinner
+//    var isThereAWinner = 
+//     winningTrios.some(trio => {return trio.every(i => indexOfSelected.includes(i))});
+// // at least one trio has every member in indexOfSelected; same as if there is winningThreeIndexes
+//        console.log[{indexOfSelected}]
+//        console.log({isThereAWinner});
+//    return isThereAWinner
       }
+
+// change indexOfSelected to a function that takes a board and a player?
+
 
 function declareWinner() {
   setTimeout(alert (checkClass() + " WINS"), 1000);
