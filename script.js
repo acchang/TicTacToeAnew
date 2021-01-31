@@ -175,20 +175,12 @@ function playerhasWon() {
   console.log("win index " + winningThreeIndexes)
   console.log("win index length" + winningThreeIndexes.length)
 
-  if (winningThreeIndexes.length === 1) {winningThreeIndexes[0]
-    .map((index) => {arrayfromBoxes[index].className += ' winner'})}  
-
-  if (winningThreeIndexes.length === 1) {return true}  
- 
-//    var isThereAWinner = 
-//     winningTrios.some(trio => {return trio.every(i => indexOfSelected.includes(i))});
-// // at least one trio has every member in indexOfSelected; same as if there is winningThreeIndexes
-//        console.log[{indexOfSelected}]
-//        console.log({isThereAWinner});
-//    return isThereAWinner
+  if (winningThreeIndexes.length === 1) {
+    winningThreeIndexes[0].map((index) => {arrayfromBoxes[index].className += ' winner'});
+    return true
+  }  
       }
 
-// change indexOfSelected to a function that takes a board and a player?
 
 
 function declareWinner() {
