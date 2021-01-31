@@ -31,7 +31,7 @@ btn2.onclick = function () {
     alert("Your Opponent is "  + playerTwoIdentity)
     };
 
-let playerOneTurn 
+var playerOneTurn 
     
 function swapTurns() {
   playerOneTurn = !playerOneTurn
@@ -54,13 +54,15 @@ function startGame() {
   if (ONE_CLASS == undefined || playerTwoIdentity == undefined) 
   {alert ("Make sure players are defined")}
   console.log("player 1 = " + ONE_CLASS + ", player 2 = " + playerTwoIdentity)
-  drawBoard();
+  establishBoard();
   playerOneTurn = true;
 }
 
 const arrayfromBoxes = Array.from(document.getElementsByClassName('box'));
 
-function drawBoard() {
+var board = arrayfromBoxes
+
+function establishBoard() {
   console.log(arrayfromBoxes)
   for (let i = 0; i < arrayfromBoxes.length; i++) {
     arrayfromBoxes[i].addEventListener('click', boxmarked, {once: true});}
@@ -117,6 +119,7 @@ function boxmarked(e) {
     } 
 
     else if(playerTwoIdentity === "Smart AI"){alert("Smart AI not working yet")}
+// call minimax on the board minimax()
 
 
 else { console.log("Human")
@@ -151,6 +154,7 @@ function emptySpaceRemains() {
 function declareTie() {
   setTimeout(alert ("TIE GAME"), 1000)}
 
+/// arrayfromBoxes needs to be its own gameboard that can be evaluated
 function playerhasWon() {
     var indexOfSelected = arrayfromBoxes.reduce((indexOfSelected, box, idx) => {
         if (box.classList[1] === checkClass()) {
@@ -158,6 +162,7 @@ function playerhasWon() {
         }
         return indexOfSelected;
     }, []);
+/// 
 
   const winningThreeIndexes = winningTrios
   .map(trio => trio.filter(i => indexOfSelected.includes(i)))
@@ -189,7 +194,6 @@ function minimax(newBoard, player) {
   /// for him, origBoard = Array.from(Array(9).keys());
   /// arrayfromBoxes is my origBoard that can go into the playerhaswon function
 
-    /// need a function to get availspots
   var availSpots = listEmptySpaces();
 
 	if (playerhasWon() &&  playerOneTurn) {
@@ -201,11 +205,8 @@ function minimax(newBoard, player) {
 	}
 
    var moves = [];
-  // moves is an array
   for (var i = 0; i < availSpots.length; i++) {
-  // lets say 7,8,9 is availSpots
     var move = {};
-  // each move is an object that is created for each available spot and corresponds
   // move {index:7} is from availSpots[0] of newBoard, which is 7.
     move.index = newBoard[availSpots[i]];
   // availSpots that tells you what's available on the new board, spots added to move obj
@@ -231,7 +232,6 @@ function minimax(newBoard, player) {
 // this is in preparaton for the next i in the for loop, the marker goes away and the index returns?
 
     moves.push(move);
-  /// move is pushed into the array moves; where would you console.log and how does moves look?
 	}
 
 ///// this is a checking mechanism
@@ -261,11 +261,6 @@ function minimax(newBoard, player) {
   return moves[bestMove];
 //// bestMove is an array of objects, best move is the best one in the array
 }
-
-/// ******* where in the code is it switching to the other player?
-/// It doesn't, because it's taking the array of empty spaces, it just takes the first empty through 
-/// the for loop, then places a marker, and moves on
-
 
 /// minimax generates a moves[bestmove] for bestspot.
 /// bestspot takes the board and player
