@@ -61,7 +61,6 @@ function startGame() {
 const origBoard = Array.from(document.getElementsByClassName('box'));
 
 function establishBoard() {
-  console.log(origBoard)
   for (let i = 0; i < origBoard.length; i++) {
     origBoard[i].addEventListener('click', boxmarked, {once: true});}
     origBoard.forEach(gridBox => {
@@ -95,10 +94,9 @@ function boxmarked(e) {
       }
     swapTurns()
 
-        if(playerTwoIdentity === "Dumb AI") {
+    if(playerTwoIdentity === "Dumb AI") {
         
         var AIArray = listEmptySpaces()
-        console.log(AIArray)
   // setTimeout(() => {
         let dumbAIpicked = AIArray[Math.floor(AIArray.length * (Math.random()))]
         origBoard[dumbAIpicked].classList.add(TWO_CLASS)
@@ -159,7 +157,6 @@ function listEmptySpaces() {
     }
     return acc;
   }, []);
-  console.log(acc)
   return acc;
 }
 
@@ -173,14 +170,12 @@ function checkClass() {
 // function emptySpaceRemains() evaluates board
 function emptySpaceRemains() {
   var innerHTMLempty = (insidebox) => insidebox.innerHTML===""
-  console.log("is there empty space?" + origBoard.some(innerHTMLempty))
   // returns true or false
   return (origBoard.some(innerHTMLempty))
 }
 
 // function playerhasWon() evaluates board
 function playerhasWon(board) {
-    console.log (board)
     var indexOfSelected = board.reduce((indexOfSelected, box, idx) => {
         if (box.classList[1] === checkClass()) {
             indexOfSelected.push(idx);
@@ -194,9 +189,6 @@ function playerhasWon(board) {
   .filter(i => i.length === 3);
 // get the const by mapping each trio and run filter, does indexOfSelected include trio?
 // then filter such that the only one returned is the trio with 3 digits.
-
-  console.log("win index " + winningThreeIndexes)
-  console.log("win index length" + winningThreeIndexes.length)
 
   if (winningThreeIndexes.length === 1) {
     winningThreeIndexes[0].map((index) => {board[index].className += ' winner'});
@@ -216,6 +208,7 @@ function declareWinner() {
 
 ////////// BEGIN MINIMAX HERE //////////
 // do I need a player constant? playerhasWon works by if box.classList[1] === checkClass()
+// I can play dumbAI and switch at last minute to Smart
 
 function minimax(newBoard) {
 
@@ -231,19 +224,15 @@ function minimax(newBoard) {
 		return {score: 0};
 	}
 
-   var moves = [];
+  var moves = [];
+
   for (var i = 0; i < availSpots.length; i++) {
     var move = {};
-    move.index = newBoard[availSpots[i]];
+    move.index = availSpots[i];
   // newboard is an empty array, with the first i corresponding to the first # in avail spots [7,8,9]
-    newBoard[availSpots[i]].classList[1] = checkClass();
-  // put marker in the classList of availSpots of newboard matchings playing class [X,8,9]
-  // *** how are the markers from origboard retained?
-
-////////// PROCEED TO HERE -- use  if (box.classList[1] === checkClass()) and this, which is true/false
-// function swapTurns() {
-//   playerOneTurn = !playerOneTurn
-// };
+    let minimaxClass = checkClass(); 
+    newBoard[availSpots[i]].classList.add(minimaxClass);
+  }
 
 // was: if (player == aiPlayer)
 		if (checkClass() == TWO_CLASS) {
@@ -254,7 +243,8 @@ function minimax(newBoard) {
       swapTurns()
 			var result = minimax(newBoard);
 			move.score = result.score;
-		}
+    }
+    console.log(moves)
     newBoard[availSpots[i]] = move.index;
     moves.push(move);
 	}
@@ -278,8 +268,9 @@ function minimax(newBoard) {
 		}
 	}
 
+  console.log(moves[bestMove]);
   return moves[bestMove];
-//// bestMove is an array of objects, best move is the best one in the array
+// bestMove is an array of objects, best move is the best one in the array
 }
 /// minimax generates a moves[bestmove] for bestspot.
 
