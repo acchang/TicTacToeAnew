@@ -128,7 +128,7 @@ function boxmarked(e) {
 //         origBoard[smartAIpicked].classList.add(TWO_CLASS)
 //         origBoard[smartAIpicked].innerHTML = TWO_CLASS
 
-        bestMove()
+        bestAIMove()
         if (playerhasWon(origBoard)) {
         declareWinner()
         return
@@ -211,27 +211,62 @@ function declareWinner() {
 // I can play dumbAI and switch at last minute to Smart
 
 
-function bestMove() {
+function bestAIMove() {
   var smartAIArray = listEmptySpaces();
-  var Move;
-  let smartAIpicked = smartAIArray[0];
-  origBoard[smartAIpicked].classList.add(TWO_CLASS);
-  origBoard[smartAIpicked].innerHTML = TWO_CLASS;
-  let score = minimax(origBoard)
-  origBoard[smartAIpicked].classList.remove(TWO_CLASS);
-  origBoard[smartAIpicked].innerHTML = "";
+  let bestScore = -100000
+  var move;
+  // initiate for loop here of smartAIArray[i]
+  for (var i = 0; i < smartAIArray.length; i++) {
+    let smartAIpicked = smartAIArray[i];
+    origBoard[smartAIpicked].classList.add(TWO_CLASS);
+    origBoard[smartAIpicked].innerHTML = TWO_CLASS;
+       let score = minimax(origBoard)
+  // score adds depth isMaximizing; false bc minimizing for O
+      origBoard[smartAIpicked].classList.remove(TWO_CLASS);
+      origBoard[smartAIpicked].innerHTML = "";
   if (score > bestScore) {
     bestScore = score
-    Move = smartAIArray[1]
+    move = smartAIpicked
   }
+}
 origBoard[move].classList.add(TWO_CLASS);
 origBoard[move].innerHTML = TWO_CLASS;
-swapTurns()
 }
 
+// let scores = {
+//   'X':1,
+//   'O':-1,
+//   'tie':0
+// }
+
 function minimax(board) {
-  return 1
+  return 1;
 }
+  
+  
+  // , depth, isMaximizing) {
+//   let result = playerhasWon()
+//   if (result !== null) {
+//     let score = scores[result];
+//     return score
+//   }
+
+//   if (isMaximizing) {
+//     let bestScore = -100000; 
+//     var smartAIArray = listEmptySpaces();
+//     let smartAIpicked = smartAIArray[0];
+//     origBoard[smartAIpicked].classList.add(TWO_CLASS);
+//     origBoard[smartAIpicked].innerHTML = TWO_CLASS;
+//     let score = minimax(origBoard, depth + 1, false);
+//     origBoard[smartAIpicked].classList.remove(TWO_CLASS);
+//     origBoard[smartAIpicked].innerHTML = "";
+//     if (score > bestScore){
+//       bestScore = score}
+//     return bestScore
+//     }
+//   }
+
+// }
 
 
 
