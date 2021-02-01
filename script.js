@@ -145,7 +145,7 @@ else { console.log("Human")
 }
 
 function bestSpot() {
-	return minimax(origBoard).index;
+	return minimax(origBoard);
 }
   /// this is just the index of bestMove 
 
@@ -229,47 +229,56 @@ function minimax(newBoard) {
   for (var i = 0; i < availSpots.length; i++) {
     var move = {};
     move.index = availSpots[i];
-  // newboard is an empty array, with the first i corresponding to the first # in avail spots [7,8,9]
     let minimaxClass = checkClass(); 
     newBoard[availSpots[i]].classList.add(minimaxClass);
-  }
-
-// was: if (player == aiPlayer)
+  
 		if (checkClass() == TWO_CLASS) {
-			var result = minimax(newBoard);
+    // if TWO_CLASS, score is 10
+      var result = minimax(newBoard);
+      console.log(result.score)
       move.score = result.score;
-    // in the object "move", there is a quality, "score," that gets result.score
 		} else {
+    // if TWO_CLASS, score is -10
       swapTurns()
-			var result = minimax(newBoard);
-			move.score = result.score;
+      var result = minimax(newBoard);
+      console.log(result.score)
+      move.score = result.score;
+      console.log(move.score)
     }
-    console.log(moves)
-    newBoard[availSpots[i]] = move.index;
-    moves.push(move);
-	}
 
-	var bestMove;
-	if(checkClass() === ONE_CLASS) {
-		var bestScore = -10000;
-		for(var i = 0; i < moves.length; i++) {
-			if (moves[i].score > bestScore) {
-				bestScore = moves[i].score;
-				bestMove = i;
-			}
-		}
-	} else {
-		var bestScore = 10000;
-		for(var i = 0; i < moves.length; i++) {
-			if (moves[i].score < bestScore) {
-				bestScore = moves[i].score;
-				bestMove = i;
-			}
-		}
-	}
+    // undo the updated gameboard for playerhasWon
+    newBoard[availSpots[i]].classList.remove(minimaxClass);
+    moves.push(move)
+    console.log(moves);
+  }
+  // I don't need to proceed to bestMove until I get an array that works
 
-  console.log(moves[bestMove]);
-  return moves[bestMove];
+  // Glossary: availSpots[i] = 8
+  // move.index = 8
+  // newBoard = [div.box.X etc]
+
+
+	// var bestMove;
+	// if(checkClass() === ONE_CLASS) {
+	// 	var bestScore = -10000;
+	// 	for(var i = 0; i < moves.length; i++) {
+	// 		if (moves[i].score > bestScore) {
+	// 			bestScore = moves[i].score;
+	// 			bestMove = i;
+	// 		}
+	// 	}
+	// } else {
+	// 	var bestScore = 10000;
+	// 	for(var i = 0; i < moves.length; i++) {
+	// 		if (moves[i].score < bestScore) {
+	// 			bestScore = moves[i].score;
+	// 			bestMove = i;
+	// 		}
+	// 	}
+	// }
+
+  // console.log(moves[bestMove]);
+  // return moves[bestMove];
 // bestMove is an array of objects, best move is the best one in the array
 }
 /// minimax generates a moves[bestmove] for bestspot.
