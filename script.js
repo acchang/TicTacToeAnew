@@ -58,15 +58,13 @@ function startGame() {
   playerOneTurn = true;
 }
 
-const arrayfromBoxes = Array.from(document.getElementsByClassName('box'));
-
-var origBoard = arrayfromBoxes
+const origBoard = Array.from(document.getElementsByClassName('box'));
 
 function establishBoard() {
-  console.log(arrayfromBoxes)
-  for (let i = 0; i < arrayfromBoxes.length; i++) {
-    arrayfromBoxes[i].addEventListener('click', boxmarked, {once: true});}
-    arrayfromBoxes.forEach(gridBox => {
+  console.log(origBoard)
+  for (let i = 0; i < origBoard.length; i++) {
+    origBoard[i].addEventListener('click', boxmarked, {once: true});}
+    origBoard.forEach(gridBox => {
     gridBox.classList.remove(ONE_CLASS)
     gridBox.classList.remove(TWO_CLASS)
     gridBox.classList.remove('winner')
@@ -75,18 +73,18 @@ function establishBoard() {
     }
 
 function boxmarked(e) {
-    const index = arrayfromBoxes.indexOf(e.target)
+    const index = origBoard.indexOf(e.target)
 // how to consolidate? maybe I just let ONE_CLASS mark and then if the AI or player
 // or do it even earlier and link it with playerTurn? 
     if(playerOneTurn) {
-        arrayfromBoxes[index].classList.add(ONE_CLASS)
+        origBoard[index].classList.add(ONE_CLASS)
         e.target.innerHTML = ONE_CLASS
       } else {
-        arrayfromBoxes[index].classList.add(TWO_CLASS)
+        origBoard[index].classList.add(TWO_CLASS)
         e.target.innerHTML = TWO_CLASS
       }
 
-      if (playerhasWon()) {
+      if (playerhasWon(origBoard)) {
         declareWinner()
         return
       } 
@@ -103,10 +101,10 @@ function boxmarked(e) {
         console.log(AIArray)
   // setTimeout(() => {
         let dumbAIpicked = AIArray[Math.floor(AIArray.length * (Math.random()))]
-        arrayfromBoxes[dumbAIpicked].classList.add(TWO_CLASS)
-        arrayfromBoxes[dumbAIpicked].innerHTML = TWO_CLASS
+        origBoard[dumbAIpicked].classList.add(TWO_CLASS)
+        origBoard[dumbAIpicked].innerHTML = TWO_CLASS
 
-        if (playerhasWon()) {
+        if (playerhasWon(origBoard)) {
         declareWinner()
         return
         } 
@@ -118,16 +116,44 @@ function boxmarked(e) {
 // ``}, 1000);
     } 
 
-    else if(playerTwoIdentity === "Smart AI"){alert("Smart AI not working yet")}
-// call minimax on the board minimax()
+    else if(playerTwoIdentity === "Smart AI"){
+      // alert("Smart AI not working yet")}
 
+    // call minimax on the board minimax()
+// function turnClick(square) {
+// 	if (typeof origBoard[square.target.id] == 'number') {
+// 		turn(square.target.id, huPlayer)
+// 		if (!checkWin(origBoard, huPlayer) && !checkTie()) turn(bestSpot(), aiPlayer);
+//   }
+
+// var smartAIpicked = bestSpot();
+
+//         origBoard[smartAIpicked].classList.add(TWO_CLASS)
+//         origBoard[smartAIpicked].innerHTML = TWO_CLASS
+
+//         if (playerhasWon(origBoard)) {
+//         declareWinner()
+//         return
+//         } 
+//         if (emptySpaceRemains() == false) {
+//         declareTie()
+//         return
+//         }
+//         swapTurns()
+    }
 
 else { console.log("Human")
       }
 }
 
+function bestSpot() {
+	return minimax(origBoard, aiPlayer).index;
+}
+  /// this is just the index of bestMove 
+
+
 function listEmptySpaces() {
- var acc = arrayfromBoxes.reduce((acc, box, idx) => {
+ var acc = origBoard.reduce((acc, box, idx) => {
   if (box.innerHTML === "") {
     acc.push(idx);
     }
@@ -144,21 +170,18 @@ function checkClass() {
   return TWO_CLASS
 };}
 
+// function emptySpaceRemains() evaluates board
 function emptySpaceRemains() {
   var innerHTMLempty = (insidebox) => insidebox.innerHTML===""
-  console.log("is there empty space?" + arrayfromBoxes.some(innerHTMLempty))
+  console.log("is there empty space?" + origBoard.some(innerHTMLempty))
   // returns true or false
-  return (arrayfromBoxes.some(innerHTMLempty))
+  return (origBoard.some(innerHTMLempty))
 }
 
-function declareTie() {
-  setTimeout(alert ("TIE GAME"), 1000)}
-
-/// arrayfromBoxes needs to be its own gameboard that can be evaluated
-/// playerhasWon() returns true or false
-
-function playerhasWon() {
-    var indexOfSelected = arrayfromBoxes.reduce((indexOfSelected, box, idx) => {
+// function playerhasWon() evaluates board
+function playerhasWon(board) {
+    console.log (board)
+    var indexOfSelected = board.reduce((indexOfSelected, box, idx) => {
         if (box.classList[1] === checkClass()) {
             indexOfSelected.push(idx);
         }
@@ -176,74 +199,68 @@ function playerhasWon() {
   console.log("win index length" + winningThreeIndexes.length)
 
   if (winningThreeIndexes.length === 1) {
-    winningThreeIndexes[0].map((index) => {arrayfromBoxes[index].className += ' winner'});
+    winningThreeIndexes[0].map((index) => {board[index].className += ' winner'});
     return true
   }  
       }
 
 
+function declareTie() {
+  setTimeout(alert ("TIE GAME"), 1000)}
 
 function declareWinner() {
   setTimeout(alert (checkClass() + " WINS"), 1000);
-  for (let i=0; i < arrayfromBoxes.length; i++) {
-    arrayfromBoxes[i].removeEventListener('click', boxmarked, {once: true});}
+  for (let i=0; i < origBoard.length; i++) {
+    origBoard[i].removeEventListener('click', boxmarked, {once: true});}
 }
 
 ////////// BEGIN MINIMAX HERE //////////
+// do I need a player constant? playerhasWon works by if box.classList[1] === checkClass()
 
 function minimax(newBoard, player) {
-  /// I may need an old board/new board
-  /// his checkwin function takes as an input any board so that either can be put into it
-  /// for him, origBoard = Array.from(Array(9).keys());
-  /// arrayfromBoxes is my origBoard that can go into the playerhaswon function
 
   var availSpots = listEmptySpaces();
+  // availSpots are the emptyspaces to run minmax on, it works on origboard and creates an array
 
 	if (playerhasWon() &&  playerOneTurn) {
 		return {score: -10};
 	} else if (playerhasWon() && !playerOneTurn) {
 		return {score: 10};
 	} else if (emptySpaceRemains() == false) {
+    // I may need to update emptySpaceRemains() to evaluate on class based of ClassList vs innerHTML
 		return {score: 0};
 	}
 
    var moves = [];
   for (var i = 0; i < availSpots.length; i++) {
     var move = {};
-  // move {index:7} is from availSpots[0] of newBoard, which is 7.
     move.index = newBoard[availSpots[i]];
-  // availSpots that tells you what's available on the new board, spots added to move obj
-  // newBoard keeps getting redrawn each time?
-    newBoard[availSpots[i]] = player;
-  // put an "X" in availSpots of newboard, place[0]
+  // newboard is an empty array, with the first i corresponding to the first # in avail spots [7,8,9]
+    newBoard[availSpots[i]].classList[1] = checkClass();
+  // put marker in the classList of availSpots of newboard matchings playing class [X,8,9]
+  // *** how are the markers from origboard retained?
 
-  //// recursively run minimax(the whole program, on new board, which player)
-  //// get a result from the board
-  //// score the result from the if
-  //// that's called a move.score
-		if (player == aiPlayer) {
-			var result = minimax(newBoard, huPlayer);
+////////// PROCEED TO HERE -- use  if (box.classList[1] === checkClass()) and this, which is true/false
+// function swapTurns() {
+//   playerOneTurn = !playerOneTurn
+// };
+
+// was: 		if (player == aiPlayer)
+		if (checkClass() == TWO_CLASS) {
+			var result = minimax(newBoard);
       move.score = result.score;
     // in the object "move", there is a quality, "score," that gets result.score
 		} else {
-			var result = minimax(newBoard, aiPlayer);
+      swapTurns()
+			var result = minimax(newBoard);
 			move.score = result.score;
 		}
     newBoard[availSpots[i]] = move.index;
-  // ?????? I'm stuck here, it's the opposite of earlier in the for loop move.index = newBoard[availSpots[i]];
-//  newBoard[availSpots[i]] --> move.index; player --> newBoard[availSpots[i]]; move.index --> newBoard[availSpots[i]]
-// this is in preparaton for the next i in the for loop, the marker goes away and the index returns?
-
     moves.push(move);
 	}
 
-///// this is a checking mechanism
-//// if the score from moves at any one point is better than the existing best score
-//// make it the best score
-//// bestMove is i, best Move is the index of where the best score is in the array
-//// this implies the scores are put into moves array according to their space in the grid
 	var bestMove;
-	if(player === aiPlayer) {
+	if(checkClass() === ONE_CLASS) {
 		var bestScore = -10000;
 		for(var i = 0; i < moves.length; i++) {
 			if (moves[i].score > bestScore) {
@@ -264,11 +281,6 @@ function minimax(newBoard, player) {
   return moves[bestMove];
 //// bestMove is an array of objects, best move is the best one in the array
 }
-
 /// minimax generates a moves[bestmove] for bestspot.
-/// bestspot takes the board and player
-function bestSpot() {
-  return minimax(origBoard, aiPlayer).index;
-  /// this is just the index of bestMove 
-}
+
 
