@@ -244,6 +244,8 @@ function minimax() {
   swapTurns()
 
 // this recursive part is the problem
+// I don't know how to look steps ahead; might need to combine it with others' techniques
+
   if (!playerOneTurn) {
     let bestScore = -100000; 
     var smartAIArray = listEmptySpaces();
@@ -252,6 +254,8 @@ function minimax() {
       origBoard[smartAIpicked].classList.add(TWO_CLASS);
       origBoard[smartAIpicked].innerHTML = TWO_CLASS;
         let score = minimax(origBoard)
+// Schiffman uses isMax T/F, does the clearing not happen until a terminal state?
+// what about all the other ones tried?
         origBoard[smartAIpicked].classList.remove(TWO_CLASS);
         origBoard[smartAIpicked].innerHTML = "";
         if (score > bestScore) {
