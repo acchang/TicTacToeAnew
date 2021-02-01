@@ -116,7 +116,8 @@ function boxmarked(e) {
 // ``}, 1000);
     } 
 
-    if(playerTwoIdentity === "Smart AI"){alert("Smart AI not working yet")}
+    if(playerTwoIdentity === "Smart AI") {
+      // alert("Smart AI not working yet")
 
     // call minimax on the board minimax()
 // function turnClick(square) {
@@ -125,27 +126,28 @@ function boxmarked(e) {
 // 		if (!checkWin(origBoard, huPlayer) && !checkTie()) turn(bestSpot(), aiPlayer);
 //   }
 
-// var smartAIpicked = bestSpot();
+var smartAIpicked = bestSpot();
 
-//         origBoard[smartAIpicked].classList.add(TWO_CLASS)
-//         origBoard[smartAIpicked].innerHTML = TWO_CLASS
+        origBoard[smartAIpicked].classList.add(TWO_CLASS)
+        origBoard[smartAIpicked].innerHTML = TWO_CLASS
 
-//         if (playerhasWon(origBoard)) {
-//         declareWinner()
-//         return
-//         } 
-//         if (emptySpaceRemains() == false) {
-//         declareTie()
-//         return
-//         }
-//         swapTurns()
+        if (playerhasWon(origBoard)) {
+        declareWinner()
+        return
+        } 
+        if (emptySpaceRemains() == false) {
+        declareTie()
+        return
+        }
+        swapTurns()
+  }
 
 else { console.log("Human")
       }
 }
 
 function bestSpot() {
-	return minimax(origBoard, aiPlayer).index;
+	return minimax(origBoard).index;
 }
   /// this is just the index of bestMove 
 
@@ -215,14 +217,14 @@ function declareWinner() {
 ////////// BEGIN MINIMAX HERE //////////
 // do I need a player constant? playerhasWon works by if box.classList[1] === checkClass()
 
-function minimax(newBoard, player) {
+function minimax(newBoard) {
 
   var availSpots = listEmptySpaces();
   // availSpots are the emptyspaces to run minmax on, it works on origboard and creates an array
 
-	if (playerhasWon() &&  playerOneTurn) {
+	if (playerhasWon(newBoard) &&  playerOneTurn) {
 		return {score: -10};
-	} else if (playerhasWon() && !playerOneTurn) {
+	} else if (playerhasWon(newBoard) && !playerOneTurn) {
 		return {score: 10};
 	} else if (emptySpaceRemains() == false) {
     // I may need to update emptySpaceRemains() to evaluate on class based of ClassList vs innerHTML
@@ -243,7 +245,7 @@ function minimax(newBoard, player) {
 //   playerOneTurn = !playerOneTurn
 // };
 
-// was: 		if (player == aiPlayer)
+// was: if (player == aiPlayer)
 		if (checkClass() == TWO_CLASS) {
 			var result = minimax(newBoard);
       move.score = result.score;
