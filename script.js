@@ -137,7 +137,6 @@ function boxmarked(e) {
         declareTie()
         return
         }
-        swapTurns()
   }
 
 else { console.log("Human")
@@ -175,8 +174,8 @@ function emptySpaceRemains() {
 }
 
 // function playerhasWon() evaluates board
-function playerhasWon(board) {
-    var indexOfSelected = board.reduce((indexOfSelected, box, idx) => {
+function playerhasWon() {
+    var indexOfSelected = origBoard.reduce((indexOfSelected, box, idx) => {
         if (box.classList[1] === checkClass()) {
             indexOfSelected.push(idx);
         }
@@ -191,7 +190,7 @@ function playerhasWon(board) {
 // then filter such that the only one returned is the trio with 3 digits.
 
   if (winningThreeIndexes.length === 1) {
-    winningThreeIndexes[0].map((index) => {board[index].className += ' winner'});
+    winningThreeIndexes[0].map((index) => {origBoard[index].className += ' winner'});
     return true
   }  
       }
@@ -211,148 +210,73 @@ function declareWinner() {
 // I can play dumbAI and switch at last minute to Smart
 
 
+
 function bestAIMove() {
   var smartAIArray = listEmptySpaces();
   let bestScore = -100000
   var move;
-  // initiate for loop here of smartAIArray[i]
   for (var i = 0; i < smartAIArray.length; i++) {
     let smartAIpicked = smartAIArray[i];
     origBoard[smartAIpicked].classList.add(TWO_CLASS);
     origBoard[smartAIpicked].innerHTML = TWO_CLASS;
-       let score = minimax(origBoard)
-  // score adds depth isMaximizing; false bc minimizing for O
+      let score = minimax(origBoard)
       origBoard[smartAIpicked].classList.remove(TWO_CLASS);
       origBoard[smartAIpicked].innerHTML = "";
   if (score > bestScore) {
-    bestScore = score
-    move = smartAIpicked
-  }
+    bestScore = score;
+    move = smartAIpicked;
+    console.log(move)
+  } 
 }
 origBoard[move].classList.add(TWO_CLASS);
 origBoard[move].innerHTML = TWO_CLASS;
 }
 
-// let scores = {
-//   'X':1,
-//   'O':-1,
-//   'tie':0
-// }
+function minimax() {
+// minimax's role is to loop through and find the score
+  if (playerhasWon() &&  playerOneTurn) {
+    return -10;
+  } else if (playerhasWon() && !playerOneTurn) {
+    return 10;
+  } else if (emptySpaceRemains() == false) {
+    return 0;
+  }
+  swapTurns()
 
-function minimax(board) {
-  return 1;
+// this recursive part is the problem
+  if (!playerOneTurn) {
+    let bestScore = -100000; 
+    var smartAIArray = listEmptySpaces();
+    for (var i = 0; i < smartAIArray.length; i++) {
+      let smartAIpicked = smartAIArray[i];
+      origBoard[smartAIpicked].classList.add(TWO_CLASS);
+      origBoard[smartAIpicked].innerHTML = TWO_CLASS;
+        let score = minimax(origBoard)
+        origBoard[smartAIpicked].classList.remove(TWO_CLASS);
+        origBoard[smartAIpicked].innerHTML = "";
+        if (score > bestScore) {
+          bestScore = score}
+      }
+    return bestScore;
+    }
+   else {
+    let bestScore = 100000; 
+    var smartAIArray = listEmptySpaces();
+    for (var i = 0; i < smartAIArray.length; i++) {
+      let smartAIpicked = smartAIArray[i];
+      origBoard[smartAIpicked].classList.add(ONE_CLASS);
+      origBoard[smartAIpicked].innerHTML = ONE_CLASS;
+        let score = minimax(origBoard)
+      origBoard[smartAIpicked].classList.remove(ONE_CLASS);
+      origBoard[smartAIpicked].innerHTML = "";
+      if (score < bestScore) {
+        bestScore = score}
+      }
+    return bestScore;
+  }
 }
-  
-  
-  // , depth, isMaximizing) {
-//   let result = playerhasWon()
-//   if (result !== null) {
-//     let score = scores[result];
-//     return score
-//   }
-
-//   if (isMaximizing) {
-//     let bestScore = -100000; 
-//     var smartAIArray = listEmptySpaces();
-//     let smartAIpicked = smartAIArray[0];
-//     origBoard[smartAIpicked].classList.add(TWO_CLASS);
-//     origBoard[smartAIpicked].innerHTML = TWO_CLASS;
-//     let score = minimax(origBoard, depth + 1, false);
-//     origBoard[smartAIpicked].classList.remove(TWO_CLASS);
-//     origBoard[smartAIpicked].innerHTML = "";
-//     if (score > bestScore){
-//       bestScore = score}
-//     return bestScore
-//     }
-//   }
-
-// }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-// function minimax(newBoard) {
-
-//   var availSpots = listEmptySpaces();
-//   // availSpots are the emptyspaces to run minmax on, it works on origboard and creates an array
-
-// 	if (playerhasWon(newBoard) &&  playerOneTurn) {
-// 		return {score: -10};
-// 	} else if (playerhasWon(newBoard) && !playerOneTurn) {
-// 		return {score: 10};
-// 	} else if (emptySpaceRemains() == false) {
-//     // I may need to update emptySpaceRemains() to evaluate on class based of ClassList vs innerHTML
-// 		return {score: 0};
-// 	}
-
-//   var moves = [];
-
-//   for (var i = 0; i < availSpots.length; i++) {
-//     var move = {};
-//     move.index = availSpots[i];
-//     let minimaxClass = checkClass(); 
-//     newBoard[availSpots[i]].classList.add(minimaxClass);
-  
-// 		if (checkClass() == TWO_CLASS) {
-//     // if TWO_CLASS, score is 10
-//       var result = minimax(newBoard);
-//       console.log(result.score)
-//       move.score = result.score;
-// 		} else {
-//     // if TWO_CLASS, score is -10
-//       swapTurns()
-//       var result = minimax(newBoard);
-//       console.log(result.score)
-//       move.score = result.score;
-//       console.log(move.score)
-//     }
-
-//     // undo the updated gameboard for playerhasWon
-//     newBoard[availSpots[i]].classList.remove(minimaxClass);
-//     moves.push(move)
-//     console.log(moves);
-//   }
-//   // I don't need to proceed to bestMove until I get an array that works
-
-//   // Glossary: availSpots[i] = 8
-//   // move.index = 8
-//   // newBoard = [div.box.X etc]
-
-
-// 	// var bestMove;
-// 	// if(checkClass() === ONE_CLASS) {
-// 	// 	var bestScore = -10000;
-// 	// 	for(var i = 0; i < moves.length; i++) {
-// 	// 		if (moves[i].score > bestScore) {
-// 	// 			bestScore = moves[i].score;
-// 	// 			bestMove = i;
-// 	// 		}
-// 	// 	}
-// 	// } else {
-// 	// 	var bestScore = 10000;
-// 	// 	for(var i = 0; i < moves.length; i++) {
-// 	// 		if (moves[i].score < bestScore) {
-// 	// 			bestScore = moves[i].score;
-// 	// 			bestMove = i;
-// 	// 		}
-// 	// 	}
-// 	// }
-
-//   // console.log(moves[bestMove]);
-//   // return moves[bestMove];
-// // bestMove is an array of objects, best move is the best one in the array
-// }
-// /// minimax generates a moves[bestmove] for bestspot.
 
 
