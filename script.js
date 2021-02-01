@@ -116,8 +116,7 @@ function boxmarked(e) {
 // ``}, 1000);
     } 
 
-    else if(playerTwoIdentity === "Smart AI"){
-      // alert("Smart AI not working yet")}
+    if(playerTwoIdentity === "Smart AI"){alert("Smart AI not working yet")}
 
     // call minimax on the board minimax()
 // function turnClick(square) {
@@ -140,7 +139,6 @@ function boxmarked(e) {
 //         return
 //         }
 //         swapTurns()
-    }
 
 else { console.log("Human")
       }
