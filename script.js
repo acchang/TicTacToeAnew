@@ -84,22 +84,17 @@ function boxmarked(e) {
         origBoard[index].classList.add(ONE_CLASS)
         e.target.innerHTML = ONE_CLASS
         parallelBoard.splice(index, 1, ONE_CLASS)
-        console.log(parallelBoard)
-        console.log(parallelChoices)
       } else {
         origBoard[index].classList.add(TWO_CLASS)
         e.target.innerHTML = TWO_CLASS
         parallelBoard.splice(index, 1, TWO_CLASS)
-        console.log(parallelBoard)
-        console.log(parallelChoices)
       }
 
       if (playerhasWon(origBoard)) {
         declareWinner()
         return
       } 
-      
-      if (emptySpaceRemains(origBoard) == false) {
+      if (isThereATie(origBoard) == true) {
         declareTie()
         return
       }
@@ -112,47 +107,43 @@ function boxmarked(e) {
         origBoard[dumbAIpicked].classList.add(TWO_CLASS)
         origBoard[dumbAIpicked].innerHTML = TWO_CLASS
         parallelBoard.splice(dumbAIpicked, 1, TWO_CLASS)
-        console.log(parallelBoard)
-        console.log(parallelChoices)
-        console.log(playerhasWon(origBoard))
-        console.log(newCheckWin(parallelBoard))
         if (playerhasWon(origBoard)) {
         declareWinner()
         return
         } 
-        if (emptySpaceRemains(origBoard) == false) {
-        declareTie()
-        return
+        if (isThereATie(origBoard) == true) {
+          declareTie()
+          return
         }
         swapTurns()
 // ``}, 1000);
     } 
     if(playerTwoIdentity === "Smart AI") {
-      var DumbAIArray = listEmptySpaces(origBoard)
-      // setTimeout(() => {
-            let dumbAIpicked = DumbAIArray[Math.floor(DumbAIArray.length * (Math.random()))]
-            origBoard[dumbAIpicked].classList.add(TWO_CLASS)
-            origBoard[dumbAIpicked].innerHTML = TWO_CLASS
-            parallelBoard.splice(dumbAIpicked, 1, TWO_CLASS)
-            if (playerhasWon(origBoard)) {
-            declareWinner()
-            return
-            } 
-            if (emptySpaceRemains(origBoard) == false) {
-            declareTie()
-            return
-            }
-            swapTurns()
+      // var DumbAIArray = listEmptySpaces(origBoard)
+      // // setTimeout(() => {
+      //       let dumbAIpicked = DumbAIArray[Math.floor(DumbAIArray.length * (Math.random()))]
+      //       origBoard[dumbAIpicked].classList.add(TWO_CLASS)
+      //       origBoard[dumbAIpicked].innerHTML = TWO_CLASS
+      //       parallelBoard.splice(dumbAIpicked, 1, TWO_CLASS)
+      //       if (playerhasWon(origBoard)) {
+      //       declareWinner()
+      //       return
+      //       } 
+      //       if (isThereATie(origBoard) == true) {
+      //         declareTie()
+      //         return
+      //       }
+      //       swapTurns()
 
-      // bestAIMove(newBoard);
-        // if (playerhasWon(origBoard)) {
-        // declareWinner()
-        // return
-        // } 
-        // if (emptySpaceRemains() == false) {
-        // declareTie()
-        // return
-        // }
+      bestAIMove();
+        if (playerhasWon(origBoard)) {
+        declareWinner()
+        return
+        } 
+        if (isThereATie(origBoard) == true) {
+          declareTie()
+          return
+        }
   }
 else { console.log("Human")
       }
@@ -165,14 +156,14 @@ function checkClass() {
   return TWO_CLASS
 };}
 
-function emptySpaceRemains() {
-  var innerHTMLempty = (insidebox) => insidebox.innerHTML===""
-  return (origBoard.some(innerHTMLempty))
+function isThereATie() {
+  var allFilled = (insidebox) => insidebox.innerHTML !==""
+  return (origBoard.every(allFilled))
 }
 
-function parallelEmptySpaceRemains() {
-  var numbersRemain = (obj) => typeof obj !== "string"
-  return (parallelBoard.some(numbersRemain))
+function isThereATieParallel() {
+  var allStrings = (obj) => typeof obj === "string"
+  return (parallelBoard.every(allStrings))
 }
 
 function playerhasWon(board) {
@@ -219,8 +210,6 @@ function newCheckWin(board) {
 
 }
 
-
-
 function declareTie() {
   setTimeout(alert ("TIE GAME"), 1000)}
 
@@ -241,7 +230,6 @@ function listEmptySpaces(board) {
  }
 
 function listParallelSpaces(board) {
-console.log(parallelBoard);
 var acc = board.reduce((acc, obj, idx) => {
   if (typeof obj !== "string") {
     acc.push(idx);
@@ -251,56 +239,48 @@ var acc = board.reduce((acc, obj, idx) => {
   return acc;
 }
 
-
-
-
 ////////// BEGIN MINIMAX HERE //////////
-
-// function bestAIMove(board) {
-//   console.log(board)
-//   let bestScore = -1000
-//   var move;
-//   let smartAIArray = emptyParallelSpaces(board);
+function bestAIMove() {
+  let bestScore = -1000
+  var move;
+  var parallelChoices = listParallelSpaces(parallelBoard);
+  console.log("choices: " + parallelChoices)
   
-//   for (var i = 0; i < smartAIArray.length; i++) {
-//     var smartAIpicked = smartAIArray[i];
-//     console.log(smartAIArray)
-//     console.log(board)
-//     board[smartAIpicked].classList.add(TWO_CLASS);
-//     board[smartAIpicked].innerHTML = TWO_CLASS;
-//     // newBoard here is passby Value to minimax so it has i added
-//     console.log ("NEW test: " + smartAIpicked)
-//     console.log ("winner? " + playerhasWon(board))
-//     var score = minimax(board)
-//     // pass by ref so I GET the newBoard operated on by minimax
-//     console.log("score is " + score)
-//     console.log ("equal?  " + (board === newBoard))
-//       board[smartAIpicked].classList.remove(TWO_CLASS);
-//       board[smartAIpicked].innerHTML = "";
-//     console.log(smartAIArray)
-//   if (score > bestScore) {
-//     bestScore = score;
-//     move = smartAIpicked;
-//     console.log("move: " + move + " score: " + score);
-//   } 
-// }
-// origBoard[smartAIpicked].classList.add(TWO_CLASS);
-// origBoard[smartAIpicked].innerHTML = TWO_CLASS;
-// console.log (checkClass());
-// }
+  for (var i = 0; i < parallelChoices.length; i++) {
+    var parallelPick = parallelChoices[i];
+    parallelBoard.splice(parallelPick, 1, TWO_CLASS);
+    console.log ("NEW test: " + parallelPick)
+    console.log (parallelBoard)
+    console.log ("winner? " + newCheckWin(parallelBoard))
+    var score = minimax(parallelBoard)
+    console.log("score is " + score)
+    parallelBoard.splice(parallelPick, 1, parallelPick);
+    console.log("Parallel board " + (parallelBoard))
+    if (score > bestScore) {
+    bestScore = score;
+    move = parallelPick;
+    console.log("move: " + move + " score: " + score);
+  } 
+}
+origBoard[parallelPick].classList.add(TWO_CLASS);
+origBoard[parallelPick].innerHTML = TWO_CLASS;
+console.log (checkClass());
+}
 
-// function minimax(board) {
-//   if (playerhasWon(board) &&  playerOneTurn) {
-//     console.log(board)
-//     return -10;
-//   } else if (playerhasWon(board) && !playerOneTurn) {
-//     console.log(board)
-//     return 10;
-//   } else if (emptySpaceRemains(board) === false) {
-//     console.log(board)
-//     return 0;
-//   }
-//   swapTurns()
+function minimax(board) {
+  if (newCheckWin(board) &&  playerOneTurn) {
+    console.log(board)
+    return -10;
+  } else if (newCheckWin(board) && !playerOneTurn) {
+    console.log(board)
+    return 10;
+  } else if (isThereATieParallel(board) === true) {
+    console.log(board)
+    return 0;
+  }
+  swapTurns()
+
+}
 
 //   if (!playerOneTurn) {
 //     let bestScore = 10000; 
@@ -349,8 +329,6 @@ var acc = board.reduce((acc, obj, idx) => {
 
 //   }
 // }
-
-
 
 //     // score is -10, I don't want it
 //     // P1 best case -10, 0, 10 ; best is 1000; score < best score
