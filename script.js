@@ -268,41 +268,44 @@ function minimax() {
     return 0;
   }
   swapTurns()
-}
 
-//   if (!playerOneTurn) {
-//     let bestScore = 10000; 
-//     const smartAIArray = listEmptySpaces(newBoard);
-//     for (var i = 0; i < smartAIArray.length; i++) {
-//       let smartAIpicked = smartAIArray[i];
-//       newBoard[smartAIpicked].classList.add(TWO_CLASS);
-//       newBoard[smartAIpicked].innerHTML = TWO_CLASS;
-//       let score = minimax(newBoard)
-//       console.log ("P2 choice " + smartAIpicked + " P2 score " + score)
-//       newBoard[smartAIpicked].classList.remove(ONE_CLASS);
-//       newBoard[smartAIpicked].innerHTML = "";
-//       if (score < bestScore) {
-//         bestScore = score}
-//       }
-//       return bestScore
-//     }
+  if (!playerOneTurn) {
+    let bestScore = 10000; 
+    const smartAIArray = listEmptySpaces(newBoard);
+    for (var i = 0; i < smartAIArray.length; i++) {
+      let smartAIpicked = smartAIArray[i];
+      newBoard[smartAIpicked].classList.add(TWO_CLASS);
+      newBoard[smartAIpicked].innerHTML = TWO_CLASS;
+      let score = minimax(newBoard)
+      console.log ("P2 choice " + smartAIpicked + " P2 score " + score)
+      newBoard[smartAIpicked].classList.remove(ONE_CLASS);
+      newBoard[smartAIpicked].innerHTML = "";
+      if (score < bestScore) {
+        bestScore = score}
+      }
+      return bestScore
+    }
 
-  //  else {
+   else {
     let bestScore = -100000; 
-    let playerOneArray = listEmptySpaces(board);
-    for (var i = 0; i < playerOneArray.length; i++) {
-      let playerOnePicked = playerOneArray[i];
-      board[playerOnePicked].classList.add(ONE_CLASS);
-      board[playerOnePicked].innerHTML = ONE_CLASS;
-      let score = minimax(board)
-      board[playerOnePicked].classList.remove(ONE_CLASS);
-      board[playerOnePicked].innerHTML = "";
+    var parallelChoices = listParallelSpaces(parallelBoard);
+    for (var i = 0; i < parallelChoices.length; i++) {
+      var parallelPick = parallelChoices[i];
+      console.log("choices: " + parallelChoices);
+      parallelBoard.splice(parallelPick, 1, TWO_CLASS);
+      console.log ("NEW test: " + parallelPick)
+      console.log (parallelBoard)
+      console.log ("winner? " + newCheckWin(parallelBoard))
+      var score = minimax(parallelBoard)
+      console.log("score is " + score)
+      parallelBoard.splice(parallelPick, 1, parallelPick);
       if (score > bestScore) {
         bestScore = score}
       console.log("best score is " + bestScore)
       }
       return bestScore
-}
+    }
+  } 
 
 //     // score is -10, I don't want it
 //     // P1 best case -10, 0, 10 ; best is 1000; score < best score
