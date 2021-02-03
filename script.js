@@ -112,7 +112,7 @@ function smartAIPlay() {
     declareTie()
     return
     }
-    swapTurns()
+  playerOneTurn = true
 };
 
 
@@ -229,13 +229,22 @@ var acc = board.reduce((acc, obj, idx) => {
 }
 
 ////////// BEGIN MINIMAX HERE //////////
+// It sort of works but I need to refine the recursion
+// It goes in order, switching until it finds an end state
+// but it does not branch out
+// it takes the best of the curent terminal states
+// recursion is shallow, X is not optimizing for itself
+
+
 function bestAIMove() {
   let bestScore = -1000
   var move;
   var parallelChoices = listParallelSpaces(parallelBoard);
 
   for (var i = 0; i < parallelChoices.length; i++) {
+    playerOneTurn = false;
     var parallelPick = parallelChoices[i];
+    console.log("THIS IS ROUND " + (1 + parallelChoices.indexOf(parallelPick)));
     console.log("player: " +  checkClass())
     console.log("choices: " + parallelChoices);
     parallelBoard.splice(parallelPick, 1, TWO_CLASS);
@@ -273,25 +282,28 @@ function minimax() {
 
   if (!playerOneTurn) {
     let bestScore = 10000; 
-    const smartAIArray = listEmptySpaces(newBoard);
-    for (var i = 0; i < smartAIArray.length; i++) {
+    var parallelChoices = listParallelSpaces(parallelBoard);
+    for (var i = 0; i < parallelChoices.length; i++) {
+      var parallelPick = parallelChoices[i];
+      console.log("p2 choices: " + parallelChoices);
       console.log("player: " +  checkClass())
-      let smartAIpicked = smartAIArray[i];
-      newBoard[smartAIpicked].classList.add(TWO_CLASS);
-      newBoard[smartAIpicked].innerHTML = TWO_CLASS;
-      let score = minimax(newBoard)
-      console.log ("P2 choice " + smartAIpicked + " P2 score " + score)
-      newBoard[smartAIpicked].classList.remove(ONE_CLASS);
-      newBoard[smartAIpicked].innerHTML = "";
+      parallelBoard.splice(parallelPick, 1,TWO_CLASS);
+      console.log ("p2 test: " + parallelPick)
+      console.log (parallelBoard)
+      console.log ("p2 winner? " + newCheckWin(parallelBoard))
+      var score = minimax(parallelBoard)
+      console.log("score is " + score)
+      parallelBoard.splice(parallelPick, 1, parallelPick);
       if (score < bestScore) {
         bestScore = score}
+        return bestScore
       }
-      return bestScore
     }
 
    else {
     let bestScore = -100000; 
     var parallelChoices = listParallelSpaces(parallelBoard);
+
     for (var i = 0; i < parallelChoices.length; i++) {
       var parallelPick = parallelChoices[i];
       console.log("p1 choices: " + parallelChoices);
@@ -306,8 +318,8 @@ function minimax() {
       if (score > bestScore) {
         bestScore = score}
       console.log("best score is " + bestScore)
-      }
       return bestScore
+      }
     }
   } 
 
