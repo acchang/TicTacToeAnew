@@ -86,11 +86,11 @@ function boxmarked(e) {
         parallelBoard.splice(index, 1, TWO_CLASS)
       }
       console.log("Newcheck: " + newCheckWin())
-      if (playerhasWon(origBoard)) {
+      if (playerhasWon()) {
         declareWinner()
         return
       } 
-      if (isThereATie(origBoard) == true) {
+      if (isThereATie() == true) {
         declareTie()
         return
       }
@@ -102,11 +102,11 @@ function boxmarked(e) {
 
 function smartAIPlay() {
   bestAIMove();
-    if (playerhasWon(origBoard)) {
+    if (playerhasWon()) {
     declareWinner()
     return
     } 
-    if (isThereATie(origBoard) == true) {
+    if (isThereATie() == true) {
     declareTie()
     return
     }
@@ -115,13 +115,13 @@ function smartAIPlay() {
 
 
 function dumbAIPlay() {
-  var DumbAIArray = listEmptySpaces(origBoard)
+  var DumbAIArray = listEmptySpaces()
   // setTimeout(() => {
     let dumbAIpicked = DumbAIArray[Math.floor(DumbAIArray.length * (Math.random()))]
     origBoard[dumbAIpicked].classList.add(TWO_CLASS)
     origBoard[dumbAIpicked].innerHTML = TWO_CLASS
     parallelBoard.splice(dumbAIpicked, 1, TWO_CLASS)
-    if (playerhasWon(origBoard)) {
+    if (playerhasWon()) {
     declareWinner()
     return
     } 
@@ -151,8 +151,8 @@ function isThereATieParallel() {
   return (parallelBoard.every(allStrings))
 }
 
-function playerhasWon(board) {
-    var indexOfSelected = board.reduce((indexOfSelected, box, idx) => {
+function playerhasWon() {
+    var indexOfSelected = origBoard.reduce((indexOfSelected, box, idx) => {
         if (box.classList[1] === checkClass()) {
             indexOfSelected.push(idx);
         }
@@ -166,7 +166,7 @@ function playerhasWon(board) {
 // then filter such that the only one returned is the trio with 3 digits.
 
   if (winningThreeIndexes.length === 1) {
-    winningThreeIndexes[0].map((index) => {board[index].classList += ' winner'});
+    winningThreeIndexes[0].map((index) => {origBoard[index].classList += ' winner'});
     return true
   }  
     else {
@@ -203,8 +203,8 @@ function declareWinner() {
     origBoard[i].removeEventListener('click', boxmarked, {once: true});}
 }
 
-function listEmptySpaces(board) {
-  var acc = board.reduce((acc, box, idx) => {
+function listEmptySpaces() {
+  var acc = origBoard.reduce((acc, box, idx) => {
    if (box.innerHTML === "") {
      acc.push(idx);
      }
@@ -213,8 +213,8 @@ function listEmptySpaces(board) {
    return acc;
  }
 
-function listParallelSpaces(board) {
-var acc = board.reduce((acc, obj, idx) => {
+function listParallelSpaces() {
+var acc = parallelBoard.reduce((acc, obj, idx) => {
   if (typeof obj !== "string") {
     acc.push(idx);
     }
@@ -235,7 +235,7 @@ var acc = board.reduce((acc, obj, idx) => {
 function bestAIMove() {
   let bestScore = -1000
   var move;
-  var parallelChoices = listParallelSpaces(parallelBoard);
+  var parallelChoices = listParallelSpaces();
 
   for (var i = 0; i < parallelChoices.length; i++) {
     playerOneTurn = false;
@@ -246,8 +246,8 @@ function bestAIMove() {
     parallelBoard.splice(parallelPick, 1, TWO_CLASS);
     console.log ("NEW test: " + parallelPick)
     console.log (parallelBoard)
-    console.log ("winner? " + newCheckWin(parallelBoard))
-    var score = minimax(parallelBoard)
+    console.log ("winner? " + newCheckWin())
+    var score = minimax()
     console.log("score is " + score)
     parallelBoard.splice(parallelPick, 1, parallelPick);
     console.log (parallelBoard)
@@ -278,7 +278,7 @@ function minimax() {
 
   if (!playerOneTurn) {
     let bestScore = 10000; 
-    var player2Choices = listParallelSpaces(parallelBoard);
+    var player2Choices = listParallelSpaces();
     for (var i = 0; i < player2Choices.length; i++) {
       var player2Pick = player2Choices[i];
       console.log("p2 choices: " + player2Choices);
@@ -286,7 +286,7 @@ function minimax() {
       parallelBoard.splice(player2Pick, 1,TWO_CLASS);
       console.log ("p2 test: " + player2Pick)
       console.log (parallelBoard)
-      console.log ("p2 winner? " + newCheckWin(parallelBoard))
+      console.log ("p2 winner? " + newCheckWin())
       var score = minimax(parallelBoard)
       console.log("score is " + score)
       parallelBoard.splice(player2Pick, 1, player2Pick);
@@ -298,7 +298,7 @@ function minimax() {
 
    else {
     let bestScore = -100000; 
-    var player1Choices = listParallelSpaces(parallelBoard);
+    var player1Choices = listParallelSpaces();
 
     for (var i = 0; i < player1Choices.length; i++) {
       var player1Pick = player1Choices[i];
@@ -307,7 +307,7 @@ function minimax() {
       parallelBoard.splice(player1Pick, 1,ONE_CLASS);
       console.log ("p1 test: " + player1Pick)
       console.log (parallelBoard)
-      console.log ("p1 winner? " + newCheckWin(parallelBoard))
+      console.log ("p1 winner? " + newCheckWin())
       var score = minimax(parallelBoard)
       console.log("score is " + score)
       parallelBoard.splice(player1Pick, 1, player1Pick);
