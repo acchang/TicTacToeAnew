@@ -59,6 +59,7 @@ function startGame() {
 }
 
 const origBoard = Array.from(document.getElementsByClassName('box'));
+const paralleBoard = [];
 
 function establishBoard() {
   for (let i = 0; i < origBoard.length; i++) {
@@ -95,7 +96,6 @@ function boxmarked(e) {
     swapTurns()
 
     if(playerTwoIdentity === "Dumb AI") {
-        
         var DumbAIArray = listEmptySpaces(origBoard)
   // setTimeout(() => {
         let dumbAIpicked = DumbAIArray[Math.floor(DumbAIArray.length * (Math.random()))]
@@ -113,22 +113,8 @@ function boxmarked(e) {
         swapTurns()
 // ``}, 1000);
     } 
-
     if(playerTwoIdentity === "Smart AI") {
-      // alert("Smart AI not working yet")
-
-    // call minimax on the board minimax()
-// function turnClick(square) {
-// 	if (typeof origBoard[square.target.id] == 'number') {
-// 		turn(square.target.id, huPlayer)
-// 		if (!checkWin(origBoard, huPlayer) && !checkTie()) turn(bestSpot(), aiPlayer);
-//   }
-
-// var smartAIpicked = bestSpot();
-//         origBoard[smartAIpicked].classList.add(TWO_CLASS)
-//         origBoard[smartAIpicked].innerHTML = TWO_CLASS
-
-        bestAIMove()
+        bestAIMove(newBoard);
         if (playerhasWon(origBoard)) {
         declareWinner()
         return
@@ -138,14 +124,10 @@ function boxmarked(e) {
         return
         }
   }
-
 else { console.log("Human")
       }
 }
 
-function bestSpot() {
-	return minimax(origBoard);
-}
 
 function checkClass() {
   if(playerOneTurn) {
@@ -154,14 +136,11 @@ function checkClass() {
   return TWO_CLASS
 };}
 
-// function emptySpaceRemains() evaluates board
 function emptySpaceRemains() {
   var innerHTMLempty = (insidebox) => insidebox.innerHTML===""
-  // returns true or false
   return (origBoard.some(innerHTMLempty))
 }
 
-// function playerhasWon() evaluates board
 function playerhasWon(board) {
     var indexOfSelected = board.reduce((indexOfSelected, box, idx) => {
         if (box.classList[1] === checkClass()) {
@@ -178,14 +157,13 @@ function playerhasWon(board) {
 // then filter such that the only one returned is the trio with 3 digits.
 
   if (winningThreeIndexes.length === 1) {
-    winningThreeIndexes[0].map((index) => {board[index].className += ' winner'});
+    // winningThreeIndexes[0].map((index) => {board[index].classList += ' winner'});
     return true
   }  
     else {
       return false;
     }
 }
-
 
 function declareTie() {
   setTimeout(alert ("TIE GAME"), 1000)}
@@ -206,83 +184,113 @@ function listEmptySpaces(board) {
    return acc;
  }
 
-function simpleArray() {
-  
-}
-
-
-
 ////////// BEGIN MINIMAX HERE //////////
-// do I need a player constant? playerhasWon works by if box.classList[1] === checkClass()
-// I can play dumbAI and switch at last minute to Smart
+// copy the html objects, you already have a function for generating
+// So that might be helpful for manually copying them. 
+
+const simpleBoard = origBoard.map(box => box.population < 3000000)
+
+
 
 const newBoard = [...origBoard]
+// try simple board to make minimax faster?
 
-function bestAIMove() {
-  var smartAIArray = listEmptySpaces(origBoard);
-  let bestScore = -100000
+function bestAIMove(board) {
+  console.log(board)
+  let bestScore = -1000
   var move;
+  let smartAIArray = listEmptySpaces(board);
+  
   for (var i = 0; i < smartAIArray.length; i++) {
     var smartAIpicked = smartAIArray[i];
-    console.log (smartAIpicked)
-    console.log (playerhasWon(newBoard))
-    newBoard[smartAIpicked].classList.add(TWO_CLASS);
-    newBoard[smartAIpicked].innerHTML = TWO_CLASS;
-    var score = minimax()
-    console.log(score)
-      newBoard[smartAIpicked].classList.remove(TWO_CLASS);
-      newBoard[smartAIpicked].innerHTML = "";
+    console.log(smartAIArray)
+    console.log(board)
+    board[smartAIpicked].classList.add(TWO_CLASS);
+    board[smartAIpicked].innerHTML = TWO_CLASS;
+    // newBoard here is passby Value to minimax so it has i added
+    console.log ("NEW test: " + smartAIpicked)
+    console.log ("winner? " + playerhasWon(board))
+    var score = minimax(board)
+    // pass by ref so I GET the newBoard operated on by minimax
+    console.log("score is " + score)
+    console.log ("equal?  " + (board === newBoard))
+      board[smartAIpicked].classList.remove(TWO_CLASS);
+      board[smartAIpicked].innerHTML = "";
+    console.log(smartAIArray)
   if (score > bestScore) {
     bestScore = score;
     move = smartAIpicked;
-    console.log(move)
+    console.log("move: " + move + " score: " + score);
   } 
 }
 origBoard[smartAIpicked].classList.add(TWO_CLASS);
 origBoard[smartAIpicked].innerHTML = TWO_CLASS;
+console.log (checkClass());
 }
 
-function minimax() {
-  if (playerhasWon(newBoard) &&  playerOneTurn) {
+function minimax(board) {
+  if (playerhasWon(board) &&  playerOneTurn) {
+    console.log(board)
     return -10;
-  } else if (playerhasWon(newBoard) && !playerOneTurn) {
+  } else if (playerhasWon(board) && !playerOneTurn) {
+    console.log(board)
     return 10;
-  } else if (emptySpaceRemains(newBoard) !== true) {
+  } else if (emptySpaceRemains(board) === false) {
+    console.log(board)
     return 0;
   }
   swapTurns()
-// if we get a score from this, then it's a best score, [0] or smartAIpicked is the move
-// if no score the minimax moves on to the below
 
   if (!playerOneTurn) {
-    let bestScore = -100000; 
-    var smartAIArray = listEmptySpaces(newBoard);
+    let bestScore = 10000; 
+    const smartAIArray = listEmptySpaces(newBoard);
     for (var i = 0; i < smartAIArray.length; i++) {
       let smartAIpicked = smartAIArray[i];
       newBoard[smartAIpicked].classList.add(TWO_CLASS);
       newBoard[smartAIpicked].innerHTML = TWO_CLASS;
         let score = minimax(newBoard)
-        newBoard[smartAIpicked].classList.remove(TWO_CLASS);
+        console.log ("P2 choice " + smartAIpicked + " P2 score " + score)
+        newBoard[smartAIpicked].classList.remove(ONE_CLASS);
         newBoard[smartAIpicked].innerHTML = "";
-        if (score > bestScore) {
+        if (score < bestScore) {
           bestScore = score}
       }
     return bestScore;
     }
    else {
-
-    let bestScore = 100000; 
-    var smartAIArray = listEmptySpaces(newBoard);
-    for (var i = 0; i < smartAIArray.length; i++) {
-      let smartAIpicked = smartAIArray[i];
-      newBoard[smartAIpicked].classList.add(ONE_CLASS);
-      newBoard[smartAIpicked].innerHTML = ONE_CLASS;
-        let score = minimax(newBoard)
-      newBoard[smartAIpicked].classList.remove(ONE_CLASS);
-      newBoard[smartAIpicked].innerHTML = "";
-      if (score < bestScore) {
+    let bestScore = -100000; 
+    console.log(board)
+    let playerOneArray = listEmptySpaces(board);
+    // newBoard has changed, which is why array doesn't work
+    // bc newboard not passed by reference 
+    console.log(playerOneArray);
+    // this still retains the bestAIMove pick
+    for (var i = 0; i < playerOneArray.length; i++) {
+      let playerOnePicked = playerOneArray[i];
+      board[playerOnePicked].classList.add(ONE_CLASS);
+      board[playerOnePicked].innerHTML = ONE_CLASS;
+      console.log ("P1 choice " + playerOnePicked)
+      console.log ("winner? " + playerhasWon(board))
+      let score = minimax(board)
+      console.log ("equal?  " + (board === newBoard))
+      console.log ("P1 score " + score);
+      board[playerOnePicked].classList.remove(ONE_CLASS);
+      board[playerOnePicked].innerHTML = "";
+      // this is pass by value inside the minimax function
+      // I need to pass by reference
+      console.log(playerOneArray)
+      console.log(board)
+      if (score > bestScore) {
         bestScore = score}
+      console.log("best score is " + bestScore)
+      return bestScore
       }
-    return bestScore;
+
   }
 }
+
+
+
+    // score is -10, I don't want it
+    // P1 best case -10, 0, 10 ; best is 1000; score < best score
+    // P2 best case 10, 0 -10 ; best is -1000; score > best score
