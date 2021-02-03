@@ -236,24 +236,26 @@ function bestAIMove() {
 
   for (var i = 0; i < parallelChoices.length; i++) {
     var parallelPick = parallelChoices[i];
+    console.log("player: " +  checkClass())
     console.log("choices: " + parallelChoices);
     parallelBoard.splice(parallelPick, 1, TWO_CLASS);
     console.log ("NEW test: " + parallelPick)
     console.log (parallelBoard)
     console.log ("winner? " + newCheckWin(parallelBoard))
-// newCheckWin is not working
     var score = minimax(parallelBoard)
     console.log("score is " + score)
     parallelBoard.splice(parallelPick, 1, parallelPick);
+    console.log (parallelBoard)
     if (score > bestScore) {
     bestScore = score;
     move = parallelPick;
-    console.log("move: " + move + " score: " + score);
+    console.log("move: " + move + " bestscore: " + bestScore);
   } 
 }
-origBoard[parallelPick].classList.add(TWO_CLASS);
-origBoard[parallelPick].innerHTML = TWO_CLASS;
-console.log (checkClass());
+parallelBoard.splice(move, 1, TWO_CLASS);
+origBoard[move].classList.add(TWO_CLASS);
+origBoard[move].innerHTML = TWO_CLASS;
+console.log("player: " +  checkClass())
 }
 
 function minimax() {
@@ -273,6 +275,7 @@ function minimax() {
     let bestScore = 10000; 
     const smartAIArray = listEmptySpaces(newBoard);
     for (var i = 0; i < smartAIArray.length; i++) {
+      console.log("player: " +  checkClass())
       let smartAIpicked = smartAIArray[i];
       newBoard[smartAIpicked].classList.add(TWO_CLASS);
       newBoard[smartAIpicked].innerHTML = TWO_CLASS;
@@ -291,11 +294,12 @@ function minimax() {
     var parallelChoices = listParallelSpaces(parallelBoard);
     for (var i = 0; i < parallelChoices.length; i++) {
       var parallelPick = parallelChoices[i];
-      console.log("choices: " + parallelChoices);
-      parallelBoard.splice(parallelPick, 1, TWO_CLASS);
-      console.log ("NEW test: " + parallelPick)
+      console.log("p1 choices: " + parallelChoices);
+      console.log("player: " +  checkClass())
+      parallelBoard.splice(parallelPick, 1,ONE_CLASS);
+      console.log ("p1 test: " + parallelPick)
       console.log (parallelBoard)
-      console.log ("winner? " + newCheckWin(parallelBoard))
+      console.log ("p1 winner? " + newCheckWin(parallelBoard))
       var score = minimax(parallelBoard)
       console.log("score is " + score)
       parallelBoard.splice(parallelPick, 1, parallelPick);
