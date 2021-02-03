@@ -74,9 +74,6 @@ function establishBoard() {
     parallelBoard= [0,1,2,3,4,5,6,7,8]
   }
 
-// how to consolidate? maybe I just let ONE_CLASS mark and then if the AI or player
-// or do it even earlier and link it with playerTurn? 
-
 function boxmarked(e) {
     const index = origBoard.indexOf(e.target)
     if(playerOneTurn) {
@@ -98,6 +95,7 @@ function boxmarked(e) {
         return
       }
     swapTurns()
+
     if(playerTwoIdentity === "Dumb AI") {dumbAIPlay()} 
     if(playerTwoIdentity === "Smart AI") {smartAIPlay()}
 };
@@ -123,9 +121,6 @@ function dumbAIPlay() {
     origBoard[dumbAIpicked].classList.add(TWO_CLASS)
     origBoard[dumbAIpicked].innerHTML = TWO_CLASS
     parallelBoard.splice(dumbAIpicked, 1, TWO_CLASS)
-    console.log(parallelBoard)
-    console.log(playerhasWon(origBoard))
-    console.log(newCheckWin(parallelBoard))
     if (playerhasWon(origBoard)) {
     declareWinner()
     return
@@ -234,6 +229,7 @@ var acc = board.reduce((acc, obj, idx) => {
 // but it does not branch out
 // it takes the best of the curent terminal states
 // recursion is shallow, X is not optimizing for itself
+// also it's not declaring when O winds
 
 
 function bestAIMove() {
@@ -282,18 +278,18 @@ function minimax() {
 
   if (!playerOneTurn) {
     let bestScore = 10000; 
-    var parallelChoices = listParallelSpaces(parallelBoard);
-    for (var i = 0; i < parallelChoices.length; i++) {
-      var parallelPick = parallelChoices[i];
-      console.log("p2 choices: " + parallelChoices);
+    var player2Choices = listParallelSpaces(parallelBoard);
+    for (var i = 0; i < player2Choices.length; i++) {
+      var player2Pick = player2Choices[i];
+      console.log("p2 choices: " + player2Choices);
       console.log("player: " +  checkClass())
-      parallelBoard.splice(parallelPick, 1,TWO_CLASS);
-      console.log ("p2 test: " + parallelPick)
+      parallelBoard.splice(player2Pick, 1,TWO_CLASS);
+      console.log ("p2 test: " + player2Pick)
       console.log (parallelBoard)
       console.log ("p2 winner? " + newCheckWin(parallelBoard))
       var score = minimax(parallelBoard)
       console.log("score is " + score)
-      parallelBoard.splice(parallelPick, 1, parallelPick);
+      parallelBoard.splice(player2Pick, 1, player2Pick);
       if (score < bestScore) {
         bestScore = score}
         return bestScore
@@ -302,19 +298,19 @@ function minimax() {
 
    else {
     let bestScore = -100000; 
-    var parallelChoices = listParallelSpaces(parallelBoard);
+    var player1Choices = listParallelSpaces(parallelBoard);
 
-    for (var i = 0; i < parallelChoices.length; i++) {
-      var parallelPick = parallelChoices[i];
-      console.log("p1 choices: " + parallelChoices);
+    for (var i = 0; i < player1Choices.length; i++) {
+      var player1Pick = player1Choices[i];
+      console.log("p1 choices: " + player1Choices);
       console.log("player: " +  checkClass())
-      parallelBoard.splice(parallelPick, 1,ONE_CLASS);
-      console.log ("p1 test: " + parallelPick)
+      parallelBoard.splice(player1Pick, 1,ONE_CLASS);
+      console.log ("p1 test: " + player1Pick)
       console.log (parallelBoard)
       console.log ("p1 winner? " + newCheckWin(parallelBoard))
       var score = minimax(parallelBoard)
       console.log("score is " + score)
-      parallelBoard.splice(parallelPick, 1, parallelPick);
+      parallelBoard.splice(player1Pick, 1, player1Pick);
       if (score > bestScore) {
         bestScore = score}
       console.log("best score is " + bestScore)
