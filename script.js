@@ -29,6 +29,7 @@ btn2.onclick = function () {
         }
     }
     alert("Your Opponent is "  + playerTwoIdentity)
+    if (playerTwoIdentity === "Smart AI")(smartAIwarning())
     };
 
 var playerOneTurn 
@@ -49,6 +50,10 @@ const winningTrios = [
 ]
 
 restartBtn.addEventListener('click', startGame);
+
+
+function smartAIwarning() { alert 
+  ("Smart AI is not unbeatable. First move is random because making 8! or 40,320 tests is taxing! Sometimes we can be slow.")}
 
 function startGame() {
   if (ONE_CLASS == undefined || playerTwoIdentity == undefined) 
@@ -101,6 +106,15 @@ function boxmarked(e) {
 };
 
 function smartAIPlay() {
+  if(parallelBoard.includes("O") == false) {
+    var DumbAIArray = listEmptySpaces()
+    let dumbAIpicked = DumbAIArray[Math.floor(DumbAIArray.length * (Math.random()))]
+    origBoard[dumbAIpicked].classList.add(TWO_CLASS)
+    origBoard[dumbAIpicked].innerHTML = TWO_CLASS
+    parallelBoard.splice(dumbAIpicked, 1, TWO_CLASS)
+    swapTurns();
+    return
+  }
   bestAIMove();
     if (playerhasWon()) {
     declareWinner()
@@ -233,7 +247,7 @@ var acc = parallelBoard.reduce((acc, obj, idx) => {
 
 
 function bestAIMove() {
-  let bestScore = -1000
+  let bestScore = -10000
   var move;
   var parallelChoices = listParallelSpaces();
 
@@ -248,13 +262,12 @@ function bestAIMove() {
     console.log (parallelBoard)
     console.log ("winner? " + newCheckWin())
     var score = minimax()
-    console.log("score is " + score)
+    console.log("KEY: " + parallelPick + " Score: " + score)
     parallelBoard.splice(parallelPick, 1, parallelPick);
-    console.log (parallelBoard)
     if (score > bestScore) {
     bestScore = score;
     move = parallelPick;
-    console.log("move: " + move + " bestscore: " + bestScore);
+    console.log("BEST: " + bestScore + "move " + move);
   } 
 }
 parallelBoard.splice(move, 1, TWO_CLASS);
@@ -272,14 +285,15 @@ function minimax() {
     return 10;
   } else if (isThereATieParallel() === true) {
     console.log(parallelBoard)
-    return 0;
+    return 2;
   }
   swapTurns()
 
   if (!playerOneTurn) {
-    let bestScore = 10000; 
+    let bestScore = -10000; 
     var player2Choices = listParallelSpaces();
     for (var i = 0; i < player2Choices.length; i++) {
+      playerOneTurn = false
       var player2Pick = player2Choices[i];
       console.log("p2 choices: " + player2Choices);
       console.log("player: " +  checkClass())
@@ -288,19 +302,21 @@ function minimax() {
       console.log (parallelBoard)
       console.log ("p2 winner? " + newCheckWin())
       var score = minimax(parallelBoard)
-      console.log("score is " + score)
+      console.log("p2scoremax: " + score + " p2best score: " + bestScore)
       parallelBoard.splice(player2Pick, 1, player2Pick);
-      if (score < bestScore) {
-        bestScore = score}
-        return bestScore
+      if (score > bestScore) {
+        bestScore = score
+        console.log("player: " + checkClass() + " bestscore: " + bestScore);}
       }
+      return bestScore
     }
 
    else {
-    let bestScore = -100000; 
+    let bestScore = 100000; 
     var player1Choices = listParallelSpaces();
 
     for (var i = 0; i < player1Choices.length; i++) {
+      playerOneTurn = true
       var player1Pick = player1Choices[i];
       console.log("p1 choices: " + player1Choices);
       console.log("player: " +  checkClass())
@@ -309,16 +325,22 @@ function minimax() {
       console.log (parallelBoard)
       console.log ("p1 winner? " + newCheckWin())
       var score = minimax(parallelBoard)
-      console.log("score is " + score)
+      console.log("p1scoremin: " + score + " p1best score: " + bestScore)
       parallelBoard.splice(player1Pick, 1, player1Pick);
-      if (score > bestScore) {
-        bestScore = score}
-      console.log("best score is " + bestScore)
-      return bestScore
+      if (score < bestScore) {
+        bestScore = score
+        console.log("player: " + checkClass() + " bestscore: " + bestScore);}
       }
+      return bestScore
+      // I want this to return -10 to top level bc I want him to avoid it
+      // a tie at 0 would be better
     }
   } 
 
 //     // score is -10, I don't want it
 //     // P1 best case -10, 0, 10 ; best is 1000; score < best score
 //     // P2 best case 10, 0 -10 ; best is -1000; score > best score
+
+
+// A wins is -10 A > -10000
+// B wins is +10 B < 10000
