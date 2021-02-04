@@ -29,7 +29,6 @@ btn2.onclick = function () {
         }
     }
     alert("Your Opponent is "  + playerTwoIdentity)
-    if (playerTwoIdentity === "Smart AI")(smartAIwarning())
     };
 
 var playerOneTurn 
@@ -50,10 +49,6 @@ const winningTrios = [
 ]
 
 restartBtn.addEventListener('click', startGame);
-
-
-function smartAIwarning() { alert 
-  ("Smart AI is not unbeatable. First move is random because making 8! or 40,320 tests is taxing! Sometimes we can be slow.")}
 
 function startGame() {
   if (ONE_CLASS == undefined || playerTwoIdentity == undefined) 
@@ -107,11 +102,13 @@ function boxmarked(e) {
 
 function smartAIPlay() {
   if(parallelBoard.includes("O") == false) {
-    var DumbAIArray = listEmptySpaces()
-    let dumbAIpicked = DumbAIArray[Math.floor(DumbAIArray.length * (Math.random()))]
-    origBoard[dumbAIpicked].classList.add(TWO_CLASS)
-    origBoard[dumbAIpicked].innerHTML = TWO_CLASS
-    parallelBoard.splice(dumbAIpicked, 1, TWO_CLASS)
+    var smartAIchoices = listEmptySpaces().filter(i => i%2 == 0 ) 
+    console.log(listEmptySpaces())
+    console.log(smartAIchoices)
+    let smartAIstart = smartAIchoices[Math.floor(smartAIchoices.length * (Math.random()))]
+    origBoard[smartAIstart].classList.add(TWO_CLASS)
+    origBoard[smartAIstart].innerHTML = TWO_CLASS
+    parallelBoard.splice(smartAIstart, 1, TWO_CLASS)
     swapTurns();
     return
   }
@@ -254,37 +251,34 @@ function bestAIMove() {
   for (var i = 0; i < parallelChoices.length; i++) {
     playerOneTurn = false;
     var parallelPick = parallelChoices[i];
-    console.log("THIS IS ROUND " + (1 + parallelChoices.indexOf(parallelPick)));
-    console.log("player: " +  checkClass())
-    console.log("choices: " + parallelChoices);
+    console.log("THIS IS MAIN ROUND " + (1 + parallelChoices.indexOf(parallelPick)));
+    console.log("player: " +  checkClass() + ", choices: " + parallelChoices)
     parallelBoard.splice(parallelPick, 1, TWO_CLASS);
-    console.log ("NEW test: " + parallelPick)
-    console.log (parallelBoard)
+    console.log ("AI " +  checkClass() + " picks "  + parallelPick)
     console.log ("winner? " + newCheckWin())
     var score = minimax()
-    console.log("KEY: " + parallelPick + " Score: " + score)
+    playerOneTurn = false;
+    console.log("AI " +  checkClass() + " picks " + parallelPick + ", gets " + score)
     parallelBoard.splice(parallelPick, 1, parallelPick);
     if (score > bestScore) {
     bestScore = score;
     move = parallelPick;
-    console.log("BEST: " + bestScore + "move " + move);
+    console.log("MAIN BEST is " + bestScore + " for " + move);
   } 
 }
+playerOneTurn = false;
 parallelBoard.splice(move, 1, TWO_CLASS);
 origBoard[move].classList.add(TWO_CLASS);
 origBoard[move].innerHTML = TWO_CLASS;
-console.log("player: " +  checkClass())
+console.log("Board changed with " + checkClass() + " in " + move)
 }
 
 function minimax() {
   if (newCheckWin() &&  playerOneTurn) {
-    console.log(parallelBoard)
     return -10;
   } else if (newCheckWin() && !playerOneTurn) {
-    console.log(parallelBoard)
     return 10;
   } else if (isThereATieParallel() === true) {
-    console.log(parallelBoard)
     return 2;
   }
   swapTurns()
@@ -295,18 +289,14 @@ function minimax() {
     for (var i = 0; i < player2Choices.length; i++) {
       playerOneTurn = false
       var player2Pick = player2Choices[i];
-      console.log("p2 choices: " + player2Choices);
-      console.log("player: " +  checkClass())
+      console.log("Minimizer " + checkClass() + " picks " + player2Pick + " from " + player2Choices);
       parallelBoard.splice(player2Pick, 1,TWO_CLASS);
-      console.log ("p2 test: " + player2Pick)
-      console.log (parallelBoard)
-      console.log ("p2 winner? " + newCheckWin())
       var score = minimax(parallelBoard)
-      console.log("p2scoremax: " + score + " p2best score: " + bestScore)
+      console.log("Minimizer " +  checkClass() +  " picked " + player2Pick + ", scores " + score)
       parallelBoard.splice(player2Pick, 1, player2Pick);
       if (score > bestScore) {
         bestScore = score
-        console.log("player: " + checkClass() + " bestscore: " + bestScore);}
+        console.log("Minimizer BEST is " + bestScore + " for " + player2Pick);}
       }
       return bestScore
     }
@@ -318,22 +308,17 @@ function minimax() {
     for (var i = 0; i < player1Choices.length; i++) {
       playerOneTurn = true
       var player1Pick = player1Choices[i];
-      console.log("p1 choices: " + player1Choices);
-      console.log("player: " +  checkClass())
+      console.log("Maximizer " + checkClass() + " picks " + player1Pick + " from " + player1Choices);
       parallelBoard.splice(player1Pick, 1,ONE_CLASS);
-      console.log ("p1 test: " + player1Pick)
-      console.log (parallelBoard)
-      console.log ("p1 winner? " + newCheckWin())
       var score = minimax(parallelBoard)
-      console.log("p1scoremin: " + score + " p1best score: " + bestScore)
+      console.log("Maximizer " +  checkClass() +  " picked " + player1Pick + ", scores " + score)
       parallelBoard.splice(player1Pick, 1, player1Pick);
       if (score < bestScore) {
         bestScore = score
-        console.log("player: " + checkClass() + " bestscore: " + bestScore);}
+        bestScore = score
+        console.log("Maximizer BEST is " + bestScore + " for " + player1Pick);}
       }
       return bestScore
-      // I want this to return -10 to top level bc I want him to avoid it
-      // a tie at 0 would be better
     }
   } 
 
