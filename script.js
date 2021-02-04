@@ -80,11 +80,14 @@ function boxmarked(e) {
         origBoard[index].classList.add(ONE_CLASS)
         e.target.innerHTML = ONE_CLASS
         parallelBoard.splice(index, 1, ONE_CLASS)
+
       } else {
         origBoard[index].classList.add(TWO_CLASS)
         e.target.innerHTML = TWO_CLASS
         parallelBoard.splice(index, 1, TWO_CLASS)
       }
+
+     
       console.log("Newcheck: " + newCheckWin())
       if (playerhasWon()) {
         declareWinner()
@@ -94,18 +97,24 @@ function boxmarked(e) {
         declareTie()
         return
       }
-    swapTurns()
 
+    swapTurns()
     if(playerTwoIdentity === "Dumb AI") {dumbAIPlay()} 
     if(playerTwoIdentity === "Smart AI") {smartAIPlay()}
 };
 
+
+
+
+
 function smartAIPlay() {
-  if(parallelBoard.includes("O") == false) {
-    var smartAIchoices = listEmptySpaces().filter(i => i%2 == 0 ) 
-    console.log(listEmptySpaces())
-    console.log(smartAIchoices)
-    let smartAIstart = smartAIchoices[Math.floor(smartAIchoices.length * (Math.random()))]
+  if(parallelBoard.includes(TWO_CLASS) == false) {
+    let smartAIstart
+    var smartAIchoices = listEmptySpaces().filter(i => i%2 == 0) 
+      if (smartAIchoices.includes(4) == true) {smartAIstart = 4}
+        else {smartAIstart = smartAIchoices[Math.floor(smartAIchoices.length * (Math.random()))]}
+      console.log(listEmptySpaces())
+      console.log(smartAIchoices)
     origBoard[smartAIstart].classList.add(TWO_CLASS)
     origBoard[smartAIstart].innerHTML = TWO_CLASS
     parallelBoard.splice(smartAIstart, 1, TWO_CLASS)
@@ -141,6 +150,7 @@ function dumbAIPlay() {
       return
     }
     swapTurns()
+    // suggestedAIMove()
 // ``}, 1000);
 }
 
@@ -176,7 +186,7 @@ function playerhasWon() {
 // map each trio and run filter, does indexOfSelected include trio?
 // then filter such that the only one returned is the trio with 3 digits.
 
-  if (winningThreeIndexes.length === 1) {
+  if (winningThreeIndexes.length === 1 || winningThreeIndexes.length === 2) {
     winningThreeIndexes[0].map((index) => {origBoard[index].classList += ' winner'});
     return true
   }  
@@ -234,13 +244,32 @@ var acc = parallelBoard.reduce((acc, obj, idx) => {
   return acc;
 }
 
-////////// BEGIN MINIMAX HERE //////////
-// It sort of works but I need to refine the recursion
-// It goes in order, switching until it finds an end state
-// but it does not branch out
-// it takes the best of the curent terminal states
-// recursion is shallow, X is not optimizing for itself
-// also it's not declaring when O winds
+
+function suggestedAIMove() {
+  let bestScore = 10000
+  var suggestion;
+  var yourParallelChoices = listParallelSpaces()
+
+  if (Object.keys(yourParallelChoices).length < 6 == true){
+  for (var i = 0; i < yourParallelChoices.length; i++) {
+    var yourParallelPick = yourParallelChoices[i];
+    console.log("YOUR ROUND " + (1 + yourParallelChoices.indexOf(yourParallelPick)));
+    console.log("player: " +  checkClass() + ", choices: " + yourParallelChoices)
+    parallelBoard.splice(yourParallelPick, 1, ONE_CLASS);
+    console.log ("You " +  checkClass() + " picks "  + yourParallelPick)
+    console.log ("winner? " + newCheckWin())
+    var score = minimax()
+    playerOneTurn = false;
+    parallelBoard.splice(yourParallelPick, 1, yourParallelPick);
+    if (score < bestScore) {
+    bestScore = score;
+    suggestion = yourParallelPick;
+    console.log("YOUR BEST for " + checkClass() + " " + suggestion + " is " + bestScore);
+  } 
+}
+console.log("SUGGESTION is " + suggestion)}
+}
+
 
 
 function bestAIMove() {
@@ -263,7 +292,7 @@ function bestAIMove() {
     if (score > bestScore) {
     bestScore = score;
     move = parallelPick;
-    console.log("MAIN BEST is " + bestScore + " for " + move);
+    console.log("MAIN BEST for " + move + " is " + bestScore);
   } 
 }
 playerOneTurn = false;
@@ -296,7 +325,7 @@ function minimax() {
       parallelBoard.splice(player2Pick, 1, player2Pick);
       if (score > bestScore) {
         bestScore = score
-        console.log("Minimizer BEST is " + bestScore + " for " + player2Pick);}
+        console.log("Minimizer BEST for " + player2Pick + " is " + bestScore);}
       }
       return bestScore
     }
@@ -316,7 +345,7 @@ function minimax() {
       if (score < bestScore) {
         bestScore = score
         bestScore = score
-        console.log("Maximizer BEST is " + bestScore + " for " + player1Pick);}
+        console.log("Maximizer BEST for " + player1Pick + " is " + bestScore);}
       }
       return bestScore
     }
