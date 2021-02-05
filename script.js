@@ -1,13 +1,20 @@
-// solve the alert issue with a hidden div that shows when won
-
 var ONE_CLASS
 var TWO_CLASS
 var suggestion
 
 const btn = document.querySelector('#PlayerOneSymbol');
-
+const proceedButton = document.getElementById('proceedButton');
+const roundEndedElement = document.getElementById('roundEnded');
+const roundEndedText = document.querySelector('[roundEndedtext]');
 
 // document.getElementById("AIhelp").innerHTML = suggestion.toString()
+
+// proceedButton.addEventListener('click', proceed)
+
+function proceed() {
+  roundEnded.classList.remove('show')
+  establishBoard()
+}
 
 btn.onclick = function () {
     const XOs = document.querySelectorAll('input[name="choice"]');
@@ -17,9 +24,6 @@ btn.onclick = function () {
           TWO_CLASS = XO.value == 'X' ? 'O' : 'X'
           alert("First Move Belongs to " + ONE_CLASS);
           break;
-        }
-        else if (XO.checked === false) {alert ("Pick a player.");
-        break
         }
     }
     };
@@ -85,7 +89,6 @@ function startGame() {
     alert ("Make sure both players are defined");
   }
   console.log("player 1 = " + ONE_CLASS + ", player 2 = " + playerTwoIdentity)
-  establishBoard();
   playerOneTurn = true;
 }
 
@@ -248,10 +251,14 @@ function newCheckWin() {
 }
 
 function declareTie() {
-  setTimeout(alert ("TIE GAME"), 1000)}
+  roundEndedText.innerText = 'Draw!';
+  roundEnded.classList.add('show');
+}
 
 function declareWinner() {
-  setTimeout(alert (checkClass() + " WINS"), 1000);
+  roundEndedText.innerText = checkClass() + " WINS";
+  roundEnded.classList.add('show');
+  // setTimeout(alert (checkClass() + " WINS"), 1000);
   for (let i=0; i < origBoard.length; i++) {
     origBoard[i].removeEventListener('click', boxmarked, {once: true});}
 }

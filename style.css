@@ -7,8 +7,6 @@
   font-weight: 400;
 }
 
-
-
 body {
   display: flex;
   justify-content: center;
@@ -36,11 +34,11 @@ transform: translate(-50%, -50%);
 }
 
 .container {
-  margin-top: 10px;
-  background-color: rgb(203, 228, 238);
-  justify-content: center;
-  width: 400px;
-  height: 600px;
+margin-top: 10px;
+background-color: rgb(203, 228, 238);
+justify-content: center;
+width: 400px;
+height: 600px;
 }
 
 .gameboard {
@@ -49,16 +47,26 @@ border-bottom: 4px;
 border-bottom-color: black
 }
 
+
+.gameboard.x .box:hover{}
+
+
 .box {
-  background-color: rgb(252, 252, 249);
-  border: 2px solid black;
-  width: 125px;
-  height: 125px;
-  float: left;
-  width: 33.33%;
-  justify-content: center;
-  align-items: center;
-  display: flex;
+background-color: rgb(252, 252, 249);
+border: 1px solid black;
+width: 125px;
+height: 125px;
+float: left;
+width: 33.33%;
+justify-content: center;
+align-items: center;
+display: flex;
+cursor: pointer;
+}
+
+.box.X,
+.box.O {
+  cursor: not-allowed
 }
 
 .box:first-child,
