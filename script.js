@@ -54,8 +54,9 @@ const winningTrios = [
 restartBtn.addEventListener('click', startGame);
 
 function startGame() {
-  if (ONE_CLASS == undefined || playerTwoIdentity == undefined) 
-  {alert ("Make sure players are defined")}
+  if (ONE_CLASS == undefined || playerTwoIdentity == undefined) {
+    alert ("Make sure players are defined");
+  }
   console.log("player 1 = " + ONE_CLASS + ", player 2 = " + playerTwoIdentity)
   establishBoard();
   playerOneTurn = true;
@@ -65,7 +66,8 @@ const origBoard = Array.from(document.getElementsByClassName('box'));
 var parallelBoard = [0,1,2,3,4,5,6,7,8];
 
 function establishBoard() {
-  for (let i = 0; i < origBoard.length; i++) {
+  if (ONE_CLASS !== undefined || playerTwoIdentity !== undefined) {
+    for (let i = 0; i < origBoard.length; i++) {
     origBoard[i].addEventListener('click', boxmarked, {once: true});};
 
     origBoard.forEach(gridBox => {
@@ -73,7 +75,8 @@ function establishBoard() {
     gridBox.classList.remove(TWO_CLASS)
     gridBox.classList.remove('winner')
     gridBox.innerHTML = ""
-    });
+    })
+      };
     parallelBoard= [0,1,2,3,4,5,6,7,8]
   }
 
