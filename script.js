@@ -149,8 +149,7 @@ function dumbAIPlay() {
       declareTie()
       return
     }
-    swapTurns()
-    // suggestedAIMove()
+    suggestedAIMove()
 // ``}, 1000);
 }
 
@@ -246,12 +245,22 @@ var acc = parallelBoard.reduce((acc, obj, idx) => {
 
 
 function suggestedAIMove() {
+
   let bestScore = 10000
   var suggestion;
   var yourParallelChoices = listParallelSpaces()
 
-  if (Object.keys(yourParallelChoices).length < 6 == true){
+  if(yourParallelChoices.length > 6){
+    var suggestedAIchoices = listEmptySpaces().filter(i => i%2 == 0) 
+      if (suggestedAIchoices.includes(4) == true) {suggestion = 4}
+        else {suggestion = suggestedAIchoices[Math.floor(suggestedAIchoices.length * (Math.random()))]}
+        console.log("suggestion is " + suggestion);
+        swapTurns();
+        return
+      }
+  
   for (var i = 0; i < yourParallelChoices.length; i++) {
+    playerOneTurn = true;
     var yourParallelPick = yourParallelChoices[i];
     console.log("YOUR ROUND " + (1 + yourParallelChoices.indexOf(yourParallelPick)));
     console.log("player: " +  checkClass() + ", choices: " + yourParallelChoices)
@@ -259,7 +268,7 @@ function suggestedAIMove() {
     console.log ("You " +  checkClass() + " picks "  + yourParallelPick)
     console.log ("winner? " + newCheckWin())
     var score = minimax()
-    playerOneTurn = false;
+    console.log ("score " + score)
     parallelBoard.splice(yourParallelPick, 1, yourParallelPick);
     if (score < bestScore) {
     bestScore = score;
@@ -267,9 +276,9 @@ function suggestedAIMove() {
     console.log("YOUR BEST for " + checkClass() + " " + suggestion + " is " + bestScore);
   } 
 }
-console.log("SUGGESTION is " + suggestion)}
+playerOneTurn = true;
+console.log("SUGGESTION is " + suggestion)
 }
-
 
 
 function bestAIMove() {
