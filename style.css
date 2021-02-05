@@ -13,6 +13,7 @@ body {
 }
 
 #playtext {
+  background-color: rgb(203, 228, 238);
   text-align: center;
   padding: 10px;
 }
@@ -35,7 +36,6 @@ transform: translate(-50%, -50%);
 
 .container {
 margin-top: 10px;
-background-color: rgb(203, 228, 238);
 justify-content: center;
 width: 400px;
 height: 600px;
@@ -47,9 +47,9 @@ border-bottom: 4px;
 border-bottom-color: black
 }
 
-
-.gameboard.x .box:hover{}
-
+.gameboard .box:not(.X):not(.O):hover {
+  background-color: rgb(218, 241, 248);
+}
 
 .box {
 background-color: rgb(252, 252, 249);

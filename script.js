@@ -1,53 +1,3 @@
-var ONE_CLASS
-var TWO_CLASS
-var suggestion
-
-const btn = document.querySelector('#PlayerOneSymbol');
-const proceedButton = document.getElementById('proceedButton');
-const roundEndedElement = document.getElementById('roundEnded');
-const roundEndedText = document.querySelector('[roundEndedtext]');
-
-// document.getElementById("AIhelp").innerHTML = suggestion.toString()
-
-// proceedButton.addEventListener('click', proceed)
-
-function proceed() {
-  roundEnded.classList.remove('show')
-  establishBoard()
-}
-
-btn.onclick = function () {
-    const XOs = document.querySelectorAll('input[name="choice"]');
-    for (const XO of XOs) {
-        if (XO.checked) {
-          ONE_CLASS = XO.value
-          TWO_CLASS = XO.value == 'X' ? 'O' : 'X'
-          alert("First Move Belongs to " + ONE_CLASS);
-          break;
-        }
-    }
-    };
-
-var playerTwoIdentity
-  
-const btn2 = document.querySelector('#PlayerTwoChoice');
-btn2.onclick = function () {
-    const Opponents = document.querySelectorAll('input[name="choice2"]');
-    for (const Opponent of Opponents) {
-        if (Opponent.checked) {
-          playerTwoIdentity = Opponent.value
-          break;
-        }
-    }
-    alert("Your Opponent is "  + playerTwoIdentity)
-    };
-
-var playerOneTurn 
-    
-function swapTurns() {
-  playerOneTurn = !playerOneTurn
-};
-
 const winningTrios = [
 	[0, 1, 2],
 	[3, 4, 5],
@@ -58,9 +8,6 @@ const winningTrios = [
 	[0, 4, 8],
 	[6, 4, 2]
 ]
-
-restartBtn.addEventListener('click', startGame);
-hintBtn.addEventListener('click', hintButtonHit);
 
 const tipDetail = {
   undefined: " can choose any",
@@ -75,7 +22,60 @@ const tipDetail = {
   8: " should pick bottom right"
 }
 
-document.getElementById("AIhelp").innerHTML = tipDetail[suggestion];
+var ONE_CLASS
+var TWO_CLASS
+var suggestion
+var parallelBoard = [0,1,2,3,4,5,6,7,8]
+var playerTwoIdentity
+var playerOneTurn 
+
+const btn = document.querySelector('#PlayerOneSymbol');
+const proceedButton = document.getElementById('proceedButton');
+const roundEndedElement = document.getElementById('roundEnded');
+const roundEndedText = document.querySelector('[roundEndedtext]');
+const origBoard = Array.from(document.getElementsByClassName('box'));
+
+proceedButton.addEventListener('click', proceed)
+restartBtn.addEventListener('click', startGame);
+hintBtn.addEventListener('click', hintButtonHit);
+
+
+// document.getElementById("AIhelp").innerHTML = suggestion.toString()
+// document.getElementById("AIhelp").innerHTML = tipDetail[suggestion];
+
+btn.onclick = function () {
+    const XOs = document.querySelectorAll('input[name="choice"]');
+    for (const XO of XOs) {
+        if (XO.checked) {
+          ONE_CLASS = XO.value
+          TWO_CLASS = XO.value == 'X' ? 'O' : 'X'
+          alert("First Move Belongs to " + ONE_CLASS);
+          break;
+        }
+    }
+    };
+  
+const btn2 = document.querySelector('#PlayerTwoChoice');
+btn2.onclick = function () {
+    const Opponents = document.querySelectorAll('input[name="choice2"]');
+    for (const Opponent of Opponents) {
+        if (Opponent.checked) {
+          playerTwoIdentity = Opponent.value
+          break;
+        }
+    }
+    alert("Your Opponent is "  + playerTwoIdentity)
+    };
+
+
+function proceed() {
+  roundEnded.classList.remove('show')
+  establishBoard()
+}
+
+function swapTurns() {
+  playerOneTurn = !playerOneTurn
+};
 
 function hintButtonHit() {
   if (ONE_CLASS == undefined || playerTwoIdentity == undefined) {
@@ -89,11 +89,9 @@ function startGame() {
     alert ("Make sure both players are defined");
   }
   console.log("player 1 = " + ONE_CLASS + ", player 2 = " + playerTwoIdentity)
+  establishBoard()
   playerOneTurn = true;
 }
-
-const origBoard = Array.from(document.getElementsByClassName('box'));
-var parallelBoard = [0,1,2,3,4,5,6,7,8];
 
 function establishBoard() {
   if (ONE_CLASS !== undefined || playerTwoIdentity !== undefined) {
@@ -124,7 +122,6 @@ function boxmarked(e) {
         swapTurns()
       }
 
-     
       console.log("Newcheck: " + newCheckWin())
       if (playerhasWon()) {
         declareWinner()
@@ -172,7 +169,6 @@ function smartAIPlay() {
 
 function dumbAIPlay() {
   var DumbAIArray = listEmptySpaces()
-  // setTimeout(() => {
     let dumbAIpicked = DumbAIArray[Math.floor(DumbAIArray.length * (Math.random()))]
     origBoard[dumbAIpicked].classList.add(TWO_CLASS)
     origBoard[dumbAIpicked].innerHTML = TWO_CLASS
@@ -186,7 +182,6 @@ function dumbAIPlay() {
       return
     }
     suggestedAIMove()
-// ``}, 1000);
 }
 
 
@@ -398,11 +393,3 @@ function minimax() {
       return bestScore
     }
   } 
-
-//     // score is -10, I don't want it
-//     // P1 best case -10, 0, 10 ; best is 1000; score < best score
-//     // P2 best case 10, 0 -10 ; best is -1000; score > best score
-
-
-// A wins is -10 A > -10000
-// B wins is +10 B < 10000
