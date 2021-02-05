@@ -2,8 +2,11 @@
 
 var ONE_CLASS
 var TWO_CLASS
+var suggestion
 
 const btn = document.querySelector('#PlayerOneSymbol');
+
+// document.getElementById("AIhelp").innerHTML = suggestion.toString()
 
 btn.onclick = function () {
     const XOs = document.querySelectorAll('input[name="choice"]');
@@ -246,7 +249,6 @@ var acc = parallelBoard.reduce((acc, obj, idx) => {
 
 function suggestedAIMove() {
   let bestScore = 10000
-  var suggestion;
   var yourParallelChoices = listParallelSpaces()
 
   if(yourParallelChoices.length > 6){
