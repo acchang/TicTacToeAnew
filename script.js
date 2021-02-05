@@ -80,11 +80,12 @@ function boxmarked(e) {
         origBoard[index].classList.add(ONE_CLASS)
         e.target.innerHTML = ONE_CLASS
         parallelBoard.splice(index, 1, ONE_CLASS)
-
       } else {
         origBoard[index].classList.add(TWO_CLASS)
         e.target.innerHTML = TWO_CLASS
         parallelBoard.splice(index, 1, TWO_CLASS)
+        suggestedAIMove()
+        swapTurns()
       }
 
      
@@ -102,8 +103,6 @@ function boxmarked(e) {
     if(playerTwoIdentity === "Dumb AI") {dumbAIPlay()} 
     if(playerTwoIdentity === "Smart AI") {smartAIPlay()}
 };
-
-
 
 
 
