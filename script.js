@@ -55,25 +55,30 @@ restartBtn.addEventListener('click', startGame);
 hintBtn.addEventListener('click', hintButtonHit);
 
 const tipDetail = {
-  undefined: "You can choose any",
-  0: "You should pick top left",
-  1: "You should pick top middle",
-  2: "You should pick top right",
-  3: "You should pick middle left",
-  4: "You should pick dead center",
-  5: "You should pick middle right",
-  6: "You should pick bottom left",
-  7: "You should pick bottom center",
-  8: "You should pick bottom right"
+  undefined: " can choose any",
+  0: " should pick top left",
+  1: " should pick top middle",
+  2: " should pick top right",
+  3: " should pick middle left",
+  4: " should pick dead center",
+  5: " should pick middle right",
+  6: " should pick bottom left",
+  7: " should pick bottom center",
+  8: " should pick bottom right"
 }
 
+document.getElementById("AIhelp").innerHTML = tipDetail[suggestion];
+
 function hintButtonHit() {
-  alert(tipDetail[suggestion])
+  if (ONE_CLASS == undefined || playerTwoIdentity == undefined) {
+    alert ("Make sure both players are defined");
+  } else {
+  alert("Player " + ONE_CLASS + tipDetail[suggestion])}
 }
 
 function startGame() {
   if (ONE_CLASS == undefined || playerTwoIdentity == undefined) {
-    alert ("Make sure players are defined");
+    alert ("Make sure both players are defined");
   }
   console.log("player 1 = " + ONE_CLASS + ", player 2 = " + playerTwoIdentity)
   establishBoard();
