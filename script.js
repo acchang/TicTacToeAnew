@@ -6,6 +6,7 @@ var suggestion
 
 const btn = document.querySelector('#PlayerOneSymbol');
 
+
 // document.getElementById("AIhelp").innerHTML = suggestion.toString()
 
 btn.onclick = function () {
@@ -14,10 +15,13 @@ btn.onclick = function () {
         if (XO.checked) {
           ONE_CLASS = XO.value
           TWO_CLASS = XO.value == 'X' ? 'O' : 'X'
+          alert("First Move Belongs to " + ONE_CLASS);
           break;
         }
+        else if (XO.checked === false) {alert ("Pick a player.");
+        break
+        }
     }
-    alert("First Move Belongs to " + ONE_CLASS);
     };
 
 var playerTwoIdentity

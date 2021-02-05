@@ -142,9 +142,8 @@ width: 50%;
   color:white;
 }
 
-
  .roundEnded {
-  /* display: none; */
+  display: none;
   position: fixed;
   width: 300px;
   height: 400px;
@@ -153,7 +152,6 @@ width: 50%;
   margin-left: -150px;
   margin-top: -200px;
   background-color: rgba(104, 145, 206, 0.9);
-  display:flex;
   justify-content: center;
   align-items: center;
   color: white;
