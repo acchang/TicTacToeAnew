@@ -117,7 +117,8 @@ function smartAIPlay() {
     origBoard[smartAIstart].classList.add(TWO_CLASS)
     origBoard[smartAIstart].innerHTML = TWO_CLASS
     parallelBoard.splice(smartAIstart, 1, TWO_CLASS)
-    swapTurns();
+    suggestedAIMove()
+    console.log("smart AI play" + checkClass())
     return
   }
   bestAIMove();
@@ -244,7 +245,6 @@ var acc = parallelBoard.reduce((acc, obj, idx) => {
 
 
 function suggestedAIMove() {
-
   let bestScore = 10000
   var suggestion;
   var yourParallelChoices = listParallelSpaces()
@@ -279,7 +279,6 @@ playerOneTurn = true;
 console.log("SUGGESTION is " + suggestion)
 }
 
-
 function bestAIMove() {
   let bestScore = -10000
   var move;
@@ -308,6 +307,8 @@ parallelBoard.splice(move, 1, TWO_CLASS);
 origBoard[move].classList.add(TWO_CLASS);
 origBoard[move].innerHTML = TWO_CLASS;
 console.log("Board changed with " + checkClass() + " in " + move)
+suggestedAIMove()
+console.log("best AI " + checkClass())
 }
 
 function minimax() {
