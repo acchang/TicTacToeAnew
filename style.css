@@ -22,7 +22,7 @@ body {
   width: 100%;
   float: left;
   position: relative;
-  background-color: rgb(207, 243, 139);
+  background-color: rgb(218, 247, 164);
 }
 
 .buttonWrapper {
@@ -34,7 +34,7 @@ transform: translate(-50%, -50%);
 }
 
 .container {
-  background-color: rgb(161, 248, 89);
+  background-color: rgb(213, 238, 203);
   justify-content: center;
   /* display: flex;
   flex-wrap: wrap; */
@@ -42,20 +42,44 @@ transform: translate(-50%, -50%);
   height: 600px;
 }
 
-#gameboard {
+.gameboard {
 border-top:10px;
 border-bottom: 4px;
-border-bottom-color: black;
-background-color: chartreuse;
+border-bottom-color: black
 }
 
 .box {
   background-color: beige;
+  border: 2px solid black;
   width: 125px;
   height: 125px;
   float: left;
   width: 33.33%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
 }
+
+.box:first-child,
+.box:nth-child(2),
+.box:nth-child(3) {
+  border-top: none;
+}
+
+.box:nth-child(3n + 1) {
+  border-left: none;
+}
+
+.box:nth-child(3n + 3) {
+  border-right: none;
+}
+
+.box:last-child,
+.box:nth-child(7),
+.box:nth-child(8) {
+  border-bottom: none;
+}
+
 
 button:hover {
   cursor: pointer;
@@ -86,7 +110,7 @@ padding: 10px;
 }
 
 #playerOne {
-background-color: blanchedalmond;
+background-color: rgb(238, 245, 235);
 padding: 5px;
 height: 110px;
 float: left;
