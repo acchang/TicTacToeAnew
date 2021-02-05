@@ -52,6 +52,24 @@ const winningTrios = [
 ]
 
 restartBtn.addEventListener('click', startGame);
+hintBtn.addEventListener('click', hintButtonHit);
+
+const tipDetail = {
+  undefined: "You can choose any",
+  0: "You should pick top left",
+  1: "You should pick top middle",
+  2: "You should pick top right",
+  3: "You should pick middle left",
+  4: "You should pick dead center",
+  5: "You should pick middle right",
+  6: "You should pick bottom left",
+  7: "You should pick bottom center",
+  8: "You should pick bottom right"
+}
+
+function hintButtonHit() {
+  alert(tipDetail[suggestion])
+}
 
 function startGame() {
   if (ONE_CLASS == undefined || playerTwoIdentity == undefined) {
