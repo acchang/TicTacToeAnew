@@ -34,11 +34,14 @@ const proceedButton = document.getElementById('proceedButton');
 const roundEndedElement = document.getElementById('roundEnded');
 const roundEndedText = document.querySelector('[roundEndedtext]');
 const origBoard = Array.from(document.getElementsByClassName('box'));
+const statusDiv = document.querySelector('.isPlaying');
 
 proceedButton.addEventListener('click', proceed)
 restartBtn.addEventListener('click', startGame);
 hintBtn.addEventListener('click', hintButtonHit);
 
+
+// document.getElementById("isPlaying").innerHTML = checkClass()
 
 // document.getElementById("AIhelp").innerHTML = suggestion.toString()
 // document.getElementById("AIhelp").innerHTML = tipDetail[suggestion];
@@ -68,20 +71,23 @@ btn2.onclick = function () {
     };
 
 
+
+
 function proceed() {
   roundEnded.classList.remove('show')
   establishBoard()
 }
 
 function swapTurns() {
-  playerOneTurn = !playerOneTurn
-};
+  playerOneTurn = !playerOneTurn;
+  statusDiv.innerHTML = checkClass();
+;};
 
 function hintButtonHit() {
-  if (ONE_CLASS == undefined || playerTwoIdentity == undefined) {
-    alert ("Make sure both players are defined");
+  if (parallelBoard.includes("X", "O") === false ) {
+    alert ("Not enough info to suggest.")
   } else {
-  alert("Player " + ONE_CLASS + tipDetail[suggestion])}
+  alert("Player " + ONE_CLASS + tipDetail[suggestion]+ ". No hint for Player " + TWO_CLASS + ".")}
 }
 
 function startGame() {
@@ -91,6 +97,7 @@ function startGame() {
   console.log("player 1 = " + ONE_CLASS + ", player 2 = " + playerTwoIdentity)
   establishBoard()
   playerOneTurn = true;
+  statusDiv.innerHTML = ONE_CLASS 
 }
 
 function establishBoard() {
@@ -106,6 +113,7 @@ function establishBoard() {
     })
       };
     parallelBoard= [0,1,2,3,4,5,6,7,8]
+    statusDiv.innerHTML = ""
   }
 
 function boxmarked(e) {
@@ -284,13 +292,18 @@ function suggestedAIMove() {
   var yourParallelChoices = listParallelSpaces()
 
   if(yourParallelChoices.length > 6){
+    console.log(yourParallelChoices)
     var suggestedAIchoices = listEmptySpaces().filter(i => i%2 == 0) 
       if (suggestedAIchoices.includes(4) == true) {suggestion = 4}
-        else {suggestion = suggestedAIchoices[Math.floor(suggestedAIchoices.length * (Math.random()))]}
+      else if (suggestedAIchoices < 4 && parallelBoard.indexOf(TWO_CLASS) == 2 || parallelBoard.indexOf(TWO_CLASS) == 6)
+         {suggestion = Math.random() < 0.5 ? 0 : 8}
+      else if (suggestedAIchoices < 4 && parallelBoard.indexOf(TWO_CLASS) == 0 || parallelBoard.indexOf(TWO_CLASS) == 8)
+      {suggestion = Math.random() < 0.5 ? 2 : 6}
+      else {suggestion = suggestedAIchoices[Math.floor(suggestedAIchoices.length * (Math.random()))]}
+        console.log(parallelBoard.indexOf(TWO_CLASS))
         console.log("suggestion is " + suggestion);
         swapTurns();
-        return
-      }
+        return}
   
   for (var i = 0; i < yourParallelChoices.length; i++) {
     playerOneTurn = true;
