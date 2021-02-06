@@ -130,7 +130,6 @@ function boxmarked(e) {
         swapTurns()
       }
 
-      console.log("Newcheck: " + newCheckWin())
       if (playerhasWon()) {
         declareWinner()
         return
@@ -159,18 +158,11 @@ function smartAIPlay() {
     origBoard[smartAIstart].innerHTML = TWO_CLASS
     parallelBoard.splice(smartAIstart, 1, TWO_CLASS)
     suggestedAIMove()
-    console.log("smart AI play" + checkClass())
+    console.log("smart AI play " + checkClass())
+    console.log(origBoard)
     return
   }
-  bestAIMove();
-    if (playerhasWon()) {
-    declareWinner()
-    return
-    } 
-    if (isThereATie() == true) {
-    declareTie()
-    return
-    }
+    bestAIMove()
   playerOneTurn = true
 };
 
@@ -292,7 +284,6 @@ function suggestedAIMove() {
   var yourParallelChoices = listParallelSpaces()
 
   if(yourParallelChoices.length > 6){
-    console.log(yourParallelChoices)
     var suggestedAIchoices = listEmptySpaces().filter(i => i%2 == 0) 
       if (suggestedAIchoices.includes(4) == true) {suggestion = 4}
       else if (suggestedAIchoices < 4 && parallelBoard.indexOf(TWO_CLASS) == 2 || parallelBoard.indexOf(TWO_CLASS) == 6)
@@ -300,8 +291,6 @@ function suggestedAIMove() {
       else if (suggestedAIchoices < 4 && parallelBoard.indexOf(TWO_CLASS) == 0 || parallelBoard.indexOf(TWO_CLASS) == 8)
       {suggestion = Math.random() < 0.5 ? 2 : 6}
       else {suggestion = suggestedAIchoices[Math.floor(suggestedAIchoices.length * (Math.random()))]}
-        console.log(parallelBoard.indexOf(TWO_CLASS))
-        console.log("suggestion is " + suggestion);
         swapTurns();
         return}
   
@@ -354,6 +343,14 @@ parallelBoard.splice(move, 1, TWO_CLASS);
 origBoard[move].classList.add(TWO_CLASS);
 origBoard[move].innerHTML = TWO_CLASS;
 console.log("Board changed with " + checkClass() + " in " + move)
+if (playerhasWon()) {
+  declareWinner();
+  return
+  } 
+if (isThereATie() == true) {
+declareTie()
+return
+}
 suggestedAIMove()
 console.log("best AI " + checkClass())
 }
