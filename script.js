@@ -280,17 +280,16 @@ var acc = parallelBoard.reduce((acc, obj, idx) => {
 
 
 function suggestedAIMove() {
-  console.log ("hint")
   let bestScore = 10000
   var yourParallelChoices = listParallelSpaces()
 
   if(yourParallelChoices.length > 6){
     var suggestedAIchoices = listEmptySpaces().filter(i => i%2 == 0) 
       if (suggestedAIchoices.includes(4) == true) {suggestion = 4}
-      else if (parallelBoard.indexOf(TWO_CLASS) == 2 || parallelBoard.indexOf(ONE_CLASS) == 2 || parallelBoard.indexOf(TWO_CLASS) == 6 || parallelBoard.indexOf(ONE_CLASS) == 6)
+      else if (typeof parallelBoard[2] == "string" || typeof parallelBoard[6] == "string")
          {suggestion = Math.random() < 0.5 ? 0 : 8}
-      else if (parallelBoard.indexOf(TWO_CLASS) == 0 || parallelBoard.indexOf(ONE_CLASS) == 0 || parallelBoard.indexOf(TWO_CLASS) == 8 || parallelBoard.indexOf(ONE_CLASS) == 8)
-      {suggestion = Math.random() < 0.5 ? 2 : 6}
+      else if (typeof parallelBoard[0] == "string" || typeof parallelBoard[8] == "string")
+      { suggestion = Math.random() < 0.5 ? 2 : 6}
       else {suggestion = suggestedAIchoices[Math.floor(suggestedAIchoices.length * (Math.random()))]}
         swapTurns();
         return}
