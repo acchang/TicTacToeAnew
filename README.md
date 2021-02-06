@@ -2,6 +2,7 @@
 Returning to coding after a long break
 
 
+
 The goal of this project was to create a tic-tac-toe board. It probably could have taken me two weeks, which is still a long time, but it took me close to a month because I kept piling on features. 
 
 To make an updatable game board would have been a pretty simple proposition ... an interview question or with minimax, a second-semester freshman CS project. But then I set about 
@@ -50,3 +51,5 @@ X O X
 O   X
 ```
 Essentially, it takes the highest first appearing move even though it may take several steps to play out than going for the kill.
+
+According the repl.it updates, the last big project I did on Library was started six month ago. I started the repl.it for this one 21 days ago... which means my hiatus was probably 4 months: I began library five months ago and it took me a month to finish this.
