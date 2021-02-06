@@ -18,6 +18,10 @@ https://stackoverflow.com/questions/65999974/tic-tac-toe-minimax-ai-not-working-
 
 Daniel Shiffman's video was really helpful in understanding minimax, even though he operates in a js variant called p5js. I couldn't make heads or tails of what Beau Carnes of Free Code Camp did, his minimax is full of recursive methods that don't come second hand to me so it was hard to parse.
 
+I really struggled with understanding recursion. One of the first and biggest hurdles was understanding that there was no player switch going on -- it was in the function. The function works like this: put a move down, see if it is a terminal value of a win by calling `minimax`. `minimax` has a score associated with it. If it's a score, the board is marked with the move. If no score, then minimax leaps to a section for the opposite player, where upon the board is marked, minimax is called upon itself and it's scored. If there is no score, then it goes to a section for the current player, a mark is made and the board scored.
+
+When there is a terminal state, it generates a score, and the code can proceed past minimax rather than being called on itself repeatedly. Those scores are put in order to determine what is the optimal move at every step of the game.
+
 I spent many days debugging, working line by line though what the minimax recursion was doing. 
 
 Then I faced a new hurdle because the system was really slow dealing with the initial moves. I understand that's because it's testing 8! (40,320) game boards. Is this lag expected and the only way to do it? 
