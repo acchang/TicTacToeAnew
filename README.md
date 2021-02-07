@@ -52,4 +52,6 @@ O   X
 ```
 Essentially, it takes the highest first appearing move even though it may take several steps to play out than going for the kill.
 
+Also, I learned you can code a ton, get the logic right but UI matters quite a bit too, people will do things your app doesn't account for if you don't see it up right. My original design had "Player One" and "Player Two" across the top, and the "Human vs. Human" game simply labeled as "Human," while the "Hint" button was just above the confirm button on the left. Far too many inputs.
+
 According the repl.it updates, the last big project I did on Library was started six month ago. I started the repl.it for this one 21 days ago... which means my hiatus was probably 4 months: I began library five months ago and it took me a month to finish this.
