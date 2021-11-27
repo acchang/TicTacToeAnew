@@ -403,3 +403,6 @@ function minimax() {
       return bestScore
     }
   } 
+
+
+// test test test
