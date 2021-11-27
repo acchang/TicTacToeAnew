@@ -1,7 +1,11 @@
 # TicTacToeAnew
+
+11/26/2021
+Revisiting to relearn and maybe refine hint so both get
+
+
+2/6/2021
 Returning to coding after a long break
-
-
 
 The goal of this project was to create a tic-tac-toe board. It probably could have taken me two weeks, which is still a long time, but it took me close to a month because I kept piling on features. 
 
