@@ -1,5 +1,8 @@
 # TicTacToeAnew
 
+11/27/2021
+I used this video a lot: https://www.youtube.com/watch?v=Y-GkMjUZsmM
+
 11/26/2021
 Revisiting to relearn and maybe refine hint so both get
 
