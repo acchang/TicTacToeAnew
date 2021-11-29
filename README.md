@@ -1,7 +1,12 @@
 # TicTacToeAnew
 
+11/28/2021
+Re-learning minimax (still need to review)
+https://youtu.be/P2TcQ3h0ipQ
+
 11/27/2021
 I used this video a lot: https://www.youtube.com/watch?v=Y-GkMjUZsmM
+(mostly for styling)
 
 11/26/2021
 Revisiting to relearn and maybe refine hint so both get
