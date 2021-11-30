@@ -27,7 +27,7 @@ To make an updatable game board would have been a pretty simple proposition ... 
 I was also coming back after a several month hiatus, so I had to learn everything all over again. 
 
 I watched all the videos of Tic Tac Toe and minimax available on YouTube (about a dozen in total.) Surprisingly only about three of the Tic Tac Toe tutorials teach minimax. I also asked a lot of Stack Exchange
-https://stackoverflow.com/questions/65999974/tic-tac-toe-minimax-ai-not-working-beyond-end-game-recursion-issues-where-are
+ 
 
 Daniel Shiffman's video was really helpful in understanding minimax, even though he operates in a js variant called p5js. I couldn't make heads or tails of what Beau Carnes of Free Code Camp did, his minimax is full of recursive methods that don't come second hand to me so it was hard to parse.
 
