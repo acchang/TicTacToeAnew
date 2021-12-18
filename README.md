@@ -1,7 +1,10 @@
 # TicTacToeAnew
 
+
+
+
 11/30/2021
-Started watch Connect Four tutorials, I may need to build one of these to understand this all again.
+Started watching Connect Four tutorials, I may need to build one of these to understand this all again.
 https://www.youtube.com/watch?v=aroYjgQH8Tw&t
 https://www.youtube.com/watch?v=Hi5hEH1KNEc
 
