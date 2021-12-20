@@ -113,6 +113,8 @@ function establishBoard() {
   if (ONE_CLASS !== undefined || playerTwoIdentity !== undefined) {
     for (let i = 0; i < origBoard.length; i++) {
     origBoard[i].addEventListener('click', boxmarked, {once: true});};
+// adds eventlistener to origboard, which length is determined by the divs in index.html
+// activates boxmarked with click
 
     origBoard.forEach(gridBox => {
     gridBox.classList.remove(ONE_CLASS)
@@ -125,17 +127,22 @@ function establishBoard() {
     statusDiv.innerHTML = ""
   };
 
-// RESUME HERE -- BOXMARKED
+// The target event property returns the element that triggered the event.
+// indexOf() method returns the first index at which a given element can be found in the array
+// boxmarked takes works on array of origBoard
+// origBoard is an array of HTML elements with class=box
 
 function boxmarked(e) {
     const index = origBoard.indexOf(e.target)
+    // need to id index so can transpose it to parallel board
+    // or else can just add classlist to e.target
     if(playerOneTurn) {
         origBoard[index].classList.add(ONE_CLASS)
         e.target.innerHTML = ONE_CLASS
         parallelBoard.splice(index, 1, ONE_CLASS)
       } else {
         origBoard[index].classList.add(TWO_CLASS)
-        e.target.innerHTML = TWO_CLASS
+        e.target.innerHTML = TWO_CLASS;
         parallelBoard.splice(index, 1, TWO_CLASS)
         suggestedAIMove()
         swapTurns()
@@ -156,6 +163,25 @@ function boxmarked(e) {
 };
 
 
+//this is easy, just plays randomly.
+function dumbAIPlay() {
+  var DumbAIArray = listEmptySpaces()
+    let dumbAIpicked = DumbAIArray[Math.floor(DumbAIArray.length * (Math.random()))]
+    origBoard[dumbAIpicked].classList.add(TWO_CLASS)
+    origBoard[dumbAIpicked].innerHTML = TWO_CLASS
+    parallelBoard.splice(dumbAIpicked, 1, TWO_CLASS)
+    if (playerhasWon()) {
+    declareWinner()
+    return
+    } 
+    if (isThereATie(origBoard) == true) {
+      declareTie()
+      return
+    }
+    suggestedAIMove()
+}
+
+// this is easy, just marks space randomly
 
 function smartAIPlay() {
   if(parallelBoard.includes(TWO_CLASS) == false) {
@@ -178,35 +204,50 @@ function smartAIPlay() {
 };
 
 
-function dumbAIPlay() {
-  var DumbAIArray = listEmptySpaces()
-    let dumbAIpicked = DumbAIArray[Math.floor(DumbAIArray.length * (Math.random()))]
-    origBoard[dumbAIpicked].classList.add(TWO_CLASS)
-    origBoard[dumbAIpicked].innerHTML = TWO_CLASS
-    parallelBoard.splice(dumbAIpicked, 1, TWO_CLASS)
-    if (playerhasWon()) {
-    declareWinner()
-    return
-    } 
-    if (isThereATie(origBoard) == true) {
-      declareTie()
-      return
-    }
-    suggestedAIMove()
-}
-
+// this is just to mark who is playing
+// it operates out of swapTurns() and the variable PlayerOneTurn
 
 function checkClass() {
   if(playerOneTurn) {
   return ONE_CLASS
-} else {
+  } else {
   return TWO_CLASS
-};}
+  }
+};
+
+// these are easy, just for the interface
+function declareTie() {
+  roundEndedText.innerText = 'Draw!';
+  roundEnded.classList.add('show');
+}
+
+function declareWinner() {
+  roundEndedText.innerText = checkClass() + " WINS";
+  roundEnded.classList.add('show');
+  // setTimeout(alert (checkClass() + " WINS"), 1000);
+  for (let i=0; i < origBoard.length; i++) {
+    origBoard[i].removeEventListener('click', boxmarked, {once: true});}
+}
+
+
+// Check win functions are tricky  -- All these work on arrow functions
+
+// function isThereATie runs another function `allFilled` which takes insidebox as an argument
+// if the innerHTML of insidebox is not empty 
+// It returns the result of the `every` test of `allFilled` the array origBoard
+// insidebox is never defined, it could be "fizzbuzz", it just serves to mark objects in the array
+// isThereATie is a function declaration, we use allFilled as a function expression 
+// because `every` needs to call it. 
+
+// Could `allFilled` be used as a function declaration? 
+// If so, would it have to be declared separately as a new top-level function?
 
 function isThereATie() {
   var allFilled = (insidebox) => insidebox.innerHTML !==""
   return (origBoard.every(allFilled))
 }
+
+
 
 function isThereATieParallel() {
   var allStrings = (obj) => typeof obj === "string"
@@ -254,19 +295,6 @@ function newCheckWin() {
     else {
       return false;
     }
-}
-
-function declareTie() {
-  roundEndedText.innerText = 'Draw!';
-  roundEnded.classList.add('show');
-}
-
-function declareWinner() {
-  roundEndedText.innerText = checkClass() + " WINS";
-  roundEnded.classList.add('show');
-  // setTimeout(alert (checkClass() + " WINS"), 1000);
-  for (let i=0; i < origBoard.length; i++) {
-    origBoard[i].removeEventListener('click', boxmarked, {once: true});}
 }
 
 function listEmptySpaces() {
