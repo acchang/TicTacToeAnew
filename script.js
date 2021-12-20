@@ -46,6 +46,9 @@ hintBtn.addEventListener('click', hintButtonHit);
 // document.getElementById("AIhelp").innerHTML = suggestion.toString()
 // document.getElementById("AIhelp").innerHTML = tipDetail[suggestion];
 
+// below, "input[name]" is for player marker and type of game
+// the code is a litle confusing.
+
 btn.onclick = function () {
     const XOs = document.querySelectorAll('input[name="choice"]');
     for (const XO of XOs) {
@@ -57,7 +60,7 @@ btn.onclick = function () {
         }
     }
     };
-  
+
 const btn2 = document.querySelector('#PlayerTwoChoice');
 btn2.onclick = function () {
     const Opponents = document.querySelectorAll('input[name="choice2"]');
@@ -71,18 +74,19 @@ btn2.onclick = function () {
     };
 
 
-
-
+// this removes the win boxes highlighted in yellow and starts anew.
 function proceed() {
   roundEnded.classList.remove('show')
   establishBoard()
 }
 
+// swaps and then updates the const statusDiv which shows on board
 function swapTurns() {
   playerOneTurn = !playerOneTurn;
   statusDiv.innerHTML = checkClass();
 ;};
 
+// this is the one that only hints for player one
 function hintButtonHit() {
   if (parallelBoard.includes("X", "O") === false ) {
     alert ("Not enough info to suggest.")
@@ -100,6 +104,11 @@ function startGame() {
   statusDiv.innerHTML = ONE_CLASS 
 }
 
+// this builds the board and establishes event listeners after the classes are selected
+// there is no 'else' because I've alerted the lack of them
+// rebuilds the parallel board too
+// function boxmarked has nothing passed in bc it's passed into addEventListener.
+
 function establishBoard() {
   if (ONE_CLASS !== undefined || playerTwoIdentity !== undefined) {
     for (let i = 0; i < origBoard.length; i++) {
@@ -114,7 +123,9 @@ function establishBoard() {
       };
     parallelBoard= [0,1,2,3,4,5,6,7,8]
     statusDiv.innerHTML = ""
-  }
+  };
+
+// RESUME HERE -- BOXMARKED
 
 function boxmarked(e) {
     const index = origBoard.indexOf(e.target)
