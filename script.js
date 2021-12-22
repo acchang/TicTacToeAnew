@@ -247,21 +247,44 @@ function isThereATie() {
   return (origBoard.every(allFilled))
 }
 
-
+// we check parallelBoard to see if every window has a string bc of minimax
+// minimax check works by ???? (I will know when I get to checking mechanisms) <-- RESTART HERE
 
 function isThereATieParallel() {
   var allStrings = (obj) => typeof obj === "string"
   return (parallelBoard.every(allStrings))
 }
 
+// this is used to check if the current player has won (true or false)
+// origBoard is the array from the boxes. 
+// take that array and reduce, using previousValue, currentValue, currentIndex
+// this uses reduce not as numbers. 
+// it goes through each piece of the array (board) and results in an array called `indexOfSelected`
+// if the box is the same as the current class, push the index into `indexOfSelected` array
+// so then you get an array of the played spaces like [4,5]
+// the syntax is `array.reduce(final value)` AND
+// const array = [?, ?, ?];
+// const 'final value' = (previousValue, currentValue, index) => previousValue operation currentValue;
+// to get the variable 'iOS' which is an array, 
+// move over the origBoard and put in `iOS` the index of the box if the box matches current player
+// reduce is a callback function, calls it once for each element, in ascending order.
+// index of selected returns all the indexes of the boxes that have been selected by the current player
+
 function playerhasWon() {
+  console.log(indexOfSelected);
     var indexOfSelected = origBoard.reduce((indexOfSelected, box, idx) => {
         if (box.classList[1] === checkClass()) {
             indexOfSelected.push(idx);
         }
+        console.log(indexOfSelected)
         return indexOfSelected;
     }, []);
 
+// then with map, you take an array and you call a function on every object inside the array.
+// so here you take WinningTrios, and on every one of them, you see if a winningtrio is in indexOfSelected.
+
+
+// Of the trios in indexOfSelected (is this one at a time? how do you get partial mapping?)
   const winningThreeIndexes = winningTrios
   .map(trio => trio.filter(i => indexOfSelected.includes(i)))
   .filter(i => i.length === 3);
@@ -296,6 +319,8 @@ function newCheckWin() {
       return false;
     }
 }
+
+// this is needed for minimax --
 
 function listEmptySpaces() {
   var acc = origBoard.reduce((acc, box, idx) => {
