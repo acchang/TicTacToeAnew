@@ -248,7 +248,7 @@ function isThereATie() {
 }
 
 // we check parallelBoard to see if every window has a string bc of minimax
-// minimax check works by ???? (I will know when I get to checking mechanisms) <-- RESTART HERE
+// minimax check works by ???? (I will know when I get to checking mechanisms OF PARALLEL BOARD) <-- RESTART HERE
 
 function isThereATieParallel() {
   var allStrings = (obj) => typeof obj === "string"
@@ -276,21 +276,21 @@ function playerhasWon() {
         if (box.classList[1] === checkClass()) {
             indexOfSelected.push(idx);
         }
-        console.log(indexOfSelected)
         return indexOfSelected;
     }, []);
 
-// then with map, you take an array and you call a function on every object inside the array.
-// so here you take WinningTrios, and on every one of them, you see if a winningtrio is in indexOfSelected.
+// filter function works by big group first, then 'filter' then the rest
+// so each object is a trio, in 'winningTrios' and the matches to indexOfSelected are filtered out.
+// each object in the trio array is tested to see if it's in indexOfSelected
+// some trios will have two digits in indexOfSelected, some one, we want the one that has three
+// map tests each trio in 'winningTrios'
+// the second filter on length operates on a different i, it only wants the trios with 3 
 
-
-// Of the trios in indexOfSelected (is this one at a time? how do you get partial mapping?)
   const winningThreeIndexes = winningTrios
   .map(trio => trio.filter(i => indexOfSelected.includes(i)))
   .filter(i => i.length === 3);
-// map each trio and run filter, does indexOfSelected include trio?
-// then filter such that the only one returned is the trio with 3 digits.
 
+// this runs the highlights -- RESTART HERE
   if (winningThreeIndexes.length === 1 || winningThreeIndexes.length === 2) {
     winningThreeIndexes[0].map((index) => {origBoard[index].classList += ' winner'});
     return true
