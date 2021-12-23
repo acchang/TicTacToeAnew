@@ -181,7 +181,7 @@ function dumbAIPlay() {
     suggestedAIMove()
 }
 
-// this is easy, just marks space randomly
+// this is the smart initial move: take center, then corners
 
 function smartAIPlay() {
   if(parallelBoard.includes(TWO_CLASS) == false) {
@@ -290,7 +290,12 @@ function playerhasWon() {
   .map(trio => trio.filter(i => indexOfSelected.includes(i)))
   .filter(i => i.length === 3);
 
-// this runs the highlights -- RESTART HERE
+// if `winningThreeIndexes` is made of 1 or 2 arrays --
+// then take the first array add the class winner
+// why does this limit to 1 or 2. Why not 3? Why does it need to exist at all? WHY WHY WHY
+// take the first set of 3 in 'WTI', use map for each one of the digits inside to index origBoard
+// and add winner class
+
   if (winningThreeIndexes.length === 1 || winningThreeIndexes.length === 2) {
     winningThreeIndexes[0].map((index) => {origBoard[index].classList += ' winner'});
     return true
@@ -298,7 +303,10 @@ function playerhasWon() {
     else {
       return false;
     }
-}
+};
+
+// this checks on minimax, works the same way but does not highlight winning spaces.
+// also it's only a win if there is ONE winningThreeIndex
 
 function newCheckWin() {
   var indexOfParallel = parallelBoard.reduce((indexOfParallel, obj, idx) => {
@@ -320,7 +328,9 @@ function newCheckWin() {
     }
 }
 
-// this is needed for minimax --
+// these are is needed for AI 
+// `listEmptySpaces` gives the algo and idea of what to choose from
+
 
 function listEmptySpaces() {
   var acc = origBoard.reduce((acc, box, idx) => {
