@@ -1,7 +1,11 @@
 # TicTacToeAnew
 
 
-
+12/23/2021
+I have it all almost figured out, just trying to parse the minimax algo
+best help is:
+Beau Carnes video: https://www.youtube.com/watch?v=P2TcQ3h0ipQ&t=1584s
+Abdulsaheb essay: https://www.freecodecamp.org/news/how-to-make-your-tic-tac-toe-game-unbeatable-by-using-the-minimax-algorithm-9d690bad4b37/
 
 11/30/2021
 Started watching Connect Four tutorials, I may need to build one of these to understand this all again.

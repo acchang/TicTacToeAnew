@@ -203,7 +203,6 @@ function smartAIPlay() {
   playerOneTurn = true
 };
 
-
 // this is just to mark who is playing
 // it operates out of swapTurns() and the variable PlayerOneTurn
 
@@ -429,6 +428,40 @@ suggestedAIMove()
 console.log("best AI " + checkClass())
 }
 
+// minimax works by: returning a score for winning conditions, based on a board
+// (1) if neither checkwin() nor tie() is true, then it swaps turns, then ...
+// (2) listParallelSpaces(), splice in the first, put in parallelboard, score it 
+// (3) if there is a score: 
+// Minimizer starts way negative from 0 (-100) and tries to get closer (+10 for win)
+// Maximizer starts way positive from 0 (+100) and tries to get closer (-10 for win)
+// These won't get mixed up bc of minimax scoring conditions (ie +10 not scored vs +100)
+// In other words: board is scored using avail choices, call minimax, swap turns, repeat until a -10, +10 or 2 returned
+// return stops the function
+// and then the last space (`playerPick`) is evaluated for best score
+// The `for` loop then kicks in, for the same player, `parallel spaces` now has the previous 2 choices.
+// i is now on the second choice, and sees if it is a win.
+
+
+// The forloop does not initiate yet. 
+
+// After minimax returns a score
+
+// splice is (index, replace how many?, with what)
+// second splice returns the board to what it was before it was scored. this only happens we get a return.
+
+// the returned is evaluated to see if the # is the best score.
+// HOW DOES IT SEE THE OTHER POSSIBILITIES FROM THE FIRST?
+
+// WHAT HAPPENS NEXT AFTER THE BEST SCORE IS GOTTEN? AI IS AFFECTED
+// WHEN THIS PROCESS IS DONE, bestAIMove() places the token. 
+
+// HOW DOES THIS PROCEED THROUGH THE EMPTY SPACES AND HOW DOES IT REMEMBER?
+// There is only one "score" and it is "best" depending on the condition
+// so the algo goes thru parallelpsaces, alternating choices, gets a bestScore
+// in other words, splices first choice, 
+
+
+
 function minimax() {
   if (newCheckWin() &&  playerOneTurn) {
     return -10;
@@ -470,7 +503,6 @@ function minimax() {
       console.log("Maximizer " +  checkClass() +  " picked " + player1Pick + ", scores " + score)
       parallelBoard.splice(player1Pick, 1, player1Pick);
       if (score < bestScore) {
-        bestScore = score
         bestScore = score
         console.log("Maximizer BEST for " + player1Pick + " is " + bestScore);}
       }
