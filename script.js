@@ -428,12 +428,22 @@ suggestedAIMove()
 console.log("best AI " + checkClass())
 }
 
+// minimax fires when it is called by bestAIMove()
 // minimax works by: returning a score for winning conditions, based on a board
 // (1) if neither checkwin() nor tie() is true, then it swaps turns, then ...
-// (2) listParallelSpaces(), splice in the first, put in parallelboard, score it 
+// (2) listParallelSpaces(), splice in the first, put in parallelboard, use minimax (2nd call) to score it 
 // (3) if there is a score: 
 // Minimizer starts way negative from 0 (-100) and tries to get closer (+10 for win)
 // Maximizer starts way positive from 0 (+100) and tries to get closer (-10 for win)
+// This second call of minimax ends with the return of 10/-10/2
+
+// something like this:
+// Then the loop moves on to the next i with the same player until another best score
+// `return bestscore` does not happen until all possibilities are fulfilled (examine this)
+// whereupon `return bestscore` is returned to bestAIMove() and then 
+// bestAIMove() executes its own forloop for the choices it's given and I console.log ("main")
+
+
 // These won't get mixed up bc of minimax scoring conditions (ie +10 not scored vs +100)
 // In other words: board is scored using avail choices, call minimax, swap turns, repeat until a -10, +10 or 2 returned
 // return stops the function
@@ -441,10 +451,6 @@ console.log("best AI " + checkClass())
 // The `for` loop then kicks in, for the same player, `parallel spaces` now has the previous 2 choices.
 // i is now on the second choice, and sees if it is a win.
 
-
-// The forloop does not initiate yet. 
-
-// After minimax returns a score
 
 // splice is (index, replace how many?, with what)
 // second splice returns the board to what it was before it was scored. this only happens we get a return.
