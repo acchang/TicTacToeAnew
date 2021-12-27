@@ -87,6 +87,8 @@ function swapTurns() {
 ;};
 
 // this is the one that only hints for player one
+// tipDetail is basically a lookup table using an array.
+
 function hintButtonHit() {
   if (parallelBoard.includes("X", "O") === false ) {
     alert ("Not enough info to suggest.")
@@ -181,7 +183,8 @@ function dumbAIPlay() {
     suggestedAIMove()
 }
 
-// this is the smart initial move: take center, then corners
+// this is the smart initial move: take center, then corners. 
+// Then it is called and uses bestAIMove() to decide where to go from now on.
 
 function smartAIPlay() {
   if(parallelBoard.includes(TWO_CLASS) == false) {
@@ -352,6 +355,11 @@ var acc = parallelBoard.reduce((acc, obj, idx) => {
 }
 
 
+// suggestedAIMove() works the same as bestAIMove() basically 
+// but the first if section is to eliminate >6 available spaces
+// otherwise, it runs minimax in a forloop to decide the best choice
+// here, what is `move` for bestAIMove() is outputted as a suggestion
+
 function suggestedAIMove() {
   let bestScore = 10000
   var yourParallelChoices = listParallelSpaces()
@@ -387,6 +395,13 @@ function suggestedAIMove() {
 playerOneTurn = true;
 console.log("SUGGESTION is " + suggestion)
 }
+
+// bestAIMove() is called whenever the player places a token if he selected SmartAI().
+// listParallelSpaced() creates an array of the available spaces.
+// we call a forloop that goes through each available space.
+// the AI player is spliced into the array, checked for a win, and then minimax() runs
+// you will get a best score for each object in the array. 
+// Each time score > bestScore, that choice will be assigned to move until the forloop ends.
 
 function bestAIMove() {
   let bestScore = -10000
@@ -428,45 +443,27 @@ suggestedAIMove()
 console.log("best AI " + checkClass())
 }
 
-// minimax fires when it is called by bestAIMove()
-// minimax works by: returning a score for winning conditions, based on a board
-// (1) if neither checkwin() nor tie() is true, then it swaps turns, then ...
-// (2) listParallelSpaces(), splice in the first, put in parallelboard, use minimax (2nd call) to score it 
-// (3) if there is a score: 
-// Minimizer starts way negative from 0 (-100) and tries to get closer (+10 for win)
-// Maximizer starts way positive from 0 (+100) and tries to get closer (-10 for win)
-// This second call of minimax ends with the return of 10/-10/2
+// minimax() fires when it is called by bestAIMove()
+// (1) if neither checkwin() nor tie() is true, then swapTurns(), then ...
+// (2) listParallelSpaces(), forloop over that array.
+// (3) splice a marker into parallelboard, use minimax (on itself)
+// this again goes to step 1, checking and swapping sides until there is a win. 
+// if there is a score, `parallelBoard.splice(player2Pick, 1, player2Pick)` steps it back
+// there is no swap, the board is tested again
+// if there is no win, then again swapTurns() until there is a win
+// and then again, step back, no swap, test again
+// this goes until the `forloop` is done, and you get a score for one choice at bestAIMove()
+// then bestAIMove() goes through its own forloop
+// There is only one "score" and it is "best" depending on who is the player
 
-// something like this:
-// Then the loop moves on to the next i with the same player until another best score
-// `return bestscore` does not happen until all possibilities are fulfilled (examine this)
-// whereupon `return bestscore` is returned to bestAIMove() and then 
-// bestAIMove() executes its own forloop for the choices it's given and I console.log ("main")
-
-
-// These won't get mixed up bc of minimax scoring conditions (ie +10 not scored vs +100)
-// In other words: board is scored using avail choices, call minimax, swap turns, repeat until a -10, +10 or 2 returned
-// return stops the function
-// and then the last space (`playerPick`) is evaluated for best score
-// The `for` loop then kicks in, for the same player, `parallel spaces` now has the previous 2 choices.
-// i is now on the second choice, and sees if it is a win.
-
-
-// splice is (index, replace how many?, with what)
-// second splice returns the board to what it was before it was scored. this only happens we get a return.
-
-// the returned is evaluated to see if the # is the best score.
-// HOW DOES IT SEE THE OTHER POSSIBILITIES FROM THE FIRST?
-
-// WHAT HAPPENS NEXT AFTER THE BEST SCORE IS GOTTEN? AI IS AFFECTED
-// WHEN THIS PROCESS IS DONE, bestAIMove() places the token. 
-
-// HOW DOES THIS PROCEED THROUGH THE EMPTY SPACES AND HOW DOES IT REMEMBER?
-// There is only one "score" and it is "best" depending on the condition
-// so the algo goes thru parallelpsaces, alternating choices, gets a bestScore
-// in other words, splices first choice, 
-
-
+// so bestAIMove() starts with one choice and tests all possible combinations
+// the `parallelPick` that gets the best score is turned into the `move`
+// because the bestAIMove() does a forloop
+// the `move` will always be the last relevant one in the array.
+// there is a possibility that a move blocking a projected win is not the optimal move
+// if the opponent does not do the optimal move. But because the board is so small, 
+// if the opponent's move is sub-optimal, the AI will take the first win it sees.
+// the AI is only effective if it takes a win over a tie or a loss and assumes you do too.
 
 function minimax() {
   if (newCheckWin() &&  playerOneTurn) {
