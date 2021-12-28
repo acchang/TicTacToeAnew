@@ -464,6 +464,8 @@ console.log("best AI " + checkClass())
 // if the opponent does not do the optimal move. But because the board is so small, 
 // if the opponent's move is sub-optimal, the AI will take the first win it sees.
 // the AI is only effective if it takes a win over a tie or a loss and assumes you do too.
+// `bestScore` is interesting because there is only one best score. 
+// It keeps updating to -10, 10 or 2 depending on who the current player is.
 
 function minimax() {
   if (newCheckWin() &&  playerOneTurn) {
@@ -481,14 +483,14 @@ function minimax() {
     for (var i = 0; i < player2Choices.length; i++) {
       playerOneTurn = false
       var player2Pick = player2Choices[i];
-      console.log("Minimizer " + checkClass() + " picks " + player2Pick + " from " + player2Choices);
+      console.log("Maximizer " + checkClass() + " picks " + player2Pick + " from " + player2Choices);
       parallelBoard.splice(player2Pick, 1,TWO_CLASS);
       var score = minimax(parallelBoard)
-      console.log("Minimizer " +  checkClass() +  " picked " + player2Pick + ", scores " + score)
+      console.log("Maximizer " +  checkClass() +  " picked " + player2Pick + ", scores " + score)
       parallelBoard.splice(player2Pick, 1, player2Pick);
       if (score > bestScore) {
         bestScore = score
-        console.log("Minimizer BEST for " + player2Pick + " is " + bestScore);}
+        console.log("Maximizer BEST for " + player2Pick + " is " + bestScore);}
       }
       return bestScore
     }
@@ -500,14 +502,14 @@ function minimax() {
     for (var i = 0; i < player1Choices.length; i++) {
       playerOneTurn = true
       var player1Pick = player1Choices[i];
-      console.log("Maximizer " + checkClass() + " picks " + player1Pick + " from " + player1Choices);
+      console.log("Minimizer " + checkClass() + " picks " + player1Pick + " from " + player1Choices);
       parallelBoard.splice(player1Pick, 1,ONE_CLASS);
       var score = minimax(parallelBoard)
-      console.log("Maximizer " +  checkClass() +  " picked " + player1Pick + ", scores " + score)
+      console.log("Minimizer " +  checkClass() +  " picked " + player1Pick + ", scores " + score)
       parallelBoard.splice(player1Pick, 1, player1Pick);
       if (score < bestScore) {
         bestScore = score
-        console.log("Maximizer BEST for " + player1Pick + " is " + bestScore);}
+        console.log("Minimizer BEST for " + player1Pick + " is " + bestScore);}
       }
       return bestScore
     }

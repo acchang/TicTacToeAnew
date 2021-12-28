@@ -1,5 +1,16 @@
 # TicTacToeAnew
 
+12/27/2021
+I think I understand how it all works now. See the comments for a better explanation.
+Last thing I checked was if I got minimizer and maximizer term right.
+Minimizer starts big (1000) and goes small.
+Also checked if Abdulsaheb steps back one after finding a terminal condition. 
+Yes, he uses `newBoard[availSpots[i]] = move.index;`
+
+Also revisited this, I'm not sure how I'd answer my initial question, but I know DOM manipulation was too much
+https://stackoverflow.com/questions/65999974/tic-tac-toe-minimax-ai-not-working-beyond-end-game-recursion-issues-where-are
+
+I think I'm ready to take on Connect Four again. I just need to understand a better checking mechanism.
 
 12/23/2021
 I have it all almost figured out, just trying to parse the minimax algo
